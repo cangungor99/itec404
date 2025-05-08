@@ -2,6 +2,7 @@
 <html lang="en">
 
 
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -29,7 +30,7 @@
     <link href="assets/css/semi-dark.css" rel="stylesheet" />
     <link href="assets/css/header-colors.css" rel="stylesheet" />
 
-    <title>EMU Digital Club | Club Lists</title>
+    <title>EMU Digital Club | Club Detail</title>
 </head>
 
 <body>
@@ -38,6 +39,7 @@
     <!--start wrapper-->
     <div class="wrapper">
         <!--start top header-->
+       
         <?php include "navbar.php"; ?>
         <!--end top header-->
 
@@ -372,7 +374,7 @@
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Active Club Lists</li>
+                            <li class="breadcrumb-item active" aria-current="page">Club Detail</li>
                         </ol>
                     </nav>
                 </div>
@@ -380,97 +382,95 @@
             </div>
             <!--end breadcrumb-->
 
-            <div class="card">
+
+            <div class="card border shadow-none">
                 <div class="card-header py-3">
-                    <div class="row align-items-center m-0">
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <select class="form-select">
-                                <option>All category</option>
-                                <option>IT</option>
-                                <option>Sport</option>
-                               
-                            </select>
+                    <div class="row align-items-center g-3">
+                        <div class="col-12 col-lg-6">
+                            <h5 class="mb-0">IT Club</h5>
                         </div>
                        
-                        <div class="col-md-2 col-6">
-                            <select class="form-select">
-                                <option>Status</option>
-                                <option>Active</option>
-                                <option>Disabled</option>
-                                <option>Show all</option>
-                            </select>
+                    </div>
+                </div>
+                <div class="card-header py-2 bg-light">
+                    <div class="row row-cols-1 row-cols-lg-3">
+                        <div class="col">
+                            <div class="">
+                                
+                                <address class="m-t-5 m-b-5">
+                                    <strong class="text-inverse">Club Logo</strong><br>
+                                   
+                                </address>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="">
+                                
+                                <address class="m-t-5 m-b-5">
+                                    <strong class="text-inverse">Club Description</strong><br>
+                                    
+                                </address>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="">
+                                <small>Created At</small>
+                                <div class=""><b>August 3,2012</b></div>
+                                <div class="invoice-detail">
+                                    
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-
                     <div class="table-responsive">
-                        <table class="table align-middle table-striped">
-                            <thead class="">
-                                <th>
-                                    Select
-                                </th>
-                                <th>
-                                    Club Logo
-                                </th>
-                                <th>
-
-                                    Club Name
-                                </th>
-                                <th>
-                                    Club Description 
-                                </th>
-                                <th>
-                                    Created Date
-                                </th>
-                                <th>
-                                    Actions
-                                </th>
+                        <table class="table table-invoice">
+                            <thead>
+                                <tr>
+                                    <th>CLUB COMMITTEE</th>
+                                    
+                                    <th class="text-center" width="10%">ROLE</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox">
-                                        </div>
+                                        <span class="text-inverse">Mehmet</span><br>
+                                        
                                     </td>
-                                    <td class="productlist">
-                                        <a class="d-flex align-items-center gap-2" href="#">
-                                            <div class="product-box">
-                                                <img src="assets/images/products/01.png" alt="">
-                                            </div>
-                                           
-                                        </a>
-                                    </td>
-                                    <td><span> <div>
-                                                <h6 class="mb-0 product-title">IT Club</h6>
-                                            </div></span></td>
-                                    <td>
-                                        <!-- <span class="badge rounded-pill bg-success">Active</span> -->
-                                </td>
-                                    <td><span>5-31-2020</span></td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-3 fs-6">
-                                            <a href="javascript:;" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="View detail" aria-label="Views"><i class="bi bi-eye-fill"></i></a>
-                                        </div>
-                                    </td>
+                                    <td class="text-center">Teacher</td>
                                 </tr>
-                              
+                                <tr>
+                                    <td>
+                                        <span class="text-inverse">Ahmet</span><br>
+                                       
+                                    </td>
+                                    <td class="text-center">Leader</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="text-inverse">Fatma<br>
+                                        
+                                    </td>
+                                    <td class="text-center">Leader As.</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <nav class="float-end mt-4" aria-label="Page navigation">
-                        <ul class="pagination">
-                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
+                   
 
+                    <hr>
+                    <!-- begin invoice-note -->
+                    <div class="my-3">
+                        * If you joined that club do not need click button <br>
+                        <button type="button" class="btn btn-primary">Join Club</button>
+                    </div>
+                    <!-- end invoice-note -->
                 </div>
+
+               
             </div>
 
         </main>
@@ -494,7 +494,7 @@
         <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
         <!--End Back To Top Button-->
 
-      
+       
 
     </div>
     <!--end wrapper-->
