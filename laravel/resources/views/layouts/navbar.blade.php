@@ -17,12 +17,12 @@
                 </a>
             </li>
             <li class="nav-item dropdown dropdown-laungauge d-none d-sm-flex">
-                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown"><img src="assets/images/county/02.png" width="22" alt="">
+                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;" data-bs-toggle="dropdown"><img src="{{asset('assets/images/county/02.png')}}" width="22" alt="">
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end p-2">
-                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img src="assets/images/county/01.png" width="20" alt=""><span class="ms-2">English</span></a>
+                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img src="{{asset('assets/images/county/01.png')}}" width="20" alt=""><span class="ms-2">English</span></a>
                     </li>
-                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img src="assets/images/county/02.png" width="20" alt=""><span class="ms-2">Turkish</span></a>
+                    <li><a class="dropdown-item d-flex align-items-center py-2" href="javascript:;"><img src="{{asset('assets/images/county/02.png')}}" width="20" alt=""><span class="ms-2">Turkish</span></a>
                     </li>
 
                 </ul>
@@ -149,7 +149,7 @@
                     <div class="header-message-list p-2">
                         <a class="dropdown-item" href="#">
                             <div class="d-flex align-items-center">
-                                <img src="assets/images/avatars/avatar-1.png" alt="" class="rounded-circle" width="50" height="50">
+                                <img src="{{asset('assets/images/avatars/avatar-1.png')}}" alt="" class="rounded-circle" width="50" height="50">
                                 <div class="ms-3 flex-grow-1">
                                     <h6 class="mb-0 dropdown-msg-user">Amelio Joly <span class="msg-time float-end text-secondary">1 m</span></h6>
                                     <small class="mb-0 dropdown-msg-text text-secondary d-flex align-items-center">The standard chunk of lorem...</small>
@@ -158,7 +158,7 @@
                         </a>
                         <a class="dropdown-item" href="#">
                             <div class="d-flex align-items-center">
-                                <img src="assets/images/avatars/avatar-2.png" alt="" class="rounded-circle" width="50" height="50">
+                                <img src="{{asset('assets/images/avatars/avatar-2.png')}}" alt="" class="rounded-circle" width="50" height="50">
                                 <div class="ms-3 flex-grow-1">
                                     <h6 class="mb-0 dropdown-msg-user">Althea Cabardo <span class="msg-time float-end text-secondary">7 m</span></h6>
                                     <small class="mb-0 dropdown-msg-text text-secondary d-flex align-items-center">Many desktop publishing</small>
@@ -167,7 +167,7 @@
                         </a>
                         <a class="dropdown-item" href="#">
                             <div class="d-flex align-items-center">
-                                <img src="assets/images/avatars/avatar-3.png" alt="" class="rounded-circle" width="50" height="50">
+                                <img src="{{asset('assets/images/avatars/avatar-3.png')}}" alt="" class="rounded-circle" width="50" height="50">
                                 <div class="ms-3 flex-grow-1">
                                     <h6 class="mb-0 dropdown-msg-user">Katherine Pechon <span class="msg-time float-end text-secondary">2 h</span></h6>
                                     <small class="mb-0 dropdown-msg-text text-secondary d-flex align-items-center">Making this the first true</small>
@@ -176,7 +176,7 @@
                         </a>
                         <a class="dropdown-item" href="#">
                             <div class="d-flex align-items-center">
-                                <img src="assets/images/avatars/avatar-4.png" alt="" class="rounded-circle" width="50" height="50">
+                                <img src="{{asset('assets/images/avatars/avatar-4.png')}}" alt="" class="rounded-circle" width="50" height="50">
                                 <div class="ms-3 flex-grow-1">
                                     <h6 class="mb-0 dropdown-msg-user">Peter Costanzo <span class="msg-time float-end text-secondary">3 h</span></h6>
                                     <small class="mb-0 dropdown-msg-text text-secondary d-flex align-items-center">It was popularised in the 1960</small>
@@ -185,7 +185,7 @@
                         </a>
                         <a class="dropdown-item" href="#">
                             <div class="d-flex align-items-center">
-                                <img src="assets/images/avatars/avatar-5.png" alt="" class="rounded-circle" width="50" height="50">
+                                <img src="{{asset('assets/images/avatars/avatar-5.png')}}" alt="" class="rounded-circle" width="50" height="50">
                                 <div class="ms-3 flex-grow-1">
                                     <h6 class="mb-0 dropdown-msg-user">Thomas Wheeler <span class="msg-time float-end text-secondary">1 d</span></h6>
                                     <small class="mb-0 dropdown-msg-text text-secondary d-flex align-items-center">If you are going to use a passage</small>
@@ -194,7 +194,7 @@
                         </a>
                         <a class="dropdown-item" href="#">
                             <div class="d-flex align-items-center">
-                                <img src="assets/images/avatars/avatar-6.png" alt="" class="rounded-circle" width="50" height="50">
+                                <img src="{{asset('assets/images/avatars/avatar-6.png')}}" alt="" class="rounded-circle" width="50" height="50">
                                 <div class="ms-3 flex-grow-1">
                                     <h6 class="mb-0 dropdown-msg-user">Johnny Seitz <span class="msg-time float-end text-secondary">2 w</span></h6>
                                     <small class="mb-0 dropdown-msg-text text-secondary d-flex align-items-center">All the Lorem Ipsum generators</small>
@@ -203,7 +203,7 @@
                         </a>
                         <a class="dropdown-item" href="#">
                             <div class="d-flex align-items-center">
-                                <img src="assets/images/avatars/avatar-1.png" alt="" class="rounded-circle" width="50" height="50">
+                                <img src="{{asset('assets/images/avatars/avatar-1.png')}}" alt="" class="rounded-circle" width="50" height="50">
                                 <div class="ms-3 flex-grow-1">
                                     <h6 class="mb-0 dropdown-msg-user">Amelio Joly <span class="msg-time float-end text-secondary">1 m</span></h6>
                                     <small class="mb-0 dropdown-msg-text text-secondary d-flex align-items-center">The standard chunk of lorem...</small>
@@ -212,7 +212,7 @@
                         </a>
                         <a class="dropdown-item" href="#">
                             <div class="d-flex align-items-center">
-                                <img src="assets/images/avatars/avatar-2.png" alt="" class="rounded-circle" width="50" height="50">
+                                <img src="{{asset('assets/images/avatars/avatar-2.png')}}" alt="" class="rounded-circle" width="50" height="50">
                                 <div class="ms-3 flex-grow-1">
                                     <h6 class="mb-0 dropdown-msg-user">Althea Cabardo <span class="msg-time float-end text-secondary">7 m</span></h6>
                                     <small class="mb-0 dropdown-msg-text text-secondary d-flex align-items-center">Many desktop publishing</small>
@@ -221,7 +221,7 @@
                         </a>
                         <a class="dropdown-item" href="#">
                             <div class="d-flex align-items-center">
-                                <img src="assets/images/avatars/avatar-3.png" alt="" class="rounded-circle" width="50" height="50">
+                                <img src="{{asset('assets/images/avatars/avatar-3.png')}}" alt="" class="rounded-circle" width="50" height="50">
                                 <div class="ms-3 flex-grow-1">
                                     <h6 class="mb-0 dropdown-msg-user">Katherine Pechon <span class="msg-time float-end text-secondary">2 h</span></h6>
                                     <small class="mb-0 dropdown-msg-text text-secondary d-flex align-items-center">Making this the first true</small>
@@ -366,7 +366,7 @@
     <div class="dropdown dropdown-user-setting">
         <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="user-setting d-flex align-items-center gap-3">
-                <img src="assets/images/avatars/avatar-1.png" class="user-img" alt="">
+                <img src="{{asset('assets/images/avatars/avatar-1.png')}}" class="user-img" alt="">
                 <div class="d-none d-sm-block">
                     <p class="user-name mb-0">Jhon Deo</p>
                     <small class="mb-0 dropdown-user-designation">HR Manager</small>

@@ -17,3 +17,11 @@ Route::get('/signin', function () {
 Route::get('/students/signup', function () {
     return view('students.signup');
 });
+
+Route::get('/club/club_list', function () {
+    return view('club.club_list');
+});
+
+Route::get('/club/club_details', function () {
+    return view('club.club_details');
+});

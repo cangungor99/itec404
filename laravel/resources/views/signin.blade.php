@@ -13,7 +13,7 @@
             <div class="card shadow rounded-0 overflow-hidden">
                 <div class="row g-0">
                     <div class="col-lg-6 bg-login d-flex align-items-center justify-content-center">
-                        <img src="assets/images/error/login-img.jpg" class="img-fluid" alt="">
+                        <img src="{{asset('assets/images/error/login-img.jpg')}}" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-6">
                         <div class="card-body p-4 p-sm-5">
