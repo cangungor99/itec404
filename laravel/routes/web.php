@@ -25,3 +25,7 @@ Route::get('/club/club_list', function () {
 Route::get('/club/club_details', function () {
     return view('club.club_details');
 });
+
+Route::get('/profile', function () {
+    return view('profile');
+});
