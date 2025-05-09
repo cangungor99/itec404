@@ -111,33 +111,33 @@
                     </form>
                 </div>
             </div>
-
-            <!-- Option JS -->
-            <script>
-                document.querySelector('.add-option').addEventListener('click', function() {
-                    const container = document.getElementById('options-container');
-                    const optionIndex = container.querySelectorAll('.input-group').length + 1;
-
-                    const inputGroup = document.createElement('div');
-                    inputGroup.className = 'input-group mb-2';
-                    inputGroup.innerHTML = `
-      <input type="text" class="form-control" name="options[]" placeholder="Option ${optionIndex}" required>
-      <button class="btn btn-outline-secondary remove-option" type="button"><i class="bi bi-trash"></i></button>
-    `;
-
-                    container.appendChild(inputGroup);
-                });
-
-                document.getElementById('options-container').addEventListener('click', function(e) {
-                    if (e.target.closest('.remove-option')) {
-                        e.target.closest('.input-group').remove();
-                    }
-                });
-            </script>
-
-
         </main>
         <!--end page main-->
+        <!-- Option JS -->
+        <script>
+            document.querySelector('.add-option').addEventListener('click', function() {
+                const container = document.getElementById('options-container');
+                const optionIndex = container.querySelectorAll('.input-group').length + 1;
+
+                const inputGroup = document.createElement('div');
+                inputGroup.className = 'input-group mb-2';
+                inputGroup.innerHTML = `
+                    <input type="text" class="form-control" name="options[]" placeholder="Option ${optionIndex}" required>
+                    <button class="btn btn-outline-secondary remove-option" type="button"><i class="bi bi-trash"></i></button>
+                    `;
+
+                container.appendChild(inputGroup);
+            });
+
+            document.getElementById('options-container').addEventListener('click', function(e) {
+                if (e.target.closest('.remove-option')) {
+                    e.target.closest('.input-group').remove();
+                }
+            });
+        </script>
+
+
+
 
 
         <!--start overlay-->

@@ -122,56 +122,56 @@
                 <div class="col-12 col-lg-6 d-flex">
                     <div class="card radius-10 w-100">
 
-                    <div class="card-body">
-    <div class="d-flex align-items-center">
-        <h6 class="mb-0">Recent Notifications</h6>
-        <div class="fs-5 ms-auto dropdown">
-            <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown">
-                <i class="bi bi-three-dots"></i>
-            </div>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">All Notifications</a></li>
-                <li><a class="dropdown-item" href="#">Unread Only</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="table-responsive mt-3">
-        <table class="table align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Club</th>
-                    <th>Status</th>
-                    <th>Delivered</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Meeting Today at 5PM</td>
-                    <td>Debate Club</td>
-                    <td><span class="badge bg-success">Read</span></td>
-                    <td>2025-05-07</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>New Event Announcement</td>
-                    <td>Drama Club</td>
-                    <td><span class="badge bg-warning text-dark">Unread</span></td>
-                    <td>2025-05-06</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Budget Report Uploaded</td>
-                    <td>Science Club</td>
-                    <td><span class="badge bg-success">Read</span></td>
-                    <td>2025-05-05</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <h6 class="mb-0">Recent Notifications</h6>
+                                <div class="fs-5 ms-auto dropdown">
+                                    <div class="dropdown-toggle dropdown-toggle-nocaret cursor-pointer" data-bs-toggle="dropdown">
+                                        <i class="bi bi-three-dots"></i>
+                                    </div>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">All Notifications</a></li>
+                                        <li><a class="dropdown-item" href="#">Unread Only</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="table-responsive mt-3">
+                                <table class="table align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Title</th>
+                                            <th>Club</th>
+                                            <th>Status</th>
+                                            <th>Delivered</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Meeting Today at 5PM</td>
+                                            <td>Debate Club</td>
+                                            <td><span class="badge bg-success">Read</span></td>
+                                            <td>2025-05-07</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>New Event Announcement</td>
+                                            <td>Drama Club</td>
+                                            <td><span class="badge bg-warning text-dark">Unread</span></td>
+                                            <td>2025-05-06</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>Budget Report Uploaded</td>
+                                            <td>Science Club</td>
+                                            <td><span class="badge bg-success">Read</span></td>
+                                            <td>2025-05-05</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
