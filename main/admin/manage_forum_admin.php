@@ -29,7 +29,7 @@
     <link href="../assets/css/semi-dark.css" rel="stylesheet" />
     <link href="../assets/css/header-colors.css" rel="stylesheet" />
 
-    <title>Blank </title>
+    <title>EMU Digital Club | Manage Forums </title>
 </head>
 
 <body>
@@ -49,40 +49,85 @@
         <main class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Pages</div>
+                <div class="breadcrumb-title pe-3">Forums</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                            <li class="breadcrumb-item active" aria-current="page">Manage Forums</li>
                         </ol>
                     </nav>
                 </div>
-                <div class="ms-auto">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary">Settings</button>
-                        <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item" href="javascript:;">Action</a>
-                            <a class="dropdown-item" href="javascript:;">Another action</a>
-                            <a class="dropdown-item" href="javascript:;">Something else here</a>
-                            <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             <!--end breadcrumb-->
 
-            <div class="card shadow-sm radius-10 border-0 mb-3">
+            <div class="card shadow-sm radius-10 border-0 animate__animated animate__fadeInDown mb-4">
                 <div class="card-body">
-                    <h4>Where does it come from?</h4>
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur.</p>
-                    <h4>Where can I get some?</h4>
-                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
-                    <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
+                    <h5 class="card-title"><i class="bi bi-hourglass-split me-2"></i>Pending Forum Requests</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Created By</th>
+                                    <th>Requested Club</th>
+                                    <th>Requested At</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Forum Title 1</td>
+                                    <td>John Doe</td>
+                                    <td>IT Club</td>
+                                    <td>2025-05-09</td>
+                                    <td>
+                                        <button class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i> Approve</button>
+                                        <button class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i> Reject</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
+            <div class="card shadow-sm radius-10 border-0 animate__animated animate__fadeInUp">
+  <div class="card-body">
+    <h5 class="card-title"><i class="bi bi-chat-dots me-2"></i>Forum Topics</h5>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created At</th>
+            <th>Related Club</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Photography Tips</td>
+            <td>Let's discuss how to shoot better portraits.</td>
+            <td>2025-05-07</td>
+            <td>IT Club</td>
+            <td>
+              <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
 
         </main>
         <!--end page main-->
@@ -105,7 +150,7 @@
         <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
         <!--End Back To Top Button-->
 
-     
+
 
     </div>
     <!--end wrapper-->

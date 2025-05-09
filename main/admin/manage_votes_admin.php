@@ -29,7 +29,7 @@
     <link href="../assets/css/semi-dark.css" rel="stylesheet" />
     <link href="../assets/css/header-colors.css" rel="stylesheet" />
 
-    <title>Blank </title>
+    <title>EMU Digital Club | Voting Lists </title>
 </head>
 
 <body>
@@ -49,13 +49,13 @@
         <main class="page-content">
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Pages</div>
+                <div class="breadcrumb-title pe-3">Voting</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
+                            <li class="breadcrumb-item active" aria-current="page"> Voting Lists</li>
                         </ol>
                     </nav>
                 </div>
@@ -74,15 +74,64 @@
             </div>
             <!--end breadcrumb-->
 
-            <div class="card shadow-sm radius-10 border-0 mb-3">
-                <div class="card-body">
-                    <h4>Where does it come from?</h4>
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur.</p>
-                    <h4>Where can I get some?</h4>
-                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
-                    <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable.</p>
-                </div>
-            </div>
+            <div class="card shadow-sm radius-10 border-0 mb-4 animate__animated animate__fadeIn">
+  <div class="card-body">
+    <h4 class="mb-4"><i class="bi bi-card-checklist text-primary me-2"></i> Manage Voting Sessions</h4>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Static Sample Rows -->
+          <tr>
+            <td>1</td>
+            <td>Club President Election</td>
+            <td>2025-05-10 09:00</td>
+            <td>2025-05-12 18:00</td>
+            <td><span class="badge bg-success">Active</span></td>
+            <td>
+              <div class="btn-group" role="group">
+                <a href="edit_vote.php?id=1" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                <a href="view_results.php?id=1" class="btn btn-outline-info btn-sm"><i class="bi bi-bar-chart-line"></i></a>
+                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Event Theme Selection</td>
+            <td>2025-05-01 10:00</td>
+            <td>2025-05-03 23:59</td>
+            <td><span class="badge bg-secondary">Ended</span></td>
+            <td>
+              <div class="btn-group" role="group">
+                <a href="view_results.php?id=2" class="btn btn-outline-info btn-sm"><i class="bi bi-bar-chart-line"></i></a>
+                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          </tr>
+          <!-- End Sample -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-end mt-4">
+      <a href="create_vote.php" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i> New Voting
+      </a>
+    </div>
+  </div>
+</div>
+
 
         </main>
         <!--end page main-->
