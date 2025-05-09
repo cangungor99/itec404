@@ -29,3 +29,11 @@ Route::get('/club/club_details', function () {
 Route::get('/profile', function () {
     return view('profile');
 });
+
+Route::get('/chat', function () {
+    return view('chat');
+});
+
+Route::get('/club/club_resources', function () {
+    return view('club.club_resources');
+});
