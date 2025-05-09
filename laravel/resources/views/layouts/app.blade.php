@@ -36,7 +36,11 @@
             @include('layouts.navbar')
         </header>
         @endif
-
+        @if (!isset($hideSidebar) || !$hideSidebar)
+        <aside class="sidebar-wrapper" data-simplebar="true">
+            @include('layouts.sidebar')
+        </aside>
+        @endif
 
         @yield('content')
 

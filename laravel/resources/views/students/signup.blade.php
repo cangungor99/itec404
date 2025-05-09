@@ -4,6 +4,7 @@
 
 @php
     $hideNavbar = true;
+    $hideSidebar = true;
 @endphp
 
 @section('content')

@@ -37,3 +37,7 @@ Route::get('/chat', function () {
 Route::get('/club/club_resources', function () {
     return view('club.club_resources');
 });
+
+Route::get('/votes', function () {
+    return view('votes');
+});
