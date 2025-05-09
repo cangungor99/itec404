@@ -2,35 +2,34 @@
 <html lang="en">
 
 
-
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+    <link rel="icon" href="../assets/images/favicon-32x32.png" type="image/png" />
     <!--plugins-->
-    <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-    <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
-    <link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <link href="../assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="../assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="assets/css/bootstrap-extended.css" rel="stylesheet" />
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/icons.css" rel="stylesheet">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/css/bootstrap-extended.css" rel="stylesheet" />
+    <link href="../assets/css/style.css" rel="stylesheet" />
+    <link href="../assets/css/icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
     <!-- loader-->
-    <link href="assets/css/pace.min.css" rel="stylesheet" />
+    <link href="../assets/css/pace.min.css" rel="stylesheet" />
 
 
     <!--Theme Styles-->
-    <link href="assets/css/dark-theme.css" rel="stylesheet" />
-    <link href="assets/css/light-theme.css" rel="stylesheet" />
-    <link href="assets/css/semi-dark.css" rel="stylesheet" />
-    <link href="assets/css/header-colors.css" rel="stylesheet" />
+    <link href="../assets/css/dark-theme.css" rel="stylesheet" />
+    <link href="../assets/css/light-theme.css" rel="stylesheet" />
+    <link href="../assets/css/semi-dark.css" rel="stylesheet" />
+    <link href="../assets/css/header-colors.css" rel="stylesheet" />
 
-    <title>EMU Digital Club | Club Resources</title>
+    <title>EMU Digital Club | Club Lists</title>
 </head>
 
 <body>
@@ -46,7 +45,7 @@
         <aside class="sidebar-wrapper" data-simplebar="true">
             <div class="sidebar-header">
                 <div>
-                    <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+                    <img src="../assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
                 </div>
                 <div>
                     <h4 class="logo-text">Onedash</h4>
@@ -365,197 +364,115 @@
 
         <!--start content-->
         <main class="page-content">
-
             <!--breadcrumb-->
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Club</div>
+                <div class="breadcrumb-title pe-3">Clubs</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0">
                             <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                             </li>
-                            <li class="breadcrumb-item active" aria-current="page">Club Resources</li>
+                            <li class="breadcrumb-item active" aria-current="page">Active Club Lists</li>
                         </ol>
                     </nav>
                 </div>
-               
+                
             </div>
             <!--end breadcrumb-->
 
-            <div class="row">
-                <div class="col-12 col-xl-3">
-                    <div class="card">
-                        <div class="card-body border-bottom">
-                            <div class="d-grid"> <a href="javascript:;" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add File</a>
-                            </div>
+            <div class="card">
+                <div class="card-header py-3">
+                    <div class="row align-items-center m-0">
+                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
+                            <select class="form-select">
+                                <option>All category</option>
+                                <option>IT</option>
+                                <option>Sport</option>
+                               
+                            </select>
                         </div>
-                        <div class="fm-menu">
-                            <div class="list-group list-group-flush m-3">
-                                <a href="javascript:;" class="list-group-item py-1"><i class='bx bx-folder me-2 text-primary'></i><span>All Files</span></a>
-                                
-                                <a href="javascript:;" class="list-group-item py-1"><i class='bi bi-file-earmark-break-fill me-2 text-info'></i><span>Documents</span></a>
-                                <a href="javascript:;" class="list-group-item py-1"><i class='bi bi-file-earmark-image-fill me-2 text-warning'></i><span>Images</span></a>
-                                <a href="javascript:;" class="list-group-item py-1"><i class='bi bi-camera-reels-fill me-2 text-primary'></i><span>Videos</span></a>
-                                <a href="javascript:;" class="list-group-item py-1"><i class='bi bi-play-btn-fill me-2 text-bronze'></i><span>Audio</span></a>
-                                <a href="javascript:;" class="list-group-item py-1"><i class='bi bi-file-earmark-zip-fill me-2 text-option'></i><span>Zip Files</span></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="mb-0 text-primary font-weight-bold">45.5 GB <span class="float-end text-secondary">50 GB</span></h5>
-                            <p class="mb-0 mt-2"><span class="text-secondary">Used</span><span class="float-end text-primary"></span>
-                            </p>
-                            <hr>
-                            <div class="mb-4">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="fs-6 text-primary"><i class="bi bi-collection-play-fill"></i></div>
-                                    <div>Media Files</div>
-                                    <div class="ms-auto">100 GB</div>
-                                </div>
-                                <div class="progress mt-2" style="height: 4px;">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 65%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="fs-6 text-success"><i class="bi bi-images"></i></div>
-                                    <div>Images</div>
-                                    <div class="ms-auto">15 GB</div>
-                                </div>
-                                <div class="progress mt-2" style="height: 4px;">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 45%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="fs-6 text-warning"><i class="bi bi-file-earmark-bar-graph-fill"></i></div>
-                                    <div>Documents</div>
-                                    <div class="ms-auto">7 GB</div>
-                                </div>
-                                <div class="progress mt-2" style="height: 4px;">
-                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 45%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="fs-6 text-purple"><i class="bi bi-file-earmark-richtext-fill"></i></div>
-                                    <div>Other Files</div>
-                                    <div class="ms-auto">5 GB</div>
-                                </div>
-                                <div class="progress mt-2" style="height: 4px;">
-                                    <div class="progress-bar bg-purple" role="progressbar" style="width: 35%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="mb-0">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="fs-6 text-secondary"><i class="bi bi-file-post-fill"></i></div>
-                                    <div>Unknown Files</div>
-                                    <div class="ms-auto">8 GB</div>
-                                </div>
-                                <div class="progress mt-2" style="height: 4px;">
-                                    <div class="progress-bar bg-secondary" role="progressbar" style="width: 25%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-
+                       
+                        <div class="col-md-2 col-6">
+                            <select class="form-select">
+                                <option>Status</option>
+                                <option>Active</option>
+                                <option>Disabled</option>
+                                <option>Show all</option>
+                            </select>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-xl-9">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="ms-auto position-relative">
-                                <div class="position-absolute top-50 translate-middle-y search-icon fs-5 px-3"><i class="bi bi-search"></i></div>
-                                <input class="form-control form-control-lg ps-5" type="text" placeholder="Search the files">
-                            </div>
-                           
-                            <!--end row-->
-                            <h5>Folders</h5>
-                            <div class="row mt-3">
-                                <div class="col-12 col-lg-4">
-                                    <div class="card shadow-none border radius-15">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <div class="font-30 text-primary"><i class='bx bxs-folder'></i>
-                                                </div>
-                                                <div class="user-groups ms-auto">
-                                                    <img src="assets/images/avatars/avatar-1.png" width="35" height="35" class="rounded-circle" alt="" />
-                                                    <img src="assets/images/avatars/avatar-2.png" width="35" height="35" class="rounded-circle" alt="" />
-                                                </div>
-                                                <div class="user-plus">+</div>
-                                            </div>
-                                            <h6 class="mb-0 text-primary">CLUB MEETINGS</h6>
-                                            <small>15 files</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-lg-4">
-                                    <div class="card shadow-none border radius-15">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <div class="font-30 text-primary"><i class='bx bxs-folder'></i>
-                                                </div>
-                                                <div class="user-groups ms-auto">
-                                                    <img src="assets/images/avatars/avatar-4.png" width="35" height="35" class="rounded-circle" alt="" />
-                                                </div>
-                                            </div>
-                                            <h6 class="mb-0 text-primary">PROJECTS</h6>
-                                            <small>345 files</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            <!--end row-->
+                <div class="card-body">
 
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle table-striped">
+                            <thead class="">
+                                <th>
+                                    Select
+                                </th>
+                                <th>
+                                    Club Logo
+                                </th>
+                                <th>
+
+                                    Club Name
+                                </th>
+                                <th>
+                                    Club Description 
+                                </th>
+                                <th>
+                                    Created Date
+                                </th>
+                                <th>
+                                    Actions
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox">
+                                        </div>
+                                    </td>
+                                    <td class="productlist">
+                                        <a class="d-flex align-items-center gap-2" href="#">
+                                            <div class="product-box">
+                                                <img src="../assets/images/products/01.png" alt="">
+                                            </div>
+                                           
+                                        </a>
+                                    </td>
+                                    <td><span> <div>
+                                                <h6 class="mb-0 product-title">IT Club</h6>
+                                            </div></span></td>
+                                    <td>
+                                        <!-- <span class="badge rounded-pill bg-success">Active</span> -->
+                                </td>
+                                    <td><span>5-31-2020</span></td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-3 fs-6">
+                                            <a href="javascript:;" class="text-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="View detail" aria-label="Views"><i class="bi bi-eye-fill"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                              
+                            </tbody>
+                        </table>
                     </div>
 
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <h5 class="mb-0">Recent Files</h5>
-                                </div>
-                                <div class="ms-auto"><a href="javascript:;" class="btn btn-sm btn-outline-secondary">View all</a>
-                                </div>
-                            </div>
-                            <div class="table-responsive mt-3">
-                                <table class="table table-hover mb-0">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Name <i class='bx bx-up-arrow-alt ms-2'></i>
-                                            </th>
-                                            <th>Uploaded By</th>
-                                            <th>Last Modified</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div><i class='bx bxs-file-pdf me-2 font-24 text-danger'></i>
-                                                    </div>
-                                                    <div class="font-weight-bold text-danger">Competitor Analysis Template</div>
-                                                </div>
-                                            </td>
-                                            <td>Only you</td>
-                                            <td>Sep 3, 2019</td>
-                                            <td><i class='bx bx-dots-horizontal-rounded font-24'></i>
-                                            </td>
-                                        </tr>
-                                       
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
+                    <nav class="float-end mt-4" aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
 
                 </div>
             </div>
-            <!--end row-->
+
         </main>
         <!--end page main-->
 
@@ -567,7 +484,7 @@
         <!--start footer-->
         <footer class="footer">
             <div class="footer-text">
-                Copyright © 2025. All right reserved.
+                Copyright © 2022. All right reserved.
             </div>
         </footer>
         <!--end footer-->
@@ -584,18 +501,19 @@
 
 
     <!-- Bootstrap bundle JS -->
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <!--plugins-->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
-    <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
-    <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-    <script src="assets/js/pace.min.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="../assets/plugins/metismenu/js/metisMenu.min.js"></script>
+    <script src="../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <script src="../assets/js/pace.min.js"></script>
     <!--app-->
-    <script src="assets/js/app.js"></script>
+    <script src="../assets/js/app.js"></script>
 
 
 </body>
+
 
 
 </html>
