@@ -7,29 +7,29 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+    <link rel="icon" href="../assets/images/favicon-32x32.png" type="image/png" />
     <!--plugins-->
-    <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-    <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
-    <link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <link href="../assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="../assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="assets/css/bootstrap-extended.css" rel="stylesheet" />
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <link href="assets/css/icons.css" rel="stylesheet">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/css/bootstrap-extended.css" rel="stylesheet" />
+    <link href="../assets/css/style.css" rel="stylesheet" />
+    <link href="../assets/css/icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
     <!-- loader-->
-    <link href="assets/css/pace.min.css" rel="stylesheet" />
+    <link href="../assets/css/pace.min.css" rel="stylesheet" />
 
 
 
     <!--Theme Styles-->
-    <link href="assets/css/dark-theme.css" rel="stylesheet" />
-    <link href="assets/css/light-theme.css" rel="stylesheet" />
-    <link href="assets/css/semi-dark.css" rel="stylesheet" />
-    <link href="assets/css/header-colors.css" rel="stylesheet" />
+    <link href="../assets/css/dark-theme.css" rel="stylesheet" />
+    <link href="../assets/css/light-theme.css" rel="stylesheet" />
+    <link href="../assets/css/semi-dark.css" rel="stylesheet" />
+    <link href="../assets/css/header-colors.css" rel="stylesheet" />
 
     <title>EMU Digital Club | Club Chat</title>
 </head>
@@ -48,7 +48,7 @@
         <aside class="sidebar-wrapper" data-simplebar="true">
             <div class="sidebar-header">
                 <div>
-                    <img src="assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+                    <img src="../assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
                 </div>
                 <div>
                     <h4 class="logo-text">Onedash</h4>
@@ -372,7 +372,7 @@
                     <div class="chat-sidebar-header">
                         <div class="d-flex align-items-center">
                             <div class="chat-user-online">
-                                <img src="assets/images/avatars/avatar-1.png" width="45" height="45" class="rounded-circle" alt="" />
+                                <img src="../assets/images/avatars/avatar-1.png" width="45" height="45" class="rounded-circle" alt="" />
                             </div>
                             <div class="flex-grow-1 ms-2">
                                 <p class="mb-0">Mustafa Bostan</p>
@@ -432,7 +432,7 @@
                                         <a href="javascript:;" class="list-group-item">
                                             <div class="d-flex">
                                                 <div class="chat-user-online">
-                                                    <img src="assets/images/avatars/avatar-2.png" width="42" height="42" class="rounded-circle" alt="" />
+                                                    <img src="../assets/images/avatars/avatar-2.png" width="42" height="42" class="rounded-circle" alt="" />
                                                 </div>
                                                 <div class="flex-grow-1 ms-2">
                                                     <h6 class="mb-0 chat-title">Louis Litt</h6>
@@ -444,7 +444,7 @@
                                         <a href="javascript:;" class="list-group-item active">
                                             <div class="d-flex">
                                                 <div class="chat-user-online">
-                                                    <img src="assets/images/avatars/avatar-3.png" width="42" height="42" class="rounded-circle" alt="" />
+                                                    <img src="../assets/images/avatars/avatar-3.png" width="42" height="42" class="rounded-circle" alt="" />
                                                 </div>
                                                 <div class="flex-grow-1 ms-2">
                                                     <h6 class="mb-0 chat-title">Harvey Specter</h6>
@@ -456,7 +456,7 @@
                                         <a href="javascript:;" class="list-group-item">
                                             <div class="d-flex">
                                                 <div class="chat-user-online">
-                                                    <img src="assets/images/avatars/avatar-4.png" width="42" height="42" class="rounded-circle" alt="" />
+                                                    <img src="../assets/images/avatars/avatar-4.png" width="42" height="42" class="rounded-circle" alt="" />
                                                 </div>
                                                 <div class="flex-grow-1 ms-2">
                                                     <h6 class="mb-0 chat-title">Rachel Zane</h6>
@@ -468,7 +468,7 @@
                                         <a href="javascript:;" class="list-group-item">
                                             <div class="d-flex">
                                                 <div class="chat-user-online">
-                                                    <img src="assets/images/avatars/avatar-5.png" width="42" height="42" class="rounded-circle" alt="" />
+                                                    <img src="../assets/images/avatars/avatar-5.png" width="42" height="42" class="rounded-circle" alt="" />
                                                 </div>
                                                 <div class="flex-grow-1 ms-2">
                                                     <h6 class="mb-0 chat-title">Donna Paulsen</h6>
@@ -480,7 +480,7 @@
                                         <a href="javascript:;" class="list-group-item">
                                             <div class="d-flex">
                                                 <div class="chat-user-online">
-                                                    <img src="assets/images/avatars/avatar-6.png" width="42" height="42" class="rounded-circle" alt="" />
+                                                    <img src="../assets/images/avatars/avatar-6.png" width="42" height="42" class="rounded-circle" alt="" />
                                                 </div>
                                                 <div class="flex-grow-1 ms-2">
                                                     <h6 class="mb-0 chat-title">Jessica Pearson</h6>
@@ -492,7 +492,7 @@
                                         <a href="javascript:;" class="list-group-item">
                                             <div class="d-flex">
                                                 <div class="chat-user-online">
-                                                    <img src="assets/images/avatars/avatar-7.png" width="42" height="42" class="rounded-circle" alt="" />
+                                                    <img src="../assets/images/avatars/avatar-7.png" width="42" height="42" class="rounded-circle" alt="" />
                                                 </div>
                                                 <div class="flex-grow-1 ms-2">
                                                     <h6 class="mb-0 chat-title">Harold Gunderson</h6>
@@ -504,7 +504,7 @@
                                         <a href="javascript:;" class="list-group-item">
                                             <div class="d-flex">
                                                 <div class="chat-user-online">
-                                                    <img src="assets/images/avatars/avatar-9.png" width="42" height="42" class="rounded-circle" alt="" />
+                                                    <img src="../assets/images/avatars/avatar-9.png" width="42" height="42" class="rounded-circle" alt="" />
                                                 </div>
                                                 <div class="flex-grow-1 ms-2">
                                                     <h6 class="mb-0 chat-title">Katrina Bennett</h6>
@@ -516,7 +516,7 @@
                                         <a href="javascript:;" class="list-group-item">
                                             <div class="d-flex">
                                                 <div class="chat-user-online">
-                                                    <img src="assets/images/avatars/avatar-10.png" width="42" height="42" class="rounded-circle" alt="" />
+                                                    <img src="../assets/images/avatars/avatar-10.png" width="42" height="42" class="rounded-circle" alt="" />
                                                 </div>
                                                 <div class="flex-grow-1 ms-2">
                                                     <h6 class="mb-0 chat-title">Charles Forstman</h6>
@@ -528,7 +528,7 @@
                                         <a href="javascript:;" class="list-group-item">
                                             <div class="d-flex">
                                                 <div class="chat-user-online">
-                                                    <img src="assets/images/avatars/avatar-11.png" width="42" height="42" class="rounded-circle" alt="" />
+                                                    <img src="../assets/images/avatars/avatar-11.png" width="42" height="42" class="rounded-circle" alt="" />
                                                 </div>
                                                 <div class="flex-grow-1 ms-2">
                                                     <h6 class="mb-0 chat-title">Jonathan Sidwell</h6>
@@ -560,7 +560,7 @@
                 <div class="chat-content">
                     <div class="chat-content-leftside">
                         <div class="d-flex">
-                            <img src="assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
+                            <img src="../assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
                             <div class="flex-grow-1 ms-2">
                                 <p class="mb-0 chat-time">Harvey, 2:35 PM</p>
                                 <p class="chat-left-msg">Hi, harvey where are you now a days?</p>
@@ -577,7 +577,7 @@
                     </div>
                     <div class="chat-content-leftside">
                         <div class="d-flex">
-                            <img src="assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
+                            <img src="../assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
                             <div class="flex-grow-1 ms-2">
                                 <p class="mb-0 chat-time">Harvey, 2:48 PM</p>
                                 <p class="chat-left-msg">okk, what about admin template?</p>
@@ -594,7 +594,7 @@
                     </div>
                     <div class="chat-content-leftside">
                         <div class="d-flex">
-                            <img src="assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
+                            <img src="../assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
                             <div class="flex-grow-1 ms-2">
                                 <p class="mb-0 chat-time">Harvey, 3:12 PM</p>
                                 <p class="chat-left-msg">ohhk, great, which admin template you have purchased?</p>
@@ -611,7 +611,7 @@
                     </div>
                     <div class="chat-content-leftside">
                         <div class="d-flex">
-                            <img src="assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
+                            <img src="../assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
                             <div class="flex-grow-1 ms-2">
                                 <p class="mb-0 chat-time">Harvey, 3:16 PM</p>
                                 <p class="chat-left-msg">who is the author of this template?</p>
@@ -628,7 +628,7 @@
                     </div>
                     <div class="chat-content-leftside">
                         <div class="d-flex">
-                            <img src="assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
+                            <img src="../assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
                             <div class="flex-grow-1 ms-2">
                                 <p class="mb-0 chat-time">Harvey, 3:16 PM</p>
                                 <p class="chat-left-msg">ohh i know about this author. he has good admin products in his portfolio.</p>
@@ -645,7 +645,7 @@
                     </div>
                     <div class="chat-content-leftside">
                         <div class="d-flex">
-                            <img src="assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
+                            <img src="../assets/images/avatars/avatar-3.png" width="48" height="48" class="rounded-circle" alt="" />
                             <div class="flex-grow-1 ms-2">
                                 <p class="mb-0 chat-time">Harvey, 3:33 PM</p>
                                 <p class="chat-left-msg">All the best for your target. thanks for giving your time.</p>
@@ -705,16 +705,16 @@
 
 
     <!-- Bootstrap bundle JS -->
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
     <!--plugins-->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
-    <script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
-    <script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
-    <script src="assets/js/pace.min.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="../assets/plugins/metismenu/js/metisMenu.min.js"></script>
+    <script src="../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <script src="../assets/js/pace.min.js"></script>
     <!--app-->
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/app-chat-box.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/app-chat-box.js"></script>
 
 
 </body>
