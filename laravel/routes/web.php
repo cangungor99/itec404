@@ -18,26 +18,46 @@ Route::get('/students/signup', function () {
     return view('students.signup');
 });
 
-Route::get('/club/club_list', function () {
-    return view('club.club_list');
+Route::get('/students/dashboard', function () {
+    return view('students.dashboard');
 });
 
-Route::get('/club/club_details', function () {
-    return view('club.club_details');
+Route::get('/students/profile', function () {
+    return view('students.profile');
 });
 
-Route::get('/profile', function () {
-    return view('profile');
+Route::get('/students/club_list', function () {
+    return view('students.club_list');
 });
 
-Route::get('/chat', function () {
-    return view('chat');
+Route::get('/students/club_details', function () {
+    return view('students.club_details');
 });
 
-Route::get('/club/club_resources', function () {
-    return view('club.club_resources');
+Route::get('/students/club_resources', function () {
+    return view('students.club_resources');
 });
 
-Route::get('/votes', function () {
-    return view('votes');
+Route::get('/students/votes', function () {
+    return view('students.votes');
+});
+
+Route::get('/students/vote_detail', function () {
+    return view('students.vote_detail');
+});
+
+Route::get('/students/club_events', function () {
+    return view('students.club_events');
+});
+
+Route::get('/students/forums', function () {
+    return view('students.forums');
+});
+
+Route::get('/students/forum_detail', function () {
+    return view('students.forum_detail');
+});
+
+Route::get('/students/notifications', function () {
+    return view('students.notifications');
 });

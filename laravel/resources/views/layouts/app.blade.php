@@ -65,6 +65,8 @@
     <script>
         new PerfectScrollbar(".best-product")
     </script>
+    @stack('scripts')
+
 </body>
 
 </html>
