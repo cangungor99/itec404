@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <!-- Animate.css (animasyonlar için) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
 
     <!-- loader-->
@@ -62,34 +62,34 @@
                         </ol>
                     </nav>
                 </div>
-                
+
             </div>
             <!--end breadcrumb-->
 
             <div class="card shadow-sm radius-10 border-0 mb-3 animate__animated animate__fadeIn">
-    <div class="card-body">
-        <h5 class="mb-4"><i class="bi bi-megaphone"></i> Create New Notification</h5>
-        <form>
-            <div class="mb-3">
-                <label for="notificationTitle" class="form-label">Notification Title</label>
-                <input type="text" class="form-control" id="notificationTitle" placeholder="Enter a short title" required>
-            </div>
-            <div class="mb-3">
-                <label for="notificationContent" class="form-label">Notification Content</label>
-                <textarea class="form-control" id="notificationContent" rows="4" placeholder="Write your notification here..." required></textarea>
-            </div>
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary px-4">Create Notification</button>
-            </div>
-        </form>
+                <div class="card-body">
+                    <h5 class="mb-4"><i class="bi bi-megaphone"></i> Create New Notification</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="notificationTitle" class="form-label">Notification Title</label>
+                            <input type="text" class="form-control" id="notificationTitle" placeholder="Enter a short title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="notificationContent" class="form-label">Notification Content</label>
+                            <textarea class="form-control" id="notificationContent" rows="4" placeholder="Write your notification here..." required></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary px-4">Create Notification</button>
+                        </div>
+                    </form>
 
-        <!-- Temporary success alert (static for now) -->
-        <div class="alert alert-success alert-dismissible fade show mt-4 d-none" role="alert">
-            Notification successfully created!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    </div>
-</div>
+                    <!-- Temporary success alert (static for now) -->
+                    <div class="alert alert-success alert-dismissible fade show mt-4 d-none" role="alert">
+                        Notification successfully created!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
 
 
         </main>
@@ -113,7 +113,7 @@
         <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
         <!--End Back To Top Button-->
 
-     
+
 
     </div>
     <!--end wrapper-->

@@ -14,6 +14,8 @@ Route::get('/signin', function () {
     return view('signin');
 });
 
+// Student Routes
+
 Route::get('/students/signup', function () {
     return view('students.signup');
 });
@@ -60,4 +62,51 @@ Route::get('/students/forum_detail', function () {
 
 Route::get('/students/notifications', function () {
     return view('students.notifications');
+});
+
+
+// Leader routes
+
+Route::get('/students/leader/dashboard', function () {
+    return view('students.leader.dashboard');
+});
+
+Route::get('/students/leader/change_club_detail', function () {
+    return view('students.leader.change_club_detail');
+});
+
+Route::get('/students/leader/manage_events', function () {
+    return view('students.leader.manage_events');
+});
+
+Route::get('/students/leader/create_event', function () {
+    return view('students.leader.create_event');
+});
+
+Route::get('/students/leader/manage_votes', function () {
+    return view('students.leader.manage_votes');
+});
+
+Route::get('/students/leader/create_vote', function () {
+    return view('students.leader.create_vote');
+});
+
+Route::get('/students/leader/manage_budget', function () {
+    return view('students.leader.manage_budget');
+});
+
+Route::get('/students/leader/manage_forums', function () {
+    return view('students.leader.manage_forums');
+});
+
+Route::get('/students/leader/manage_members', function () {
+    return view('students.leader.manage_members');
+});
+
+Route::get('/students/leader/create_notification', function () {
+    return view('students.leader.create_notification');
+});
+
+Route::get('/students/leader/manage_resources', function () {
+    return view('students.leader.manage_resources');
 });
