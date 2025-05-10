@@ -110,3 +110,37 @@ Route::get('/students/leader/create_notification', function () {
 Route::get('/students/leader/manage_resources', function () {
     return view('students.leader.manage_resources');
 });
+
+
+// Admin routes
+
+
+Route::get('/admin/user_list', function () {
+    return view('admin.user_list');
+});
+
+Route::get('/admin/manage_clubs', function () {
+    return view('admin.manage_clubs');
+});
+
+Route::get('/admin/create_club', function () {
+    return view('admin.create_club');
+});
+
+Route::get('/admin/manage_votes', function () {
+    return view('admin.manage_votes');
+});
+Route::get('/admin/create_vote', function () {
+    return view('admin.create_vote');
+});
+
+Route::get('/admin/manage_forums', function () {
+    return view('admin.manage_forums');
+});
+
+Route::get('/admin/notification_list', function () {
+    return view('admin.notification_list');
+});
+Route::get('/admin/resources', function () {
+    return view('admin.resources');
+});

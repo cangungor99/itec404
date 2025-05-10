@@ -95,37 +95,37 @@
             </div>
 
             <div class="card shadow-sm radius-10 border-0 animate__animated animate__fadeInUp">
-  <div class="card-body">
-    <h5 class="card-title"><i class="bi bi-chat-dots me-2"></i>Forum Topics</h5>
-    <div class="table-responsive">
-      <table class="table align-middle mb-0">
-        <thead class="table-light">
-          <tr>
-            <th>#</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Created At</th>
-            <th>Related Club</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>Photography Tips</td>
-            <td>Let's discuss how to shoot better portraits.</td>
-            <td>2025-05-07</td>
-            <td>IT Club</td>
-            <td>
-              <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></button>
-              <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-chat-dots me-2"></i>Forum Topics</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Created At</th>
+                                    <th>Related Club</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Photography Tips</td>
+                                    <td>Let's discuss how to shoot better portraits.</td>
+                                    <td>2025-05-07</td>
+                                    <td>IT Club</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></button>
+                                        <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
 
 

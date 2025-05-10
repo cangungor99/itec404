@@ -121,9 +121,9 @@
                     const inputGroup = document.createElement('div');
                     inputGroup.className = 'input-group mb-2';
                     inputGroup.innerHTML = `
-      <input type="text" class="form-control" name="options[]" placeholder="Option ${optionIndex}" required>
-      <button class="btn btn-outline-secondary remove-option" type="button"><i class="bi bi-trash"></i></button>
-    `;
+                    <input type="text" class="form-control" name="options[]" placeholder="Option ${optionIndex}" required>
+                    <button class="btn btn-outline-secondary remove-option" type="button"><i class="bi bi-trash"></i></button>
+                    `;
 
                     container.appendChild(inputGroup);
                 });

@@ -25,7 +25,7 @@
     <link href="{{ asset('assets/css/light-theme.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/semi-dark.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/header-colors.css') }}" rel="stylesheet" />
-
+    @stack('styles')
     <title>@yield('title')</title>
 </head>
 
