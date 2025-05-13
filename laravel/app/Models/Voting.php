@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Voting extends Model
+{
+    protected $primaryKey = 'votingID';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'clubID',
+        'title',
+        'description',
+        'start_date',
+        'end_date',
+        'created_at',
+    ];
+
+    public function club(): BelongsTo{
+        return $this->belongsTo(Club::class, 'clubID');
+    }
+
+    public function options(): HasMany
+    {
+        return $this->hasMany(VotingOption::class, 'votingID');
+    }
+
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class, 'votingID');
+    }
+}
