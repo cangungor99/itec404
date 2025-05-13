@@ -12,37 +12,64 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    protected $primaryKey = 'userID';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
+
     protected $fillable = [
+        'std_no',
         'name',
+        'surname',
         'email',
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function memberships()
+    {
+        return $this->hasMany(Membership::class, 'userID');
+    }
+    public function manageClubs()
+    {
+        return $this->hasMany(Club::class, 'managerID');
+    }
+    public function leadClubs()
+    {
+        return $this->hasMany(Club::class, 'leaderID');
+    }
+    public function forums()
+    {
+        return $this->hasMany(Forum::class, 'userID');
+    }
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'creatorID');
+    }
+    public function chatsSent()
+    {
+        return $this->hasMany(Chat::class, 'senderID');
+    }
+    public function chatsReceived()
+    {
+        return $this->hasMany(Chat::class, 'receiverID');
+    }
+    public function votes()
+    {
+        return $this->hasMany(Vote::class, 'userID');
     }
 }
