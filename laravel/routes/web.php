@@ -144,3 +144,7 @@ Route::get('/admin/notification_list', function () {
 Route::get('/admin/resources', function () {
     return view('admin.resources');
 });
+
+Route::get('/admin/manage_budget', function () {
+    return view('admin.manage_budget');
+});
