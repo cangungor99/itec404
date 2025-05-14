@@ -5,11 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Club extends Model
 {
     protected $primaryKey = 'clubID';
     public $timestamps = false;
+    use HasFactory;
 
     protected $fillable = [
         'managerID',

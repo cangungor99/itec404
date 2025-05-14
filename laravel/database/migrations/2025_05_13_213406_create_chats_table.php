@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id('chatID');
-            $table->foreignId('clubID')->constrained('clubs')->onDelete('cascade');
-            $table->foreignId('senderID')->constrained('users')->onDelete('cascade');
-            $table->foreignId('receiverID')->constrained('users')->onDelete('cascade');
+            $table->unsignedBigInteger('senderID');
+            $table->unsignedBigInteger('receiverID');
+            $table->unsignedBigInteger('clubID');
+
+            $table->foreign('senderID')->references('userID')->on('users')->onDelete('cascade');
+            $table->foreign('receiverID')->references('userID')->on('users')->onDelete('cascade');
+            $table->foreign('clubID')->references('clubID')->on('clubs')->onDelete('cascade');
             $table->text('message');
             $table->timestamp('created_at')->useCurrent();
             $table->boolean('isRead')->default(false);

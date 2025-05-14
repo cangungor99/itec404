@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('forums', function (Blueprint $table) {
             $table->id('forumID');
-            $table->foreignId('clubID')->constrained('clubs')->onDelete('cascade');
-            $table->foreignId('userID')->constrained('users')->onDelete('cascade');
+            $table->unsignedBigInteger('userID');
+            $table->foreign('userID')->references('userID')->on('users')->onDelete('cascade');
+
+            $table->unsignedBigInteger('clubID');
+            $table->foreign('clubID')->references('clubID')->on('clubs')->onDelete('cascade');
+
             $table->string('title', 120);
             $table->text('description')->nullable();
             $table->timestamp('created_at')->useCurrent();

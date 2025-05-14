@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('resources', function (Blueprint $table) {
             $table->id('resourceID');
-            $table->foreignId('clubID')->constrained('clubs')->onDelete('cascade');
+            $table->unsignedBigInteger('clubID');
+            $table->foreign('clubID')->references('clubID')->on('clubs')->onDelete('cascade');
+
             $table->string('title', 100);
             $table->text('description')->nullable();
             $table->string('file_path', 255);

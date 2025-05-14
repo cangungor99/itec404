@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('voting', function (Blueprint $table) {
+        Schema::create('votings', function (Blueprint $table) {
             $table->id('votingID');
-            $table->foreignId('clubID')->constrained('clubs')->onDelete('cascade');
+            $table->unsignedBigInteger('clubID');
+            $table->foreign('clubID')->references('clubID')->on('clubs')->onDelete('cascade');
             $table->string('title', 120);
             $table->text('description')->nullable();
             $table->dateTime('start_date');
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('voting');
+        Schema::dropIfExists('votings');
     }
 };

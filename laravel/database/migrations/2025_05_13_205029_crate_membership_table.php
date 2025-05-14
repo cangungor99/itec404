@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('memberships', function (Blueprint $table) {
             $table->id('membershipID');
-            $table->foreignId('userID')->constrained('users')->onDelete('cascade');
-            $table->foreignId('clubID')->constrained('clubs')->onDelete('cascade');
+            $table->unsignedBigInteger('clubID');
+            $table->foreign('clubID')->references('clubID')->on('clubs')->onDelete('cascade');
+
+            $table->unsignedBigInteger('userID');
+            $table->foreign('userID')->references('userID')->on('users')->onDelete('cascade');
+
             $table->enum('role', ['member', 'manager', 'president', 'leader'])->default('member');
             $table->timestamp('joined_at')->useCurrent();
         });
-
     }
 
     /**

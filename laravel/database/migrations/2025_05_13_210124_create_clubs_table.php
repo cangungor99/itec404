@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('clubs', function (Blueprint $table) {
             $table->id('clubID');
-            $table->foreignId('managerID')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('leaderID')->nullable()->constrained('users')->nullOnDelete();
+            $table->unsignedBigInteger('managerID')->nullable();
+            $table->unsignedBigInteger('leaderID')->nullable();
+
+            $table->foreign('managerID')->references('userID')->on('users')->nullOnDelete();
+            $table->foreign('leaderID')->references('userID')->on('users')->nullOnDelete();
+
             $table->string('name', 100);
             $table->string('photo', 255);
             $table->text('description')->nullable();

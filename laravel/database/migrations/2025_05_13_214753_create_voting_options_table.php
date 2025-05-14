@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('voting_options', function (Blueprint $table) {
             $table->id('optionID');
-            $table->foreignId('votingID')->constrained('votings')->onDelete('cascade');
+            $table->unsignedBigInteger('votingID');
+            $table->foreign('votingID')->references('votingID')->on('votings')->onDelete('cascade');
             $table->string('option_text', 255);
         });
     }

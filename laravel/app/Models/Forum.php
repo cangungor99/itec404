@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 
 class Forum extends Model
 {
     protected $primaryKey = 'forumID';
     public $timestamps = false;
+    use HasFactory;
 
     protected $fillable = [
         'clubID',
