@@ -3,6 +3,7 @@
 
 
 <head>
+<<<<<<< HEAD
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,6 +33,71 @@
     /* Genel form padding ve spacing */
     .card form .form-label {
       font-weight: 500;
+=======
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../assets/images/favicon-32x32.png" type="image/png" />
+    <!--plugins-->
+    <link href="../assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="../assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <!-- Bootstrap CSS -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/css/bootstrap-extended.css" rel="stylesheet" />
+    <link href="../assets/css/style.css" rel="stylesheet" />
+    <link href="../assets/css/icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <!-- loader-->
+    <link href="../assets/css/pace.min.css" rel="stylesheet" />
+
+
+    <!--Theme Styles-->
+    <link href="../assets/css/dark-theme.css" rel="stylesheet" />
+    <link href="../assets/css/light-theme.css" rel="stylesheet" />
+    <link href="../assets/css/semi-dark.css" rel="stylesheet" />
+    <link href="../assets/css/header-colors.css" rel="stylesheet" />
+    <style>
+  /* Genel form padding ve spacing */
+  .card form .form-label {
+    font-weight: 500;
+  }
+
+  .card form .form-control,
+  .card form .form-select {
+    transition: all 0.3s ease;
+  }
+
+  .card form .form-control:focus,
+  .card form .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  }
+
+  /* Çoklu seçim kutusu yüksekliği */
+  #targetUsers,
+  #targetClubs {
+    height: 150px;
+  }
+
+  /* Gönder butonu animasyonu */
+  .btn-success:hover {
+    background-color: #198754;
+    box-shadow: 0 0 10px rgba(25, 135, 84, 0.5);
+  }
+
+  .btn-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+  }
+
+  /* Mobil uyumluluk */
+  @media (max-width: 768px) {
+    .page-breadcrumb .breadcrumb-title {
+      font-size: 1rem;
+>>>>>>> 16a06033180d851ac1bd52904c8ff41736f9c148
     }
 
     .card form .form-control,
@@ -184,6 +250,7 @@
     <!--end footer-->
 
 
+<<<<<<< HEAD
     <!--Start Back To Top Button-->
     <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
     <!--End Back To Top Button-->
@@ -204,6 +271,18 @@
   <script src="../../assets/js/pace.min.js"></script>
   <!--app-->
   <script src="../../assets/js/app.js"></script>
+=======
+    <!-- Bootstrap bundle JS -->
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <!--plugins-->
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/plugins/simplebar/js/simplebar.min.js"></script>
+    <script src="../assets/plugins/metismenu/js/metisMenu.min.js"></script>
+    <script src="../assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+    <script src="../assets/js/pace.min.js"></script>
+    <!--app-->
+    <script src="../assets/js/app.js"></script>
+>>>>>>> 16a06033180d851ac1bd52904c8ff41736f9c148
 
 
 </body>

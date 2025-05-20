@@ -1,5 +1,26 @@
 <?php
 
+// use App\Http\Controllers\ProfileController;
+// use Illuminate\Support\Facades\Route;
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
+
+// require __DIR__.'/auth.php';
+
+
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -10,19 +31,11 @@ Route::get('/test', function () {
     return view('test');
 });
 
-Route::get('/signin', function () {
-    return view('signin');
-});
-
 // Student Routes
 
-Route::get('/students/signup', function () {
-    return view('students.signup');
-});
-
-Route::get('/students/dashboard', function () {
-    return view('students.dashboard');
-});
+Route::get('/dashboard', function () {
+    return view('students.dashboard'); // veya kendi özel sayfan
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/students/profile', function () {
     return view('students.profile');
@@ -148,3 +161,9 @@ Route::get('/admin/resources', function () {
 Route::get('/admin/manage_budget', function () {
     return view('admin.manage_budget');
 });
+
+Route::get('/sensitive', function () {
+    return 'Hassas işlem';
+})->middleware(['auth', 'password.confirm']);
+
+require __DIR__.'/auth.php';
