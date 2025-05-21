@@ -3,6 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Student\ClubController;
+use App\Http\Controllers\Student\ClubResourceController as StudentClubResourceController;
+use App\Http\Controllers\Leader\ClubResourceController as LeaderClubResourceController;
+use App\Http\Controllers\Leader\MembershipController;
+use App\Models\Membership;
 
 Route::get('/', function () {
     return view('index');
@@ -30,13 +35,14 @@ Route::middleware(['auth', 'role:student,leader'])
             return view('students.dashboard');
         })->name('dashboard');
 
-        Route::get('/club_list', function () {
-            return view('students.club_list');
-        })->name('club_list');
+        Route::get('/clubs', [ClubController::class, 'index'])->name('clubs.index');
+        Route::get('/club/{club}', [ClubController::class, 'show'])->name('clubs.show');
+        Route::post('/club/{club}/apply', [ClubController::class, 'apply'])->name('clubs.apply');
+        Route::post('/club/{club}/leave', [ClubController::class, 'leave'])->name('clubs.leave');
+        Route::get('/clubs/{club}/resources', [StudentClubResourceController::class, 'index'])->name('clubs.resources');
+        Route::post('/clubs/{club}/resources', [StudentClubResourceController::class, 'store'])->name('clubs.resources.store');
+        Route::delete('/clubs/{club}/resources/{resource}', [StudentClubResourceController::class, 'destroy'])->name('clubs.resources.destroy');
 
-        Route::get('/club_details', function () {
-            return view('students.club_details');
-        })->name('club_details');
 
         Route::get('/club_resources', function () {
             return view('students.club_resources');
@@ -77,6 +83,23 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('/dashboard', function () {
             return view('students.leader.dashboard');
         })->name('dashboard');
+
+        Route::get('/memberships', [MembershipController::class, 'index'])->name('memberships.index');
+        Route::post('/memberships/{id}/approve', [MembershipController::class, 'approve'])->name('memberships.approve');
+        Route::post('/memberships/{id}/reject', [MembershipController::class, 'reject'])->name('memberships.reject');
+        Route::get('{club}/resources', [LeaderClubResourceController::class, 'index'])->name('resources');
+        Route::post('{club}/resources', [LeaderClubResourceController::class, 'store'])->name('resources.store');
+        Route::delete('{club}/resources/{resource}', [LeaderClubResourceController::class, 'destroy'])->name('resources.destroy');
+
+        Route::get('/resources', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
+
+            return redirect()->route('leader.resources', $club->clubID);
+        })->name('my_resources');
+
+        Route::get('/clubs', [ClubController::class, 'index'])->name('clubs.index');
+
 
         Route::get('/change_club_detail', function () {
             return view('students.leader.change_club_detail');

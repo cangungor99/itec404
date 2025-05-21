@@ -16,9 +16,14 @@ class Resource extends Model
     protected $fillable = [
         'clubID',
         'title',
+        'userID',
         'description',
         'file_path',
         'created_at',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
     ];
 
     public function club(): BelongsTo
@@ -28,5 +33,9 @@ class Resource extends Model
     public function attachments()
     {
         return $this->hasMany(Attachment::class, 'resourceID');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userID');
     }
 }
