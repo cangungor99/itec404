@@ -145,6 +145,9 @@ Route::middleware(['auth', 'role:admin'])
             return view('admin.dashboard');
         })->name('dashboard');
 
+        Route::post('/clubs/create', [App\Http\Controllers\Admin\ClubController::class, 'store'])->name('admin.clubs.store');
+
+
         Route::get('/user_list', function () {
             return view('admin.user_list');
         })->name('user_list');
@@ -183,8 +186,12 @@ Route::middleware(['auth', 'role:admin'])
     });
 
 
+    
+
+
 Route::get('/sensitive', function () {
     return 'Hassas işlem';
 })->middleware(['auth', 'password.confirm']);
+
 
 require __DIR__.'/auth.php';
