@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Providers\RouteServiceProvider;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,7 +29,19 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // Kullanıcının rolünü al
+        $role = Auth::user()->roles->pluck('name')->first();
+
+        // Rolüne göre rota belirle
+        $home = match ($role) {
+            'admin'   => route('admin.dashboard'),
+            'leader'  => route('leader.dashboard'),
+            'student' => route('students.dashboard'),
+            default   => RouteServiceProvider::HOME,
+        };
+
+        // İntended varsa ona, yoksa $home’e yönlendir
+        return redirect()->intended($home);
     }
 
     /**

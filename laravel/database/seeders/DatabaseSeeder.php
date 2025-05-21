@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ChatSeeder::class,
             VotingSeeder::class,
             AttachmentSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

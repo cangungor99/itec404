@@ -11,7 +11,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // 1) Alias tanımı: rota tanımlarında 'role' olarak kullanacağız
+        $middleware->alias([
+            'role' => \App\Http\Middleware\RoleMiddleware::class,
+        ]);
+
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

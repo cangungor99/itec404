@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     protected $primaryKey = 'userID';
@@ -74,4 +74,33 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Vote::class, 'userID');
     }
+
+    // 1. casts düzeltmesi (property olarak tanımla):
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password'          => 'hashed',
+    ];
+
+    // 2. Rol ilişkisi:
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Role::class,
+            'role_user',
+            'userID',
+            'roleID'
+        );
+    }
+
+    // 3. Role kontrol metodları:
+    public function hasRole(string $roleName): bool
+    {
+        return $this->roles->contains('name', $roleName);
+    }
+
+    public function hasAnyRole(array $roleNames): bool
+    {
+        return $this->roles->pluck('name')->intersect($roleNames)->isNotEmpty();
+    }
+
 }

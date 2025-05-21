@@ -38,7 +38,15 @@
         @endif
         @if (!isset($hideSidebar) || !$hideSidebar)
         <aside class="sidebar-wrapper" data-simplebar="true">
-            @include('layouts.sidebar')
+            @auth
+            @if(auth()->user()->hasRole('admin'))
+            @include('layouts.sidebars.sidebar-admin')
+            @elseif(auth()->user()->hasRole('leader'))
+            @include('layouts.sidebars.sidebar-leader')
+            @elseif(auth()->user()->hasRole('student'))
+            @include('layouts.sidebars.sidebar-student')
+            @endif
+            @endauth
         </aside>
         @endif
 

@@ -33,134 +33,155 @@ Route::get('/test', function () {
 
 // Student Routes
 
-Route::get('/dashboard', function () {
-    return view('students.dashboard'); // veya kendi özel sayfan
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'role:student,leader'])
+    ->prefix('students')
+    ->name('students.')
+    ->group(function () {
+        Route::get('/dashboard', function () {
+            return view('students.dashboard');
+        })->name('dashboard');
 
-Route::get('/students/profile', function () {
-    return view('students.profile');
-});
+        Route::get('/profile', function () {
+            return view('students.profile');
+        })->name('profile');
 
-Route::get('/students/club_list', function () {
-    return view('students.club_list');
-});
+        Route::get('/club_list', function () {
+            return view('students.club_list');
+        })->name('club_list');
 
-Route::get('/students/club_details', function () {
-    return view('students.club_details');
-});
+        Route::get('/club_details', function () {
+            return view('students.club_details');
+        })->name('club_details');
 
-Route::get('/students/club_resources', function () {
-    return view('students.club_resources');
-});
+        Route::get('/club_resources', function () {
+            return view('students.club_resources');
+        })->name('club_resources');
 
-Route::get('/students/votes', function () {
-    return view('students.votes');
-});
+        Route::get('/votes', function () {
+            return view('students.votes');
+        })->name('votes');
 
-Route::get('/students/vote_detail', function () {
-    return view('students.vote_detail');
-});
+        Route::get('/vote_detail', function () {
+            return view('students.vote_detail');
+        })->name('vote_detail');
 
-Route::get('/students/club_events', function () {
-    return view('students.club_events');
-});
+        Route::get('/club_events', function () {
+            return view('students.club_events');
+        })->name('club_events');
 
-Route::get('/students/forums', function () {
-    return view('students.forums');
-});
+        Route::get('/forums', function () {
+            return view('students.forums');
+        })->name('forums');
 
-Route::get('/students/forum_detail', function () {
-    return view('students.forum_detail');
-});
+        Route::get('/forum_detail', function () {
+            return view('students.forum_detail');
+        })->name('forum_detail');
 
-Route::get('/students/notifications', function () {
-    return view('students.notifications');
-});
+        Route::get('/notifications', function () {
+            return view('students.notifications');
+        })->name('notifications');
+    });
 
 
 // Leader routes
 
-Route::get('/students/leader/dashboard', function () {
-    return view('students.leader.dashboard');
-});
+Route::middleware(['auth', 'role:leader'])
+    ->prefix('leader')
+    ->name('leader.')
+    ->group(function () {
+        Route::get('/dashboard', function () {
+            return view('students.leader.dashboard');
+        })->name('dashboard');
 
-Route::get('/students/leader/change_club_detail', function () {
-    return view('students.leader.change_club_detail');
-});
+        Route::get('/change_club_detail', function () {
+            return view('students.leader.change_club_detail');
+        })->name('change_club_detail');
 
-Route::get('/students/leader/manage_events', function () {
-    return view('students.leader.manage_events');
-});
+        Route::get('/create_event', function () {
+            return view('students.leader.create_event');
+        })->name('create_event');
 
-Route::get('/students/leader/create_event', function () {
-    return view('students.leader.create_event');
-});
+        Route::get('/create_notification', function () {
+            return view('students.leader.create_notification');
+        })->name('create_notification');
 
-Route::get('/students/leader/manage_votes', function () {
-    return view('students.leader.manage_votes');
-});
+        Route::get('/create_vote', function () {
+            return view('students.leader.create_vote');
+        })->name('create_vote');
 
-Route::get('/students/leader/create_vote', function () {
-    return view('students.leader.create_vote');
-});
+        Route::get('/manage_budget', function () {
+            return view('students.leader.manage_budget');
+        })->name('manage_budget');
 
-Route::get('/students/leader/manage_budget', function () {
-    return view('students.leader.manage_budget');
-});
+        Route::get('/manage_events', function () {
+            return view('students.leader.manage_events');
+        })->name('manage_events');
 
-Route::get('/students/leader/manage_forums', function () {
-    return view('students.leader.manage_forums');
-});
+        Route::get('/manage_forums', function () {
+            return view('students.leader.manage_forums');
+        })->name('manage_forums');
 
-Route::get('/students/leader/manage_members', function () {
-    return view('students.leader.manage_members');
-});
+        Route::get('/manage_members', function () {
+            return view('students.leader.manage_members');
+        })->name('manage_members');
 
-Route::get('/students/leader/create_notification', function () {
-    return view('students.leader.create_notification');
-});
+        Route::get('/manage_resources', function () {
+            return view('students.leader.manage_resources');
+        })->name('manage_resources');
 
-Route::get('/students/leader/manage_resources', function () {
-    return view('students.leader.manage_resources');
-});
+        Route::get('/manage_votes', function () {
+            return view('students.leader.manage_votes');
+        })->name('manage_votes');
+    });
 
 
 // Admin routes
 
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
 
-Route::get('/admin/user_list', function () {
-    return view('admin.user_list');
-});
+        Route::get('/user_list', function () {
+            return view('admin.user_list');
+        })->name('user_list');
 
-Route::get('/admin/manage_clubs', function () {
-    return view('admin.manage_clubs');
-});
+        Route::get('/manage_clubs', function () {
+            return view('admin.manage_clubs');
+        })->name('manage_clubs');
 
-Route::get('/admin/create_club', function () {
-    return view('admin.create_club');
-});
+        Route::get('/create_club', function () {
+            return view('admin.create_club');
+        })->name('create_club');
 
-Route::get('/admin/manage_votes', function () {
-    return view('admin.manage_votes');
-});
-Route::get('/admin/create_vote', function () {
-    return view('admin.create_vote');
-});
+        Route::get('/manage_votes', function () {
+            return view('admin.manage_votes');
+        })->name('manage_votes');
 
-Route::get('/admin/manage_forums', function () {
-    return view('admin.manage_forums');
-});
+        Route::get('/create_vote', function () {
+            return view('admin.create_vote');
+        })->name('create_vote');
 
-Route::get('/admin/notification_list', function () {
-    return view('admin.notification_list');
-});
-Route::get('/admin/resources', function () {
-    return view('admin.resources');
-});
+        Route::get('/manage_forums', function () {
+            return view('admin.manage_forums');
+        })->name('manage_forums');
 
-Route::get('/admin/manage_budget', function () {
-    return view('admin.manage_budget');
-});
+        Route::get('/notification_list', function () {
+            return view('admin.notification_list');
+        })->name('notification_list');
+
+        Route::get('/resources', function () {
+            return view('admin.resources');
+        })->name('resources');
+
+        Route::get('/manage_budget', function () {
+            return view('admin.manage_budget');
+        })->name('manage_budget');
+    });
+
 
 Route::get('/sensitive', function () {
     return 'Hassas işlem';
