@@ -33,7 +33,9 @@
     <div class="wrapper">
         @if (!isset($hideNavbar) || !$hideNavbar)
         <header class="top-header">
+            @auth
             @include('layouts.navbar')
+            @endauth
         </header>
         @endif
         @if (!isset($hideSidebar) || !$hideSidebar)

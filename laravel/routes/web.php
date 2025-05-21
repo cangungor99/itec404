@@ -22,6 +22,7 @@
 
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return view('index');
@@ -186,5 +187,11 @@ Route::middleware(['auth', 'role:admin'])
 Route::get('/sensitive', function () {
     return 'Hassas işlem';
 })->middleware(['auth', 'password.confirm']);
+
+Route::middleware(['auth'])
+    ->get('/notifications', [NotificationController::class, 'index'])
+    ->name('notifications.index');
+
+
 
 require __DIR__.'/auth.php';
