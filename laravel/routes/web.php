@@ -1,26 +1,6 @@
 <?php
 
-// use App\Http\Controllers\ProfileController;
-// use Illuminate\Support\Facades\Route;
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-// require __DIR__.'/auth.php';
-
-
-
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController;
 
@@ -32,6 +12,14 @@ Route::get('/test', function () {
     return view('test');
 });
 
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
 // Student Routes
 
 Route::middleware(['auth', 'role:student,leader'])
@@ -41,10 +29,6 @@ Route::middleware(['auth', 'role:student,leader'])
         Route::get('/dashboard', function () {
             return view('students.dashboard');
         })->name('dashboard');
-
-        Route::get('/profile', function () {
-            return view('students.profile');
-        })->name('profile');
 
         Route::get('/club_list', function () {
             return view('students.club_list');

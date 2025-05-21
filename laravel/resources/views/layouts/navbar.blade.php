@@ -138,7 +138,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
             <li>
-                <a class="dropdown-item" href="{{ route('students.profile') }}">
+                <a class="dropdown-item" href="{{ route('profile.edit') }}">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-person-fill"></i>
                         <span class="ms-3">Profile</span>
