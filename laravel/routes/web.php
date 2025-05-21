@@ -22,6 +22,10 @@
 
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\ClubController;
+
+
 
 Route::get('/', function () {
     return view('index');
@@ -108,7 +112,6 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('/create_vote', function () {
             return view('students.leader.create_vote');
         })->name('create_vote');
-
         Route::get('/manage_budget', function () {
             return view('students.leader.manage_budget');
         })->name('manage_budget');
@@ -135,30 +138,36 @@ Route::middleware(['auth', 'role:leader'])
     });
 
 
-// Admin routes
-
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
         })->name('dashboard');
 
-        Route::post('/clubs/create', [App\Http\Controllers\Admin\ClubController::class, 'store'])->name('admin.clubs.store');
-
-
-        Route::get('/user_list', function () {
-            return view('admin.user_list');
-        })->name('user_list');
-
+        // Clubs
+        Route::post('/clubs/create', [ClubController::class, 'store'])->name('clubs.store');
+        Route::get('/create_club', function () {
+            return view('admin.create_club');
+        })->name('create_club');
         Route::get('/manage_clubs', function () {
             return view('admin.manage_clubs');
         })->name('manage_clubs');
 
-        Route::get('/create_club', function () {
-            return view('admin.create_club');
-        })->name('create_club');
+        // Notifications
+        Route::get('/notification_list', [NotificationController::class, 'index'])->name('notification_list');
+        Route::get('/create_notification', [NotificationController::class, 'create'])->name('create_notification');
+        Route::post('/notifications/create', [NotificationController::class, 'store'])->name('notifications.store');
+        Route::get('/notifications/edit/{notificationID}', [NotificationController::class, 'edit'])->name('notifications.edit');
+        Route::put('/notifications/update/{notificationID}', [NotificationController::class, 'update'])->name('notifications.update');
+        Route::delete('/notifications/delete/{notificationID}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+
+        // Others
+        Route::get('/user_list', function () {
+            return view('admin.user_list');
+        })->name('user_list');
 
         Route::get('/manage_votes', function () {
             return view('admin.manage_votes');
@@ -172,10 +181,6 @@ Route::middleware(['auth', 'role:admin'])
             return view('admin.manage_forums');
         })->name('manage_forums');
 
-        Route::get('/notification_list', function () {
-            return view('admin.notification_list');
-        })->name('notification_list');
-
         Route::get('/resources', function () {
             return view('admin.resources');
         })->name('resources');
@@ -186,12 +191,10 @@ Route::middleware(['auth', 'role:admin'])
     });
 
 
-    
-
 
 Route::get('/sensitive', function () {
     return 'Hassas işlem';
 })->middleware(['auth', 'password.confirm']);
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

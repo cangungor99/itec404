@@ -69,21 +69,37 @@
         </div>
     </div>
 
+    @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Success!</strong> {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+    </div>
+    @endif
+
+
     <!-- Form Card -->
     <div class="card shadow-sm radius-10 border-0 animate__animated animate__fadeInUp">
         <div class="card-body">
             <h5 class="card-title"><i class="bi bi-bell-fill me-2"></i> Create New Notification</h5>
-            <form>
+            <form action="{{ isset($notification) ? route('admin.notifications.update', $notification->notificationID) : route('admin.notifications.store') }}" method="POST">
+                @csrf
+                @if(isset($notification))
+                @method('PUT')
+                @endif
+
                 <!-- Title -->
                 <div class="mb-3">
                     <label for="notifTitle" class="form-label">Notification Title</label>
-                    <input type="text" class="form-control" id="notifTitle" placeholder="Enter title">
+                    <input type="text" class="form-control" id="notifTitle" name="notifTitle" placeholder="Enter title" required
+                        value="{{ old('notifTitle', $notification->title ?? '') }}">
+
                 </div>
 
                 <!-- Content -->
                 <div class="mb-3">
                     <label for="notifContent" class="form-label">Notification Content</label>
-                    <textarea class="form-control" id="notifContent" rows="4" placeholder="Write your message here..."></textarea>
+                    <textarea class="form-control" id="notifContent" name="notifContent" rows="4" required>{{ old('notifContent', $notification->content ?? '') }}</textarea>
+
                 </div>
 
                 <!-- Target Selection -->
@@ -91,23 +107,28 @@
                     <!-- Users -->
                     <div class="col-md-6 mb-3 mb-md-0">
                         <label for="targetUsers" class="form-label">Select Users</label>
-                        <select class="form-select" id="targetUsers" multiple>
-                            <option selected disabled>Choose users (optional)</option>
-                            <option value="1">Ali Yılmaz</option>
-                            <option value="2">Ayşe Demir</option>
-                            <option value="3">Mehmet Kaya</option>
+                        <select class="form-select" id="targetUsers" name="userIDs[]" multiple>
+                            @foreach($users as $user)
+                            <option value="{{ $user->userID }}"
+                                @if(isset($notificationUserIDs) && in_array($user->userID, $notificationUserIDs)) selected @endif>
+                                {{ $user->name }} {{ $user->surname }}
+                            </option>
+                            @endforeach
                         </select>
                     </div>
 
                     <!-- Clubs -->
                     <div class="col-md-6">
-                        <label for="targetClubs" class="form-label">Select Clubs</label>
-                        <select class="form-select" id="targetClubs" multiple>
-                            <option selected disabled>Choose clubs (optional)</option>
-                            <option value="1">Software Club</option>
-                            <option value="2">Photography Club</option>
-                            <option value="3">Entrepreneurship Club</option>
+                        <label for="targetClubs" class="form-label">Select Club</label>
+                        <select class="form-select" id="targetClubs" name="clubID" required>
+                            <option disabled {{ !isset($notification) ? 'selected' : '' }} value="">Choose a club</option>
+                            @foreach($clubs as $club)
+                            <option value="{{ $club->clubID }}" {{ (isset($notification) && $notification->clubID == $club->clubID) ? 'selected' : '' }}>
+                                {{ $club->name }}
+                            </option>
+                            @endforeach
                         </select>
+
                     </div>
                 </div>
 
@@ -117,10 +138,13 @@
                         <i class="bi bi-x-circle"></i> Clear
                     </button>
                     <button type="submit" class="btn btn-success">
-                        <i class="bi bi-send-fill"></i> Send Notification
+                        <i class="bi bi-send-fill"></i>
+                        {{ isset($notification) ? 'Update Notification' : 'Send Notification' }}
                     </button>
                 </div>
             </form>
+
+
         </div>
     </div>
 </main>

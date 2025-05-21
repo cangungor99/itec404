@@ -66,6 +66,9 @@
         <div class="card-body">
             <h5 class="card-title mb-4"><i class="bi bi-plus-circle-fill me-1"></i> Create New Club</h5>
             <form action="{{ route('admin.clubs.store') }}" method="post">
+
+                @csrf
+
                 <div class="mb-3">
                     <label for="clubName" class="form-label">Club Name</label>
                     <input type="text" class="form-control" id="clubName" name="clubName" placeholder="Enter club name..." required>

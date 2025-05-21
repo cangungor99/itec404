@@ -69,28 +69,45 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($notifications as $notif)
                         <tr class="transition">
-                            <td>1</td>
-                            <td>Meeting Reminder</td>
-                            <td>Monthly meeting with club members will be held...</td>
-                            <td>User #12</td>
-                            <td class="d-none d-md-table-cell">
-                                <span class="badge bg-primary">#8</span>
-                                <span class="badge bg-primary">#14</span>
-                            </td>
-                            <td>2025-05-09 10:23</td>
-                            <td>
-                                <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editNotificationModal" title="Edit">
-                                    <i class="fas fa-edit"></i>
+                            <td>{{ $notif->notificationID }}</td>
+                            <td>{{ $notif->title }}</td>
+                            <td>{{ Str::limit($notif->content, 50) }}</td>
+                            <td>{{ $notif->creator_name ?? 'N/A' }}</td>
+                            <td class="d-none d-md-table-cell">{{ $notif->club_name ?? 'N/A' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($notif->created_at)->format('Y-m-d H:i') }}</td>
+                            <td class="d-flex justify-content-center gap-1">
+
+                                <!-- Edit butonu -->
+                                <button class="btn btn-sm btn-warning me-1 btn-edit-notification"
+                                    data-id="{{ $notif->notificationID }}"
+                                    data-title="{{ $notif->title }}"
+                                    data-content="{{ $notif->content }}"
+                                    data-club="{{ $notif->club_name }}"
+                                    data-date="{{ $notif->created_at }}"
+                                    title="Edit">
+                                    <i class="fas fa-edit"></i> Edit
                                 </button>
 
 
-                                <button class="btn btn-sm btn-danger" title="Delete"><i class="fas fa-trash-alt"></i></button>
+
+                                <!-- Delete butonu -->
+                                <form action="{{ route('admin.notifications.destroy', $notif->notificationID) }}"
+                                    method="POST" onsubmit="return confirm('Are you sure you want to delete this notification?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </form>
+
                             </td>
                         </tr>
-                        <!-- Add more rows here dynamically -->
+                        @endforeach
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>
@@ -103,7 +120,10 @@
                 <h5 class="modal-title" id="editNotificationModalLabel"><i class="fas fa-edit me-2"></i>Edit Notification</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="editNotificationForm">
+            <form id="editNotificationForm" method="POST">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="notificationID" id="notificationID">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="notificationTitle" class="form-label"><i class="fas fa-heading me-1"></i> Title</label>
@@ -133,25 +153,51 @@
 @endsection
 @push('scripts')
 <script>
-        $(document).ready(function() {
-            // Sample edit button click handler
-            $('.btn-edit-notification').on('click', function() {
-                // You can fetch real data here
-                $('#notificationTitle').val('Meeting Reminder');
-                $('#notificationContent').val('Monthly meeting with club members will be held...');
-                $('#notificationRecipients').val('#8, #14');
-                $('#notificationDate').val('2025-05-09 10:23');
+    $(document).ready(function() {
+        // Sample edit button click handler
+        $('.btn-edit-notification').on('click', function() {
+            // You can fetch real data here
+            $('#notificationTitle').val('Meeting Reminder');
+            $('#notificationContent').val('Monthly meeting with club members will be held...');
+            $('#notificationRecipients').val('#8, #14');
+            $('#notificationDate').val('2025-05-09 10:23');
 
-                $('#editNotificationModal').modal('show');
-            });
-
-            // Handle update form submission (optional)
-            $('#editNotificationForm').on('submit', function(e) {
-                e.preventDefault();
-                // You would normally send an AJAX request here
-                alert('Notification updated!');
-                $('#editNotificationModal').modal('hide');
-            });
+            $('#editNotificationModal').modal('show');
         });
-    </script>
+
+        // Handle update form submission (optional)
+        $('#editNotificationForm').on('submit', function(e) {
+            e.preventDefault();
+            // You would normally send an AJAX request here
+            alert('Notification updated!');
+            $('#editNotificationModal').modal('hide');
+        });
+    });
+</script>
+@endpush
+
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        $('.btn-edit-notification').on('click', function () {
+            const id = $(this).data('id');
+            const title = $(this).data('title');
+            const content = $(this).data('content');
+            const date = $(this).data('date');
+
+            // Formu doldur
+            $('#notificationID').val(id);
+            $('#notificationTitle').val(title);
+            $('#notificationContent').val(content);
+            $('#notificationDate').val(date);
+
+            // Form action'ı dinamik olarak ayarla
+            $('#editNotificationForm').attr('action', `/admin/notifications/update/${id}`);
+
+            // Modalı aç
+            $('#editNotificationModal').modal('show');
+        });
+    });
+</script>
 @endpush
