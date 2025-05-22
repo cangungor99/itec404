@@ -143,38 +143,45 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($clubs as $club)
                         <tr>
-                            <td>1</td>
-                            <td><img src="../assets/images/clubs/software.png" alt="Software Club" class="rounded" width="40"></td>
-                            <td>Software Club</td>
-                            <td>Club for software enthusiasts and developers.</td>
-                            <td><span class="badge bg-success">Active</span></td>
-                            <td>2023-06-10 15:30</td>
+                            <td>{{ $club->clubID }}</td>
                             <td>
-                                <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editClubModal">
+                                <img src="{{ $club->photo }}" alt="{{ $club->name }}" class="rounded" width="40">
+                            </td>
+                            <td>{{ $club->name }}</td>
+                            <td>{{ $club->description }}</td>
+                            <td>
+                                <span class="badge {{ $club->status ? 'bg-success' : 'bg-secondary' }}">
+                                    {{ $club->status ? 'Active' : 'Inactive' }}
+                                </span>
+                            </td>
+                            <td>{{ $club->created_at }}</td>
+                            <td>
+                                <button
+                                    class="btn btn-sm btn-warning me-1 edit-club-btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editClubModal"
+                                    data-id="{{ $club->clubID }}"
+                                    data-name="{{ $club->name }}"
+                                    data-description="{{ $club->description }}"
+                                    data-status="{{ $club->status }}"
+                                    data-photo="{{ $club->photo }}">
                                     <i class="bi bi-pencil-fill"></i> Edit
                                 </button>
 
-                                <button class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Delete</button>
+                                <form method="POST" action="{{ route('admin.clubs.destroy', $club->clubID) }}" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash-fill"></i> Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><img src="../assets/images/clubs/photo.png" alt="Photo Club" class="rounded" width="40"></td>
-                            <td>Photography Club</td>
-                            <td>Capture the world through the lens with us.</td>
-                            <td><span class="badge bg-secondary">Inactive</span></td>
-                            <td>2023-09-21 09:45</td>
-                            <td>
-                                <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editClubModal">
-                                    <i class="bi bi-pencil-fill"></i> Edit
-                                </button>
-
-                                <button class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Delete</button>
-                            </td>
-                        </tr>
-                        <!-- Add more rows as needed -->
+                        @endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -183,50 +190,98 @@
 
 <!--end page main-->
 
+
 <!-- Edit Club Modal -->
 <div class="modal fade animate__animated animate__zoomIn" id="editClubModal" tabindex="-1" aria-labelledby="editClubModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content shadow">
             <div class="modal-header">
-                <h5 class="modal-title" id="editClubModalLabel"><i class="bi bi-pencil-square me-2"></i>Edit Club</h5>
+                <h5 class="modal-title" id="editClubModalLabel">
+                    <i class="bi bi-pencil-square me-2"></i> Edit Club
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <!-- Club Form -->
-                <form>
+
+            <!-- ✅ FORM BAŞLANGICI -->
+            <form id="editClubForm" method="POST">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="clubID" id="editClubID">
+
+                <div class="modal-body">
+                    <!-- Club Name -->
                     <div class="mb-3">
                         <label for="clubName" class="form-label">Club Name</label>
-                        <input type="text" class="form-control" id="clubName" value="Software Club">
+                        <input type="text" class="form-control" id="clubName" name="clubName" required>
                     </div>
 
+                    <!-- Description -->
                     <div class="mb-3">
                         <label for="clubDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="clubDescription" rows="3">Club for software enthusiasts and developers.</textarea>
+                        <textarea class="form-control" id="clubDescription" name="clubDescription" rows="3" required></textarea>
                     </div>
 
+                    <!-- Status -->
                     <div class="mb-3">
                         <label for="clubStatus" class="form-label">Status</label>
-                        <select class="form-select" id="clubStatus">
-                            <option value="1" selected>Active</option>
+                        <select class="form-select" id="clubStatus" name="clubStatus" required>
+                            <option value="1">Active</option>
                             <option value="0">Inactive</option>
                         </select>
                     </div>
 
+                    <!-- Club Photo -->
                     <div class="mb-3">
                         <label for="clubPhoto" class="form-label">Club Photo (URL)</label>
-                        <input type="text" class="form-control" id="clubPhoto" value="../assets/images/clubs/software.png">
+                        <input type="text" class="form-control" id="clubPhoto" name="clubPhoto" required>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle"></i> Cancel
-                </button>
-                <button type="button" class="btn btn-primary">
-                    <i class="bi bi-save"></i> Save Changes
-                </button>
-            </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+            <!-- ✅ FORM BİTİŞİ -->
         </div>
     </div>
 </div>
+
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const editButtons = document.querySelectorAll('.edit-club-btn');
+    const editForm = document.getElementById('editClubForm');
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const clubID = button.dataset.id;
+            const name = button.dataset.name;
+            const description = button.dataset.description;
+            const status = button.dataset.status;
+            const photo = button.dataset.photo;
+
+            // Form action'ı güncelle
+            editForm.action = `/admin/clubs/update/${clubID}`;
+
+            // Alanlara veri yerleştir
+            document.getElementById('editClubID').value = clubID;
+            document.getElementById('clubName').value = name;
+            document.getElementById('clubDescription').value = description;
+            document.getElementById('clubStatus').value = status;
+            document.getElementById('clubPhoto').value = photo;
+
+            // Modal zaten Bootstrap tarafından tetikleniyor (data-bs-target ile)
+        });
+    });
+});
+</script>
+@endpush
+

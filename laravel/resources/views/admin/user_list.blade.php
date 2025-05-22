@@ -103,52 +103,40 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($users as $user)
                         <tr>
-                            <td>1</td>
-                            <td>202012345</td>
-                            <td>Ali Yılmaz</td>
-                            <td>ali.yilmaz@example.com</td>
-                            <td>Software Club (leader), Entrepreneurship Club (member)</td>
-                            <td>2023-09-01 10:15</td>
+                            <td>{{ $user->userID }}</td>
+                            <td>{{ $user->std_no }}</td>
+                            <td>{{ $user->name }} {{ $user->surname }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td><em>Clubs to be implemented</em></td>
+                            <td>{{ $user->created_at }}</td>
                             <td>
-                                <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                    <i class="bi bi-pencil-fill"></i> Edit
-                                </button>
+                            <button class="btn btn-sm btn-warning me-1 btn-edit-user"
+    data-id="{{ $user->userID }}"
+    data-stdno="{{ $user->std_no }}"
+    data-name="{{ $user->name }}"
+    data-surname="{{ $user->surname }}"
+    data-email="{{ $user->email }}"
+    data-roles="{{ implode(',', $user->roles) }}"
+    data-bs-toggle="modal" data-bs-target="#editUserModal">
+    <i class="bi bi-pencil-fill"></i> Edit
+</button>
 
-                                <button class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Delete</button>
+
+                                <form action="{{ route('admin.users.destroy', $user->userID) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash-fill"></i> Delete
+                                    </button>
+                                </form>
                             </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>202098765</td>
-                            <td>Ayşe Demir</td>
-                            <td>ayse.demir@example.com</td>
-                            <td>Photography Club (manager)</td>
-                            <td>2023-11-12 08:42</td>
-                            <td>
-                                <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                    <i class="bi bi-pencil-fill"></i> Edit
-                                </button>
-
-                                <button class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>202056789</td>
-                            <td>Mehmet Kaya</td>
-                            <td>mehmet.kaya@example.com</td>
-                            <td><em>Not a member of any club</em></td>
-                            <td>2024-01-05 14:03</td>
-                            <td>
-                                <button class="btn btn-sm btn-warning me-1" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                    <i class="bi bi-pencil-fill"></i> Edit
-                                </button>
-
-                                <button class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Delete</button>
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
+
+
                 </table>
             </div>
         </div>
@@ -156,40 +144,81 @@
 </main>
 <!-- Edit User Modal -->
 <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content animate__animated animate__fadeIn">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editUserModalLabel"><i class="bi bi-pencil-fill"></i> Edit User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- User Info Form (static for now) -->
-                <form>
-                    <div class="mb-3">
-                        <label for="studentNo" class="form-label">Student No</label>
-                        <input type="text" class="form-control" id="studentNo" value="202012345">
-                    </div>
-                    <div class="mb-3">
-                        <label for="fullName" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="fullName" value="Ali Yılmaz">
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="email" value="ali.yilmaz@example.com">
-                    </div>
-                    <div class="mb-3">
-                        <label for="clubs" class="form-label">Clubs & Roles</label>
-                        <textarea class="form-control" id="clubs" rows="2">Software Club (leader), Entrepreneurship Club (member)</textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success">Update User</button>
-            </div>
-        </div>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content animate__animated animate__fadeIn">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editUserModalLabel"><i class="bi bi-pencil-fill"></i> Edit User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form method="POST" id="editUserForm">
+    @csrf
+    @method('PUT')
+    <input type="hidden" name="userID">
+    <input type="text" name="std_no" id="studentNo">
+    <input type="text" name="name" id="firstName">
+    <input type="text" name="surname" id="lastName">
+    <input type="email" name="email" id="email">
+    
+    <label>Roles</label>
+    <select name="roles[]" id="roleSelect" class="form-select" multiple>
+        @foreach($roles as $role)
+            <option value="{{ $role->roleID }}">{{ $role->name }}</option>
+        @endforeach
+    </select>
+
+    <button type="submit" class="btn btn-success">Update</button>
+</form>
+
     </div>
+  </div>
 </div>
+
 
 <!--end page main-->
 @endsection
+@push('scripts')
+<script>
+document.querySelectorAll('.edit-user-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const userID = this.dataset.id;
+
+        // Form action URL'sini güncelle
+        const form = document.getElementById('editUserForm');
+        form.action = `/admin/users/update/${userID}`; // Route yapına göre ayarlanmalı
+
+        // Diğer inputları doldur (örnek)
+        document.getElementById('studentNo').value = this.dataset.stdno;
+        document.getElementById('firstName').value = this.dataset.name;
+        document.getElementById('lastName').value = this.dataset.surname;
+        document.getElementById('email').value = this.dataset.email;
+
+        // Roller
+        const roles = this.dataset.roles.split(',');
+        const roleSelect = document.getElementById('roleSelect');
+        Array.from(roleSelect.options).forEach(option => {
+            option.selected = roles.includes(option.value);
+        });
+
+        // Modalı göster
+        new bootstrap.Modal(document.getElementById('editUserModal')).show();
+    });
+});
+
+$('.btn-edit-user').on('click', function () {
+    const userID = $(this).data('id');
+    $('#editUserModal input[name="userID"]').val(userID);
+    $('#studentNo').val($(this).data('stdno'));
+    $('#firstName').val($(this).data('name'));
+    $('#lastName').val($(this).data('surname'));
+    $('#email').val($(this).data('email'));
+
+    const roles = $(this).data('roles').toString().split(',');
+    $('#roleSelect option').prop('selected', false);
+    roles.forEach(role => {
+        $(`#roleSelect option[value="${role}"]`).prop('selected', true);
+    });
+});
+
+</script>
+@endpush
