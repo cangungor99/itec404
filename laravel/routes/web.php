@@ -2,12 +2,16 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\Student\ClubController;
+use App\Http\Controllers\NotificationController as NotificiationViewController;
+use App\Http\Controllers\Student\ClubController as StudentClubController;
 use App\Http\Controllers\Student\ClubResourceController as StudentClubResourceController;
 use App\Http\Controllers\Leader\ClubResourceController as LeaderClubResourceController;
 use App\Http\Controllers\Leader\MembershipController;
 use App\Models\Membership;
+use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\ClubController;
+
+
 
 Route::get('/', function () {
     return view('index');
@@ -35,10 +39,10 @@ Route::middleware(['auth', 'role:student,leader'])
             return view('students.dashboard');
         })->name('dashboard');
 
-        Route::get('/clubs', [ClubController::class, 'index'])->name('clubs.index');
-        Route::get('/club/{club}', [ClubController::class, 'show'])->name('clubs.show');
-        Route::post('/club/{club}/apply', [ClubController::class, 'apply'])->name('clubs.apply');
-        Route::post('/club/{club}/leave', [ClubController::class, 'leave'])->name('clubs.leave');
+        Route::get('/clubs', [StudentClubController::class, 'index'])->name('clubs.index');
+        Route::get('/club/{club}', [StudentClubController::class, 'show'])->name('clubs.show');
+        Route::post('/club/{club}/apply', [StudentClubController::class, 'apply'])->name('clubs.apply');
+        Route::post('/club/{club}/leave', [StudentClubController::class, 'leave'])->name('clubs.leave');
         Route::get('/clubs/{club}/resources', [StudentClubResourceController::class, 'index'])->name('clubs.resources');
         Route::post('/clubs/{club}/resources', [StudentClubResourceController::class, 'store'])->name('clubs.resources.store');
         Route::delete('/clubs/{club}/resources/{resource}', [StudentClubResourceController::class, 'destroy'])->name('clubs.resources.destroy');
@@ -116,7 +120,6 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('/create_vote', function () {
             return view('students.leader.create_vote');
         })->name('create_vote');
-
         Route::get('/manage_budget', function () {
             return view('students.leader.manage_budget');
         })->name('manage_budget');
@@ -143,27 +146,36 @@ Route::middleware(['auth', 'role:leader'])
     });
 
 
-// Admin routes
-
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
         })->name('dashboard');
 
-        Route::get('/user_list', function () {
-            return view('admin.user_list');
-        })->name('user_list');
-
+        // Clubs
+        Route::post('/clubs/create', [ClubController::class, 'store'])->name('clubs.store');
+        Route::get('/create_club', function () {
+            return view('admin.create_club');
+        })->name('create_club');
         Route::get('/manage_clubs', function () {
             return view('admin.manage_clubs');
         })->name('manage_clubs');
 
-        Route::get('/create_club', function () {
-            return view('admin.create_club');
-        })->name('create_club');
+        // Notifications
+        Route::get('/notification_list', [NotificationController::class, 'index'])->name('notification_list');
+        Route::get('/create_notification', [NotificationController::class, 'create'])->name('create_notification');
+        Route::post('/notifications/create', [NotificationController::class, 'store'])->name('notifications.store');
+        Route::get('/notifications/edit/{notificationID}', [NotificationController::class, 'edit'])->name('notifications.edit');
+        Route::put('/notifications/update/{notificationID}', [NotificationController::class, 'update'])->name('notifications.update');
+        Route::delete('/notifications/delete/{notificationID}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+
+        // Others
+        Route::get('/user_list', function () {
+            return view('admin.user_list');
+        })->name('user_list');
 
         Route::get('/manage_votes', function () {
             return view('admin.manage_votes');
@@ -177,10 +189,6 @@ Route::middleware(['auth', 'role:admin'])
             return view('admin.manage_forums');
         })->name('manage_forums');
 
-        Route::get('/notification_list', function () {
-            return view('admin.notification_list');
-        })->name('notification_list');
-
         Route::get('/resources', function () {
             return view('admin.resources');
         })->name('resources');
@@ -191,12 +199,13 @@ Route::middleware(['auth', 'role:admin'])
     });
 
 
+
 Route::get('/sensitive', function () {
     return 'Hassas işlem';
 })->middleware(['auth', 'password.confirm']);
 
 Route::middleware(['auth'])
-    ->get('/notifications', [NotificationController::class, 'index'])
+    ->get('/notifications', [NotificiationViewController::class, 'index'])
     ->name('notifications.index');
 
 
