@@ -24,6 +24,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ClubController;
+use App\Http\Controllers\Admin\UserController;
 
 
 
@@ -152,9 +153,12 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/create_club', function () {
             return view('admin.create_club');
         })->name('create_club');
-        Route::get('/manage_clubs', function () {
-            return view('admin.manage_clubs');
-        })->name('manage_clubs');
+        Route::get('/manage_clubs', [App\Http\Controllers\Admin\ClubController::class, 'index'])->name('manage_clubs');
+        
+        Route::get('/clubs/edit/{id}', [ClubController::class, 'edit'])->name('clubs.edit');
+        Route::put('/clubs/update/{id}', [ClubController::class, 'update'])->name('clubs.update');
+        Route::delete('/clubs/delete/{id}', [ClubController::class, 'destroy'])->name('clubs.destroy');
+
 
         // Notifications
         Route::get('/notification_list', [NotificationController::class, 'index'])->name('notification_list');
@@ -164,10 +168,12 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/notifications/update/{notificationID}', [NotificationController::class, 'update'])->name('notifications.update');
         Route::delete('/notifications/delete/{notificationID}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 
-        // Others
-        Route::get('/user_list', function () {
-            return view('admin.user_list');
-        })->name('user_list');
+        // User List
+        Route::get('/user_list', [UserController::class, 'index'])->name('user_list');
+        Route::delete('/user_list/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::put('/users/update/{userID}', [UserController::class, 'update'])->name('users.update');
+
+
 
         Route::get('/manage_votes', function () {
             return view('admin.manage_votes');
