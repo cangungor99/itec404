@@ -77,7 +77,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('leader.manage_votes') }}">
+        <a href="{{ route('leader.votes.my') }}">
             <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
             <div class="menu-title">Manage Votes</div>
         </a>
@@ -96,18 +96,7 @@
             <div class="menu-title">Club List</div>
         </a>
     </li>
-    <li>
-        <a href="{{ route('students.club_resources') }}">
-            <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
-            <div class="menu-title">Student Club Resources</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('students.votes') }}">
-            <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
-            <div class="menu-title">Student Votes</div>
-        </a>
-    </li>
+
     <li>
         <a href="{{ route('students.vote_detail') }}">
             <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>

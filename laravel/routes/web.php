@@ -5,14 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController as NotificiationViewController;
 use App\Http\Controllers\Student\ClubController as StudentClubController;
 use App\Http\Controllers\Student\ClubResourceController as StudentClubResourceController;
+use App\Http\Controllers\Student\StudentVoteController;
 use App\Http\Controllers\Leader\ClubResourceController as LeaderClubResourceController;
 use App\Http\Controllers\Leader\MembershipController;
-use App\Models\Membership;
+use App\Http\Controllers\Leader\LeaderVoteController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\UserController;
-
-
 
 Route::get('/', function () {
     return view('index');
@@ -47,13 +46,13 @@ Route::middleware(['auth', 'role:student,leader'])
         Route::get('/clubs/{club}/resources', [StudentClubResourceController::class, 'index'])->name('clubs.resources');
         Route::post('/clubs/{club}/resources', [StudentClubResourceController::class, 'store'])->name('clubs.resources.store');
         Route::delete('/clubs/{club}/resources/{resource}', [StudentClubResourceController::class, 'destroy'])->name('clubs.resources.destroy');
+        Route::get('/votes', [StudentVoteController::class, 'index'])->name('votes.index');
+        Route::get('/votes/{voting}', [StudentVoteController::class, 'show'])->name('votes.show');
+        Route::post('/votes/{voting}', [StudentVoteController::class, 'vote'])->name('votes.vote');
 
 
 
 
-        Route::get('/votes', function () {
-            return view('students.votes');
-        })->name('votes');
 
         Route::get('/vote_detail', function () {
             return view('students.vote_detail');
@@ -93,6 +92,14 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('{club}/resources', [LeaderClubResourceController::class, 'index'])->name('resources');
         Route::post('{club}/resources', [LeaderClubResourceController::class, 'store'])->name('resources.store');
         Route::delete('{club}/resources/{resource}', [LeaderClubResourceController::class, 'destroy'])->name('resources.destroy');
+        Route::get('{club}/votes', [LeaderVoteController::class, 'index'])->name('votes.index');
+        Route::get('{club}/votes/create', [LeaderVoteController::class, 'create'])->name('votes.create');
+        Route::post('{club}/votes', [LeaderVoteController::class, 'store'])->name('votes.store');
+        Route::delete('{club}/votes/{voting}', [LeaderVoteController::class, 'destroy'])->name('votes.destroy');
+        Route::get('{club}/votes/{voting}/edit', [LeaderVoteController::class, 'edit'])->name('votes.edit');
+        Route::put('{club}/votes/{voting}', [LeaderVoteController::class, 'update'])->name('votes.update');
+        Route::get('{club}/votes/{voting}/results', [LeaderVoteController::class, 'results'])->name('votes.results');
+
 
         Route::get('/resources', function () {
             $leader = auth()->user();
@@ -103,6 +110,11 @@ Route::middleware(['auth', 'role:leader'])
 
         Route::get('/clubs', [ClubController::class, 'index'])->name('clubs.index');
 
+        Route::get('/votes', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
+            return redirect()->route('leader.votes.index', $club->clubID);
+        })->name('votes.my');
 
         Route::get('/change_club_detail', function () {
             return view('students.leader.change_club_detail');
@@ -160,7 +172,7 @@ Route::middleware(['auth', 'role:admin'])
             return view('admin.create_club');
         })->name('create_club');
         Route::get('/manage_clubs', [App\Http\Controllers\Admin\ClubController::class, 'index'])->name('manage_clubs');
-        
+
         Route::get('/clubs/edit/{id}', [ClubController::class, 'edit'])->name('clubs.edit');
         Route::put('/clubs/update/{id}', [ClubController::class, 'update'])->name('clubs.update');
         Route::delete('/clubs/delete/{id}', [ClubController::class, 'destroy'])->name('clubs.destroy');
@@ -214,4 +226,4 @@ Route::middleware(['auth'])
 
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

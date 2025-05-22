@@ -22,7 +22,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('students.votes') }}">
+        <a href="{{ route('students.votes.index') }}">
             <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
             <div class="menu-title">Votes</div>
         </a>
