@@ -22,12 +22,6 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('students.club_resources') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Club Resources</div>
-        </a>
-    </li>
-    <li>
         <a href="{{ route('students.votes') }}">
             <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
             <div class="menu-title">Votes</div>

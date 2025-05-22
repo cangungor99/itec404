@@ -48,9 +48,7 @@ Route::middleware(['auth', 'role:student,leader'])
         Route::delete('/clubs/{club}/resources/{resource}', [StudentClubResourceController::class, 'destroy'])->name('clubs.resources.destroy');
 
 
-        Route::get('/club_resources', function () {
-            return view('students.club_resources');
-        })->name('club_resources');
+
 
         Route::get('/votes', function () {
             return view('students.votes');
