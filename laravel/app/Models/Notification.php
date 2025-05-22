@@ -20,6 +20,11 @@ class Notification extends Model
         'content',
         'created_at',
     ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creatorID');

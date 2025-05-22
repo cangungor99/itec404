@@ -18,6 +18,7 @@ class Membership extends Model
         'clubID',
         'role',
         'joined_at',
+        'status',
     ];
 
     public function user()

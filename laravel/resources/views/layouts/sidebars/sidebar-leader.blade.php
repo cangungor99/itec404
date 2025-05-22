@@ -17,9 +17,15 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('leader.change_club_detail') }}">
+        <a href="{{ route('leader.memberships.index') }}">
             <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Change Club Detail</div>
+            <div class="menu-title">Membership Requests</div>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('leader.my_resources') }}">
+            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="menu-title">Manage Resources</div>
         </a>
     </li>
     <li>
@@ -85,15 +91,9 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('students.club_list') }}">
-            <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
-            <div class="menu-title">Student Club List</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('students.club_details') }}">
-            <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
-            <div class="menu-title">Student Club Details</div>
+        <a href="{{ route('students.clubs.index') }}">
+            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="menu-title">Club List</div>
         </a>
     </li>
     <li>

@@ -16,21 +16,9 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('students.profile') }}">
-            <div class="parent-icon"><i class="bi bi-person-badge"></i></div>
-            <div class="menu-title">Profile</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('students.club_list') }}">
+        <a href="{{ route('students.clubs.index') }}">
             <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
             <div class="menu-title">Club List</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('students.club_details') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Club Details</div>
         </a>
     </li>
     <li>
