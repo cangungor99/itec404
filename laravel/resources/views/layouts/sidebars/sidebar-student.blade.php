@@ -40,7 +40,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('students.forums') }}">
+        <a href="{{ route('students.forums.index') }}">
             <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
             <div class="menu-title">Forums</div>
         </a>

@@ -6,9 +6,13 @@ use App\Http\Controllers\NotificationController as NotificiationViewController;
 use App\Http\Controllers\Student\ClubController as StudentClubController;
 use App\Http\Controllers\Student\ClubResourceController as StudentClubResourceController;
 use App\Http\Controllers\Student\StudentVoteController;
+use App\Http\Controllers\Student\StudentForumController;
 use App\Http\Controllers\Leader\ClubResourceController as LeaderClubResourceController;
 use App\Http\Controllers\Leader\MembershipController;
 use App\Http\Controllers\Leader\LeaderVoteController;
+use App\Http\Controllers\Leader\ForumApprovalController;
+use App\Http\Controllers\Leader\CommentApprovalController;
+use App\Http\Controllers\Leader\LeaderForumController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\UserController;
@@ -49,6 +53,11 @@ Route::middleware(['auth', 'role:student,leader'])
         Route::get('/votes', [StudentVoteController::class, 'index'])->name('votes.index');
         Route::get('/votes/{voting}', [StudentVoteController::class, 'show'])->name('votes.show');
         Route::post('/votes/{voting}', [StudentVoteController::class, 'vote'])->name('votes.vote');
+        Route::get('/forums', [StudentForumController::class, 'index'])->name('forums.index');
+        Route::get('/forums/create', [StudentForumController::class, 'create'])->name('forums.create');
+        Route::post('/forums', [StudentForumController::class, 'store'])->name('forums.store');
+        Route::get('/forums/{forum}', [StudentForumController::class, 'show'])->name('forums.show');
+        Route::post('/forums/{forum}/comments', [StudentForumController::class, 'comment'])->name('forums.comment');
 
 
 
@@ -62,9 +71,7 @@ Route::middleware(['auth', 'role:student,leader'])
             return view('students.club_events');
         })->name('club_events');
 
-        Route::get('/forums', function () {
-            return view('students.forums');
-        })->name('forums');
+
 
         Route::get('/forum_detail', function () {
             return view('students.forum_detail');
@@ -99,7 +106,14 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('{club}/votes/{voting}/edit', [LeaderVoteController::class, 'edit'])->name('votes.edit');
         Route::put('{club}/votes/{voting}', [LeaderVoteController::class, 'update'])->name('votes.update');
         Route::get('{club}/votes/{voting}/results', [LeaderVoteController::class, 'results'])->name('votes.results');
+        Route::get('/forums/pending', [ForumApprovalController::class, 'index'])->name('forums.pending');
+        Route::post('/forums/{forum}/approve', [ForumApprovalController::class, 'approve'])->name('forums.approve');
+        Route::post('/forums/{forum}/reject', [ForumApprovalController::class, 'reject'])->name('forums.reject');
 
+        Route::get('/comments/pending', [CommentApprovalController::class, 'index'])->name('comments.pending');
+        Route::post('/comments/{comment}/approve', [CommentApprovalController::class, 'approve'])->name('comments.approve');
+        Route::post('/comments/{comment}/reject', [CommentApprovalController::class, 'reject'])->name('comments.reject');
+        Route::get('/forums/{forum}', [LeaderForumController::class, 'show'])->name('forums.show');
 
         Route::get('/resources', function () {
             $leader = auth()->user();

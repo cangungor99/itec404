@@ -29,6 +29,18 @@
         </a>
     </li>
     <li>
+        <a href="{{ route('leader.forums.pending') }}">
+            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="menu-title">Pending Forums</div>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('leader.comments.pending') }}">
+            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="menu-title">Pending Comments</div>
+        </a>
+    </li>
+    <li>
         <a href="{{ route('leader.create_event') }}">
             <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
             <div class="menu-title">Create Event</div>
@@ -82,7 +94,6 @@
             <div class="menu-title">Manage Votes</div>
         </a>
     </li>
-
     <li class="menu-label">Student Pages</li>
     <li>
         <a href="{{ route('students.dashboard') }}">
@@ -110,7 +121,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('students.forums') }}">
+        <a href="{{ route('students.forums.index') }}">
             <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
             <div class="menu-title">Student Forums</div>
         </a>
