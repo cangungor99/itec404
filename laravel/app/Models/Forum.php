@@ -19,6 +19,7 @@ class Forum extends Model
         'userID',
         'title',
         'description',
+        'status',
         'created_at',
     ];
 
@@ -33,5 +34,9 @@ class Forum extends Model
     public function attachments()
     {
         return $this->hasMany(Attachment::class, 'forumID');
+    }
+    public function comments()
+    {
+        return $this->hasMany(ForumComment::class, 'forumID');
     }
 }
