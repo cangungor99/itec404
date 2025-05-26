@@ -24,17 +24,33 @@
         <div class="card-body">
             <h4 class="mb-3"><i class="bi bi-bar-chart-steps me-2 text-primary"></i> Create a New Voting Session</h4>
 
-            <form action="create_vote_process.php" method="POST">
+            <form action="{{ route('admin.store_vote') }}" method="POST">
+                @csrf
+                {{-- Club Selection --}}
+                <div class="mb-3">
+                    <label for="club_id" class="form-label">Select Club</label>
+                    <select class="form-select" id="club_id" name="clubID" required>
+                        <option disabled selected value="">Choose a club</option>
+                        @foreach ($clubs as $club)
+                        <option value="{{ $club->clubID }}">{{ $club->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+
+                {{-- Voting Title --}}
                 <div class="mb-3">
                     <label for="title" class="form-label">Voting Title</label>
                     <input type="text" class="form-control" id="title" name="title" placeholder="e.g. Board Elections 2025" required>
                 </div>
 
+                {{-- Description --}}
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control" id="description" name="description" rows="3" placeholder="Describe the purpose or rules of the vote..."></textarea>
                 </div>
 
+                {{-- Start/End Dates --}}
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="start_date" class="form-label">Start Date</label>
@@ -46,6 +62,7 @@
                     </div>
                 </div>
 
+                {{-- Voting Options --}}
                 <div id="options-container" class="mb-3">
                     <label class="form-label">Voting Options</label>
                     <div class="input-group mb-2">
@@ -66,6 +83,7 @@
                     </button>
                 </div>
             </form>
+
         </div>
     </div>
 </main>
