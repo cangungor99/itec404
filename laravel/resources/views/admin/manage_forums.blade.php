@@ -18,6 +18,11 @@
 
     </div>
     <!--end breadcrumb-->
+    @if (session('success'))
+    <div class="alert alert-success mt-3">
+        {{ session('success') }}
+    </div>
+    @endif
 
     <div class="card shadow-sm radius-10 border-0 animate__animated animate__fadeInDown mb-4">
         <div class="card-body">
@@ -34,17 +39,30 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($pendingForums as $forum)
                         <tr>
-                            <td>Forum Title 1</td>
-                            <td>John Doe</td>
-                            <td>IT Club</td>
-                            <td>2025-05-09</td>
+                            <td>{{ $forum->title }}</td>
+                            <td>{{ $forum->user->name }} {{ $forum->user->surname }}</td>
+                            <td>{{ $forum->club->name }}</td>
+                            <td>{{ \Carbon\Carbon::parse($forum->created_at)->format('Y-m-d') }}</td>
                             <td>
-                                <button class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i> Approve</button>
-                                <button class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i> Reject</button>
+                                <form method="POST" action="{{ route('forums.approve', $forum->forumID) }}" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-check-circle"></i> Approve
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ route('forums.reject', $forum->forumID) }}" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-x-circle"></i> Reject
+                                    </button>
+                                </form>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -66,18 +84,29 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($approvedForums as $index => $forum)
                         <tr>
-                            <td>1</td>
-                            <td>Photography Tips</td>
-                            <td>Let's discuss how to shoot better portraits.</td>
-                            <td>2025-05-07</td>
-                            <td>IT Club</td>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $forum->title }}</td>
+                            <td>{{ $forum->description }}</td>
+                            <td>{{ \Carbon\Carbon::parse($forum->created_at)->format('Y-m-d') }}</td>
+                            <td>{{ $forum->club->name }}</td>
                             <td>
-                                <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil"></i></button>
-                                <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                {{-- İsteğe bağlı: Edit ve Delete işlemleri --}}
+                                <button class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <form method="POST" action="{{ route('forums.reject', $forum->forumID) }}" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
+                        @endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>

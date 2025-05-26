@@ -18,6 +18,8 @@ use App\Http\Controllers\Leader\LeaderEventController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ForumController;
+
 
 Route::get('/', function () {
     return view('index');
@@ -160,17 +162,24 @@ Route::middleware(['auth', 'role:admin'])
 
 
 
-        Route::get('/manage_votes', function () {
-            return view('admin.manage_votes');
-        })->name('manage_votes');
+        Route::get('/manage_votes', [App\Http\Controllers\Admin\VoteController::class, 'index'])->name('manage_votes');
 
-        Route::get('/create_vote', function () {
-            return view('admin.create_vote');
-        })->name('create_vote');
+        
 
-        Route::get('/manage_forums', function () {
-            return view('admin.manage_forums');
-        })->name('manage_forums');
+        // Voting işlemleri
+
+        Route::get('/create_vote', [App\Http\Controllers\Admin\VoteController::class, 'create'])->name('create_vote');
+        Route::post('/create_vote', [App\Http\Controllers\Admin\VoteController::class, 'store'])->name('store_vote');
+        Route::get('/create_vote', [App\Http\Controllers\Admin\VoteController::class, 'create'])->name('create_vote');
+        Route::delete('/admin/votings/{id}', [App\Http\Controllers\Admin\VoteController::class, 'destroy'])->name('votings.destroy');
+
+
+
+
+        Route::get('/manage_forums', [ForumController::class, 'index'])->name('manage_forums');
+        Route::post('/forums/approve/{id}', [ForumController::class, 'approve'])->name('forums.approve');
+        Route::post('/forums/reject/{id}', [ForumController::class, 'reject'])->name('forums.reject');
+
 
         Route::get('/resources', function () {
             return view('admin.resources');
