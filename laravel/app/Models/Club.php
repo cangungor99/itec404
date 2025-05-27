@@ -57,4 +57,8 @@ class Club extends Model
     {
         return $this->hasMany(Voting::class, 'clubID');
     }
+    public function events()
+    {
+        return $this->hasMany(ClubEvent::class, 'clubID');
+    }
 }

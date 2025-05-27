@@ -15,46 +15,33 @@
             <div class="menu-title">Dashboard</div>
         </a>
     </li>
+
     <li>
         <a href="{{ route('students.clubs.index') }}">
             <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
             <div class="menu-title">Club List</div>
         </a>
     </li>
+
     <li>
-        <a href="{{ route('students.votes.index') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Votes</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('students.vote_detail') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Vote Details</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('students.club_events') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+        <a href="{{ route('students.events.index') }}">
+            <div class="parent-icon"><i class="bi bi-calendar-event"></i></div>
             <div class="menu-title">Club Events</div>
         </a>
     </li>
+
+    <li>
+        <a href="{{ route('students.votes.index') }}">
+            <div class="parent-icon"><i class="bi bi-bar-chart-line-fill"></i></div>
+            <div class="menu-title">Voting</div>
+        </a>
+    </li>
+
     <li>
         <a href="{{ route('students.forums.index') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="parent-icon"><i class="bi bi-chat-text-fill"></i></div>
             <div class="menu-title">Forums</div>
         </a>
     </li>
-    <li>
-        <a href="{{ route('students.forum_detail') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Forum Details</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('students.notifications') }}">
-            <div class="parent-icon"><i class="bi bi-bell-fill"></i></div>
-            <div class="menu-title">Notifications</div>
-        </a>
-    </li>
 </ul>
+

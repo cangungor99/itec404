@@ -9,134 +9,94 @@
 </div>
 
 <ul class="metismenu" id="menu">
-    <li class="menu-label">Leader Pages</li>
+    {{-- LİDER ALANI --}}
+    <li class="menu-label">Leader Area</li>
+
     <li>
         <a href="{{ route('leader.dashboard') }}">
             <div class="parent-icon"><i class="bi bi-speedometer2"></i></div>
-            <div class="menu-title">Dashboard</div>
+            <div class="menu-title">Leader Dashboard</div>
         </a>
     </li>
+
     <li>
         <a href="{{ route('leader.memberships.index') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Membership Requests</div>
+            <div class="parent-icon"><i class="bi bi-person-check"></i></div>
+            <div class="menu-title">Membership Approvals</div>
         </a>
     </li>
+
     <li>
         <a href="{{ route('leader.my_resources') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="parent-icon"><i class="bi bi-folder-fill"></i></div>
             <div class="menu-title">Manage Resources</div>
         </a>
     </li>
-    <li>
-        <a href="{{ route('leader.forums.pending') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Pending Forums</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('leader.comments.pending') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Pending Comments</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('leader.create_event') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Create Event</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('leader.create_notification') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Create Notification</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('leader.create_vote') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Create Vote</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('leader.manage_budget') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Manage Budget</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('leader.manage_events') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Manage Events</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('leader.manage_forums') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Manage Forums</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('leader.manage_members') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Manage Members</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('leader.manage_resources') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Manage Resources</div>
-        </a>
-    </li>
+
     <li>
         <a href="{{ route('leader.votes.my') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="parent-icon"><i class="bi bi-bar-chart-line-fill"></i></div>
             <div class="menu-title">Manage Votes</div>
         </a>
     </li>
-    <li class="menu-label">Student Pages</li>
+
+    <li>
+        <a href="{{ route('leader.events.index', optional(\App\Models\Club::where('leaderID', auth()->id())->first())->clubID) }}">
+            <div class="parent-icon"><i class="bi bi-calendar-event"></i></div>
+            <div class="menu-title">Manage Events</div>
+        </a>
+    </li>
+
+    <li>
+        <a href="{{ route('leader.forums.pending') }}">
+            <div class="parent-icon"><i class="bi bi-chat-dots"></i></div>
+            <div class="menu-title">Pending Forums</div>
+        </a>
+    </li>
+
+    <li>
+        <a href="{{ route('leader.comments.pending') }}">
+            <div class="parent-icon"><i class="bi bi-chat-left-text"></i></div>
+            <div class="menu-title">Pending Comments</div>
+        </a>
+    </li>
+
+    {{-- ÖĞRENCİ ALANI --}}
+    <li class="menu-label">Student Area</li>
+
     <li>
         <a href="{{ route('students.dashboard') }}">
-            <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
+            <div class="parent-icon"><i class="bi bi-house-door"></i></div>
             <div class="menu-title">Student Dashboard</div>
         </a>
     </li>
+
     <li>
         <a href="{{ route('students.clubs.index') }}">
-            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
-            <div class="menu-title">Club List</div>
+            <div class="parent-icon"><i class="bi bi-people"></i></div>
+            <div class="menu-title">Clubs</div>
         </a>
     </li>
 
     <li>
-        <a href="{{ route('students.vote_detail') }}">
-            <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
-            <div class="menu-title">Student Vote Details</div>
+        <a href="{{ route('students.events.index') }}">
+            <div class="parent-icon"><i class="bi bi-calendar"></i></div>
+            <div class="menu-title">My Events</div>
         </a>
     </li>
+
     <li>
-        <a href="{{ route('students.club_events') }}">
-            <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
-            <div class="menu-title">Student Club Events</div>
+        <a href="{{ route('students.votes.index') }}">
+            <div class="parent-icon"><i class="bi bi-bar-chart"></i></div>
+            <div class="menu-title">Voting</div>
         </a>
     </li>
+
     <li>
         <a href="{{ route('students.forums.index') }}">
-            <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
-            <div class="menu-title">Student Forums</div>
+            <div class="parent-icon"><i class="bi bi-chat"></i></div>
+            <div class="menu-title">Forums</div>
         </a>
     </li>
-    <li>
-        <a href="{{ route('students.forum_detail') }}">
-            <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
-            <div class="menu-title">Student Forum Details</div>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('students.notifications') }}">
-            <div class="parent-icon"><i class="bi bi-person-lines-fill"></i></div>
-            <div class="menu-title">Student Notifications</div>
-        </a>
-    </li>
-
 </ul>
+

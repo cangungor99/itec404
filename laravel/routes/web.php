@@ -7,12 +7,14 @@ use App\Http\Controllers\Student\ClubController as StudentClubController;
 use App\Http\Controllers\Student\ClubResourceController as StudentClubResourceController;
 use App\Http\Controllers\Student\StudentVoteController;
 use App\Http\Controllers\Student\StudentForumController;
+use App\Http\Controllers\Student\StudentEventController;
 use App\Http\Controllers\Leader\ClubResourceController as LeaderClubResourceController;
 use App\Http\Controllers\Leader\MembershipController;
 use App\Http\Controllers\Leader\LeaderVoteController;
 use App\Http\Controllers\Leader\ForumApprovalController;
 use App\Http\Controllers\Leader\CommentApprovalController;
 use App\Http\Controllers\Leader\LeaderForumController;
+use App\Http\Controllers\Leader\LeaderEventController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\UserController;
@@ -60,28 +62,10 @@ Route::middleware(['auth', 'role:student,leader'])
         Route::post('/forums', [StudentForumController::class, 'store'])->name('forums.store');
         Route::get('/forums/{forum}', [StudentForumController::class, 'show'])->name('forums.show');
         Route::post('/forums/{forum}/comments', [StudentForumController::class, 'comment'])->name('forums.comment');
+        Route::get('/events', [StudentEventController::class, 'index'])->name('events.index');
+        Route::post('/events/{event}/join', [StudentEventController::class, 'join'])->name('events.join');
+        Route::post('/events/{event}/leave', [StudentEventController::class, 'leave'])->name('events.leave');
 
-
-
-
-
-        Route::get('/vote_detail', function () {
-            return view('students.vote_detail');
-        })->name('vote_detail');
-
-        Route::get('/club_events', function () {
-            return view('students.club_events');
-        })->name('club_events');
-
-
-
-        Route::get('/forum_detail', function () {
-            return view('students.forum_detail');
-        })->name('forum_detail');
-
-        Route::get('/notifications', function () {
-            return view('students.notifications');
-        })->name('notifications');
     });
 
 
@@ -117,6 +101,13 @@ Route::middleware(['auth', 'role:leader'])
         Route::post('/comments/{comment}/reject', [CommentApprovalController::class, 'reject'])->name('comments.reject');
         Route::get('/forums/{forum}', [LeaderForumController::class, 'show'])->name('forums.show');
 
+        Route::get('{club}/events', [LeaderEventController::class, 'index'])->name('events.index');
+        Route::get('{club}/events/create', [LeaderEventController::class, 'create'])->name('events.create');
+        Route::post('{club}/events', [LeaderEventController::class, 'store'])->name('events.store');
+        Route::get('{club}/events/{event}/edit', [LeaderEventController::class, 'edit'])->name('events.edit');
+        Route::put('{club}/events/{event}', [LeaderEventController::class, 'update'])->name('events.update');
+        Route::delete('{club}/events/{event}', [LeaderEventController::class, 'destroy'])->name('events.destroy');
+
         Route::get('/resources', function () {
             $leader = auth()->user();
             $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
@@ -132,44 +123,6 @@ Route::middleware(['auth', 'role:leader'])
             return redirect()->route('leader.votes.index', $club->clubID);
         })->name('votes.my');
 
-        Route::get('/change_club_detail', function () {
-            return view('students.leader.change_club_detail');
-        })->name('change_club_detail');
-
-        Route::get('/create_event', function () {
-            return view('students.leader.create_event');
-        })->name('create_event');
-
-        Route::get('/create_notification', function () {
-            return view('students.leader.create_notification');
-        })->name('create_notification');
-
-        Route::get('/create_vote', function () {
-            return view('students.leader.create_vote');
-        })->name('create_vote');
-        Route::get('/manage_budget', function () {
-            return view('students.leader.manage_budget');
-        })->name('manage_budget');
-
-        Route::get('/manage_events', function () {
-            return view('students.leader.manage_events');
-        })->name('manage_events');
-
-        Route::get('/manage_forums', function () {
-            return view('students.leader.manage_forums');
-        })->name('manage_forums');
-
-        Route::get('/manage_members', function () {
-            return view('students.leader.manage_members');
-        })->name('manage_members');
-
-        Route::get('/manage_resources', function () {
-            return view('students.leader.manage_resources');
-        })->name('manage_resources');
-
-        Route::get('/manage_votes', function () {
-            return view('students.leader.manage_votes');
-        })->name('manage_votes');
     });
 
 
