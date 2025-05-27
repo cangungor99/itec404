@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ForumController;
+use App\Http\Controllers\Admin\ClubBudgetController;
 
 
 Route::get('/', function () {
@@ -65,7 +66,6 @@ Route::middleware(['auth', 'role:student,leader'])
         Route::get('/events', [StudentEventController::class, 'index'])->name('events.index');
         Route::post('/events/{event}/join', [StudentEventController::class, 'join'])->name('events.join');
         Route::post('/events/{event}/leave', [StudentEventController::class, 'leave'])->name('events.leave');
-
     });
 
 
@@ -122,7 +122,6 @@ Route::middleware(['auth', 'role:leader'])
             $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
             return redirect()->route('leader.votes.index', $club->clubID);
         })->name('votes.my');
-
     });
 
 
@@ -164,7 +163,7 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::get('/manage_votes', [App\Http\Controllers\Admin\VoteController::class, 'index'])->name('manage_votes');
 
-        
+
 
         // Voting işlemleri
 
@@ -180,7 +179,9 @@ Route::middleware(['auth', 'role:admin'])
         Route::post('/forums/approve/{id}', [ForumController::class, 'approve'])->name('forums.approve');
         Route::post('/forums/reject/{id}', [ForumController::class, 'reject'])->name('forums.reject');
 
-
+        Route::get('/budgets', [ClubBudgetController::class, 'index'])->name('budgets.index');
+        Route::put('/budgets/{club}', [ClubBudgetController::class, 'update'])->name('budgets.update');
+        
         Route::get('/resources', function () {
             return view('admin.resources');
         })->name('resources');
