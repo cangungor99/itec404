@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
                 return;
             }
 
-
+            // NOTIFICATIONS
             if ($user->hasRole('admin')) {
                 $notifications = Notification::latest()->take(5)->get();
             } else {
@@ -43,21 +43,38 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
             }
 
+            $approvedClubIDs = $user->memberships->where('status', 'approved')->pluck('clubID')->values()->all();
 
-            $recentMessages = Chat::with(['sender', 'club'])
-                ->where(function ($q) use ($user) {
-                    $q->where('receiverID', $user->userID)
-                        ->orWhere(function ($q2) use ($user) {
-                            $q2->whereNull('receiverID')
-                                ->whereHas('club.memberships', function ($m) use ($user) {
-                                    $m->where('userID', $user->userID)
-                                        ->where('status', 'approved');
-                                });
-                        });
+
+            $allMessages = Chat::with(['sender', 'club.memberships'])
+                ->where(function ($q) use ($user, $approvedClubIDs) {
+                    $q->where(function ($q1) use ($user) {
+                        $q1->where('senderID', $user->userID)
+                            ->orWhere('receiverID', $user->userID);
+                    })->orWhere(function ($q2) use ($approvedClubIDs) {
+                        $q2->whereNull('receiverID')
+                            ->whereIn('clubID', $approvedClubIDs);
+                    });
                 })
                 ->latest('created_at')
-                ->take(5)
                 ->get();
+
+            $messagesMap = [];
+
+            foreach ($allMessages as $msg) {
+                if ($msg->clubID && !in_array($msg->clubID, $approvedClubIDs)) {
+                    continue;
+                }
+                $key = $msg->clubID
+                    ? 'club_' . $msg->clubID
+                    : 'user_' . ($msg->senderID == $user->userID ? $msg->receiverID : $msg->senderID);
+
+                if (!isset($messagesMap[$key])) {
+                    $messagesMap[$key] = $msg;
+                }
+            }
+
+            $recentMessages = collect(array_values($messagesMap))->take(5);
 
             $view->with('notifications', $notifications);
             $view->with('recentMessages', $recentMessages);

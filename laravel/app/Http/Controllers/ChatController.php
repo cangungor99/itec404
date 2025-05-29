@@ -160,20 +160,30 @@ class ChatController extends Controller
             $q->where('userID', $authID)->where('status', 'approved');
         })->pluck('clubID');
 
-        $recentMessages = Chat::with(['sender', 'club'])
+        $allMessages = Chat::with(['sender', 'club'])
             ->where(function ($q) use ($authID, $approvedClubIDs) {
                 $q->where('receiverID', $authID)
                     ->orWhere(function ($q2) use ($approvedClubIDs) {
-                        $q2->whereNull('receiverID')
-                            ->whereIn('clubID', $approvedClubIDs);
+                        $q2->whereNull('receiverID')->whereIn('clubID', $approvedClubIDs);
                     });
             })
             ->latest('created_at')
-            ->limit(5)
             ->get();
+
+        $recentMessages = $allMessages
+            ->sortByDesc('created_at')
+            ->unique(function ($msg) use ($authID) {
+                return $msg->clubID
+                    ? 'club_' . $msg->clubID
+                    : 'user_' . ($msg->senderID == $authID ? $msg->receiverID : $msg->senderID);
+            })
+            ->take(5)
+            ->values();
 
         return view('chat.components.navbar-messages', compact('recentMessages'));
     }
+
+
 
 
     public function inbox()

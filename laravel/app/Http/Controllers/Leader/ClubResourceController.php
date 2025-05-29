@@ -64,7 +64,7 @@ class ClubResourceController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'file' => 'required|file|max:20480', // 20 MB
+            'file' => 'required|file|max:20480',
         ]);
 
         $path = $request->file('file')->store('resources', 'public');

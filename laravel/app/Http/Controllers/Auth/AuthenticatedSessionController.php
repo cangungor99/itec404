@@ -29,10 +29,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        // Kullanıcının rolünü al
         $role = Auth::user()->roles->pluck('name')->first();
 
-        // Rolüne göre rota belirle
         $home = match ($role) {
             'admin'   => route('admin.dashboard'),
             'leader'  => route('leader.dashboard'),
@@ -40,7 +38,6 @@ class AuthenticatedSessionController extends Controller
             default   => RouteServiceProvider::HOME,
         };
 
-        // İntended varsa ona, yoksa $home’e yönlendir
         return redirect()->intended($home);
     }
 
