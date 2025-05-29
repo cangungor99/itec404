@@ -61,4 +61,8 @@ class Club extends Model
     {
         return $this->hasMany(ClubEvent::class, 'clubID');
     }
+    public function budget()
+    {
+        return $this->hasOne(ClubBudget::class, 'clubID');
+    }
 }

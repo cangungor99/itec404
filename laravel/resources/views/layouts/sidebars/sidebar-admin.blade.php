@@ -60,7 +60,7 @@
     </a>
   </li>
   <li>
-    <a href="{{ route('admin.manage_budget') }}">
+    <a href="{{ route('admin.budgets.index') }}">
       <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
       <div class="menu-title">Manage Budget</div>
     </a>
