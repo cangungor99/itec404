@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Chat;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,15 +23,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Navbar’ı render eden view’e notifications verisini paylaş
+
         View::composer('layouts.navbar', function ($view) {
             $user = auth()->user();
-            if (! $user) {
+            if (!$user) {
                 $view->with('notifications', collect());
+                $view->with('recentMessages', collect());
                 return;
             }
 
-            // Admin ise tüm bildirimleri al, değilse üyesi olduğu kulüplerin bildirimlerini al
+
             if ($user->hasRole('admin')) {
                 $notifications = Notification::latest()->take(5)->get();
             } else {
@@ -40,7 +43,24 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
             }
 
+
+            $recentMessages = Chat::with(['sender', 'club'])
+                ->where(function ($q) use ($user) {
+                    $q->where('receiverID', $user->userID)
+                        ->orWhere(function ($q2) use ($user) {
+                            $q2->whereNull('receiverID')
+                                ->whereHas('club.memberships', function ($m) use ($user) {
+                                    $m->where('userID', $user->userID)
+                                        ->where('status', 'approved');
+                                });
+                        });
+                })
+                ->latest('created_at')
+                ->take(5)
+                ->get();
+
             $view->with('notifications', $notifications);
+            $view->with('recentMessages', $recentMessages);
         });
     }
 }

@@ -18,8 +18,13 @@ class Chat extends Model
         'senderID',
         'receiverID',
         'message',
-        'timestamp',
-        'is_read',
+        'created_at',
+        'isRead',
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
     public function club(): BelongsTo
     {

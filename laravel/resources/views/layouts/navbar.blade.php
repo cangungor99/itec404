@@ -65,12 +65,48 @@
             <li class="nav-item dropdown dropdown-large">
                 <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                     <div class="messages">
-                        <span class="notify-badge">5</span>
+                        <span class="notify-badge">{{ $recentMessages->count() }}</span>
                         <i class="bi bi-chat-left-text-fill"></i>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end p-0">
-                    {{-- … mesaj listesi … --}}
+                    <div class="p-2 border-bottom m-2">
+                        <h5 class="h5 mb-0">Gelen Mesajlar</h5>
+                    </div>
+                    <div class="header-notifications-list p-2" style="max-height: 300px; overflow-y: auto;">
+                        @forelse($recentMessages as $message)
+                        @if (!$message->clubID || ($message->club && $message->club->memberships->contains('userID', auth()->id())))
+                        {{-- sadece özel mesaj ya da gerçekten bu kulübün üyesiysen --}}
+                        <a class="dropdown-item" href="{{ $message->clubID ? route('chat.club', $message->clubID) : route('chat.private', $message->senderID == auth()->id() ? $message->receiverID : $message->senderID) }}">
+                            <div class="d-flex align-items-center">
+                                <div class="notification-box bg-light-info text-info">
+                                    <i class="bi bi-chat-dots"></i>
+                                </div>
+                                <div class="ms-3 flex-grow-1">
+                                    <h6 class="mb-0 dropdown-msg-user">
+                                        {{ $message->clubID ? $message->club->name : $message->sender->name }}
+                                        <span class="msg-time float-end text-secondary">
+                                            {{ $message->created_at->diffForHumans() }}
+                                        </span>
+                                    </h6>
+                                    <small class="mb-0 dropdown-msg-text text-secondary d-flex align-items-center">
+                                        {{ Str::limit($message->message, 50) }}
+                                    </small>
+                                </div>
+                            </div>
+                        </a>
+                        @endif
+                        @empty
+                        <p class="text-center text-secondary">Yeni mesaj yok</p>
+                        @endforelse
+
+                    </div>
+                    <div class="p-2">
+                        <hr class="dropdown-divider">
+                        <a class="dropdown-item text-center" href="{{ route('chat.inbox') }}">
+                            Tüm Mesajları Gör
+                        </a>
+                    </div>
                 </div>
             </li>
 
