@@ -54,14 +54,26 @@
                             <td>{{ \Carbon\Carbon::parse($vote->start_date)->format('Y-m-d H:i') }}</td>
                             <td>{{ \Carbon\Carbon::parse($vote->end_date)->format('Y-m-d H:i') }}</td>
                             <td>
-                                @php
-                                $now = now();
-                                $status = ($vote->start_date <= $now && $vote->end_date >= $now) ? 'Active' : 'Ended';
-                                    @endphp
-                                    <span class="badge {{ $status === 'Active' ? 'bg-success' : 'bg-secondary' }}">
-                                        {{ $status }}
-                                    </span>
-                            </td>
+    @php
+        $now = \Carbon\Carbon::now();
+        $start = \Carbon\Carbon::parse($vote->start_date);
+        $end = \Carbon\Carbon::parse($vote->end_date);
+
+        if ($now->lt($start)) {
+            $status = 'Upcoming';
+        } elseif ($now->between($start, $end)) {
+            $status = 'Active';
+        } else {
+            $status = 'Ended';
+        }
+    @endphp
+    <span class="badge
+        {{ $status === 'Upcoming' ? 'bg-warning' :
+           ($status === 'Active' ? 'bg-success' : 'bg-secondary') }}">
+        {{ $status }}
+    </span>
+</td>
+
                             <td>
                                 <div class="btn-group" role="group">
                                     <!-- Edit Button: Modal Tetikleyici -->

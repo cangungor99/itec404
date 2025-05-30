@@ -170,7 +170,8 @@
                                     <i class="bi bi-pencil-fill"></i> Edit
                                 </button>
 
-                                <form method="POST" action="{{ route('admin.clubs.destroy', $club->clubID) }}" class="d-inline">
+                                <form method="POST" action="{{ route('admin.clubs.destroy', $club->clubID) }}" class="d-inline delete-club-form">
+
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger">
@@ -203,7 +204,8 @@
             </div>
 
             <!-- ✅ FORM BAŞLANGICI -->
-            <form id="editClubForm" method="POST">
+            <form id="editClubForm" method="POST" action="/admin/clubs/update/{{ $club->clubID }}">
+
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="clubID" id="editClubID">
@@ -255,6 +257,8 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const editButtons = document.querySelectorAll('.edit-club-btn');
@@ -269,7 +273,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const photo = button.dataset.photo;
 
             // Form action'ı güncelle
-            editForm.action = `/admin/clubs/update/${clubID}`;
+            editForm.action = `/clubs/update/${clubID}`; // Çünkü route böyle
+
 
             // Alanlara veri yerleştir
             document.getElementById('editClubID').value = clubID;
@@ -283,5 +288,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+
+<script>
+document.querySelectorAll('.delete-club-form').forEach(form => {
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure to delete that club?',
+            text: "The club will be permanently deleted!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+});
+</script>
+
 @endpush
 
