@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Notification extends Model
 {
     protected $primaryKey = 'notificationID';
-    public $timestamps = false;
+    public $timestamps = true;
     use HasFactory;
 
     protected $fillable = [
@@ -18,11 +18,11 @@ class Notification extends Model
         'clubID',
         'title',
         'content',
-        'created_at',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function creator(): BelongsTo

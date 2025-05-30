@@ -84,11 +84,12 @@
                                     data-id="{{ $notif->notificationID }}"
                                     data-title="{{ $notif->title }}"
                                     data-content="{{ $notif->content }}"
-                                    data-club="{{ $notif->club_name }}"
+                                    data-clubid="{{ $notif->clubID }}"
                                     data-date="{{ $notif->created_at }}"
                                     title="Edit">
                                     <i class="fas fa-edit"></i> Edit
                                 </button>
+
 
 
 
@@ -124,29 +125,36 @@
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="notificationID" id="notificationID">
+
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="notificationTitle" class="form-label"><i class="fas fa-heading me-1"></i> Title</label>
-                        <input type="text" class="form-control" id="notificationTitle" placeholder="Enter notification title" required>
+                        <input type="text" class="form-control" id="notificationTitle" name="notifTitle" placeholder="Enter notification title" required>
                     </div>
                     <div class="mb-3">
                         <label for="notificationContent" class="form-label"><i class="fas fa-align-left me-1"></i> Content</label>
-                        <textarea class="form-control" id="notificationContent" rows="4" placeholder="Enter notification content" required></textarea>
+                        <textarea class="form-control" id="notificationContent" name="notifContent" rows="4" placeholder="Enter notification content" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="notificationRecipients" class="form-label"><i class="fas fa-users me-1"></i> Recipients (comma separated)</label>
-                        <input type="text" class="form-control" id="notificationRecipients" placeholder="#8, #14" required>
+                        <label for="notificationRecipients" class="form-label"><i class="fas fa-users me-1"></i> Recipients</label>
+                        <select class="form-select" name="clubID" id="notificationRecipients" required>
+                            @foreach ($clubs as $club)
+                            <option value="{{ $club->clubID }}">{{ $club->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="notificationDate" class="form-label"><i class="fas fa-clock me-1"></i> Created Date</label>
                         <input type="text" class="form-control" id="notificationDate" readonly>
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancel</button>
                     <button type="submit" class="btn btn-success"><i class="fas fa-save me-1"></i>Update</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
@@ -154,48 +162,27 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        // Sample edit button click handler
         $('.btn-edit-notification').on('click', function() {
-            // You can fetch real data here
-            $('#notificationTitle').val('Meeting Reminder');
-            $('#notificationContent').val('Monthly meeting with club members will be held...');
-            $('#notificationRecipients').val('#8, #14');
-            $('#notificationDate').val('2025-05-09 10:23');
-
-            $('#editNotificationModal').modal('show');
-        });
-
-        // Handle update form submission (optional)
-        $('#editNotificationForm').on('submit', function(e) {
-            e.preventDefault();
-            // You would normally send an AJAX request here
-            alert('Notification updated!');
-            $('#editNotificationModal').modal('hide');
-        });
-    });
-</script>
-@endpush
-
-
-@push('scripts')
-<script>
-    $(document).ready(function () {
-        $('.btn-edit-notification').on('click', function () {
             const id = $(this).data('id');
             const title = $(this).data('title');
             const content = $(this).data('content');
+            const club = $(this).data('club'); // kulüp adı geliyor
             const date = $(this).data('date');
 
-            // Formu doldur
+            // Modal içi form alanlarını doldur
             $('#notificationID').val(id);
             $('#notificationTitle').val(title);
             $('#notificationContent').val(content);
             $('#notificationDate').val(date);
 
-            // Form action'ı dinamik olarak ayarla
-            $('#editNotificationForm').attr('action', `/admin/notifications/update/${id}`);
+            // clubID eşleştirmesi için dropdown'da seçili yap
+            const clubID = $(this).data('clubid');
+            $('#notificationRecipients').val(clubID);
 
-            // Modalı aç
+
+
+            // Form action'ı dinamik olarak ayarlanıyor
+            $('#editNotificationForm').attr('action', `/admin/notifications/update/${id}`);
             $('#editNotificationModal').modal('show');
         });
     });

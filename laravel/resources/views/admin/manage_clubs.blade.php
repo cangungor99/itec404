@@ -204,7 +204,7 @@
             </div>
 
             <!-- ✅ FORM BAŞLANGICI -->
-            <form id="editClubForm" method="POST" action="/admin/clubs/update/{{ $club->clubID }}">
+            <form id="editClubForm" method="POST" action="">
 
                 @csrf
                 @method('PUT')
@@ -260,57 +260,56 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const editButtons = document.querySelectorAll('.edit-club-btn');
-    const editForm = document.getElementById('editClubForm');
+    document.addEventListener("DOMContentLoaded", function() {
+        const editButtons = document.querySelectorAll('.edit-club-btn');
+        const editForm = document.getElementById('editClubForm');
 
-    editButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const clubID = button.dataset.id;
-            const name = button.dataset.name;
-            const description = button.dataset.description;
-            const status = button.dataset.status;
-            const photo = button.dataset.photo;
+        editButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const clubID = button.dataset.id;
+                const name = button.dataset.name;
+                const description = button.dataset.description;
+                const status = button.dataset.status;
+                const photo = button.dataset.photo;
 
-            // Form action'ı güncelle
-            editForm.action = `/clubs/update/${clubID}`; // Çünkü route böyle
+                // Form action'ı güncelle
+                editForm.action = `/admin/clubs/update/${clubID}`;
 
 
-            // Alanlara veri yerleştir
-            document.getElementById('editClubID').value = clubID;
-            document.getElementById('clubName').value = name;
-            document.getElementById('clubDescription').value = description;
-            document.getElementById('clubStatus').value = status;
-            document.getElementById('clubPhoto').value = photo;
+                // Alanlara veri yerleştir
+                document.getElementById('editClubID').value = clubID;
+                document.getElementById('clubName').value = name;
+                document.getElementById('clubDescription').value = description;
+                document.getElementById('clubStatus').value = status;
+                document.getElementById('clubPhoto').value = photo;
 
-            // Modal zaten Bootstrap tarafından tetikleniyor (data-bs-target ile)
+                // Modal zaten Bootstrap tarafından tetikleniyor (data-bs-target ile)
+            });
         });
     });
-});
 </script>
 
 <script>
-document.querySelectorAll('.delete-club-form').forEach(form => {
-    form.addEventListener('submit', function (e) {
-        e.preventDefault();
+    document.querySelectorAll('.delete-club-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        Swal.fire({
-            title: 'Are you sure to delete that club?',
-            text: "The club will be permanently deleted!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.submit();
-            }
+            Swal.fire({
+                title: 'Are you sure to delete that club?',
+                text: "The club will be permanently deleted!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
         });
     });
-});
 </script>
 
 @endpush
-

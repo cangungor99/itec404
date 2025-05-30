@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Voting extends Model
 {
     protected $primaryKey = 'votingID';
-    public $timestamps = false;
+    public $timestamps = true;
     use HasFactory;
 
     protected $fillable = [
@@ -20,13 +20,12 @@ class Voting extends Model
         'description',
         'start_date',
         'end_date',
-        'created_at',
     ];
     protected $casts = [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
     ];
-    
+
     public function club(): BelongsTo{
         return $this->belongsTo(Club::class, 'clubID');
     }

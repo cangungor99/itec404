@@ -180,8 +180,8 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::get('/create_vote', [App\Http\Controllers\Admin\VoteController::class, 'create'])->name('create_vote');
         Route::post('/create_vote', [App\Http\Controllers\Admin\VoteController::class, 'store'])->name('store_vote');
-        Route::get('/create_vote', [App\Http\Controllers\Admin\VoteController::class, 'create'])->name('create_vote');
         Route::delete('/admin/votings/{id}', [App\Http\Controllers\Admin\VoteController::class, 'destroy'])->name('votings.destroy');
+        Route::put('/votings/{id}', [App\Http\Controllers\Admin\VoteController::class, 'update'])->name('votings.update');
 
 
 

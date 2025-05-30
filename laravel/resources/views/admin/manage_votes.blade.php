@@ -54,25 +54,25 @@
                             <td>{{ \Carbon\Carbon::parse($vote->start_date)->format('Y-m-d H:i') }}</td>
                             <td>{{ \Carbon\Carbon::parse($vote->end_date)->format('Y-m-d H:i') }}</td>
                             <td>
-    @php
-        $now = \Carbon\Carbon::now();
-        $start = \Carbon\Carbon::parse($vote->start_date);
-        $end = \Carbon\Carbon::parse($vote->end_date);
+                                @php
+                                $now = \Carbon\Carbon::now();
+                                $start = \Carbon\Carbon::parse($vote->start_date);
+                                $end = \Carbon\Carbon::parse($vote->end_date);
 
-        if ($now->lt($start)) {
-            $status = 'Upcoming';
-        } elseif ($now->between($start, $end)) {
-            $status = 'Active';
-        } else {
-            $status = 'Ended';
-        }
-    @endphp
-    <span class="badge
+                                if ($now->lt($start)) {
+                                $status = 'Upcoming';
+                                } elseif ($now->between($start, $end)) {
+                                $status = 'Active';
+                                } else {
+                                $status = 'Ended';
+                                }
+                                @endphp
+                                <span class="badge
         {{ $status === 'Upcoming' ? 'bg-warning' :
            ($status === 'Active' ? 'bg-success' : 'bg-secondary') }}">
-        {{ $status }}
-    </span>
-</td>
+                                    {{ $status }}
+                                </span>
+                            </td>
 
                             <td>
                                 <div class="btn-group" role="group">
@@ -139,7 +139,7 @@
 <div class="modal fade" id="editVoteModal" tabindex="-1" aria-labelledby="editVoteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content shadow">
-            <form method="POST" id="editVoteForm">
+            <form method="POST" id="editVoteForm" action="">
                 @csrf
                 @method('PUT')
                 <div class="modal-header">
@@ -227,7 +227,7 @@
                 const vote = JSON.parse(this.dataset.vote);
 
                 // Form action'ı güncelleniyor
-                document.getElementById('editVoteForm').action = `/admin/votings/update/${vote.votingID}`;
+                document.getElementById('editVoteForm').action = `/admin/votings/${vote.votingID}`;
 
                 // Alanlar dolduruluyor
                 document.getElementById('editVotingID').value = vote.votingID;
