@@ -4,63 +4,52 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\Role;
 
 class UserController extends Controller
 {
-    // Listeleme
+    // === Kullanıcıları Listele ===
     public function index()
-{
-    $users = DB::table('users')->get();
+    {
+        // Kullanıcıları rollerle birlikte al
+        $users = User::with('roles')->get();
 
-    // Her kullanıcının rollerini al (opsiyonel ama önerilir)
-    foreach ($users as $user) {
-        $roleIDs = DB::table('role_user')->where('userID', $user->userID)->pluck('roleID')->toArray();
-        $user->roles = $roleIDs;
+        // Roller (select kutusu için)
+        $roles = Role::select('roleID', 'name')->get();
+
+        return view('admin.user_list', compact('users', 'roles'));
     }
 
-    $roles = DB::table('roles')->select('roleID', 'name')->get();
-
-    return view('admin.user_list', compact('users', 'roles'));
-}
-
-    // Silme
+    // === Kullanıcıyı Sil ===
     public function destroy($id)
     {
-        DB::table('users')->where('userID', $id)->delete();
-        DB::table('role_user')->where('userID', $id)->delete();
+        $user = User::findOrFail($id);
+        $user->roles()->detach();
+        $user->delete();
+
         return redirect()->route('admin.user_list')->with('success', 'User deleted successfully!');
     }
 
-    // Güncelleme
-    public function update(Request $request)
-    {
-        $request->validate([
-            'userID' => 'required|integer',
-            'name' => 'required|string',
-            'surname' => 'required|string',
-            'std_no' => 'required|string',
-            'email' => 'required|email',
-            'roles' => 'array'
-        ]);
+    // === Kullanıcıyı Güncelle ===
+    public function update(Request $request, $id)
+{
+    $validated = $request->validate([
+        'std_no'  => 'required|string',
+        'name'    => 'required|string',
+        'surname' => 'required|string',
+        'email'   => 'required|email',
+        'roles'   => 'array'
+    ]);
 
-        DB::table('users')->where('userID', $request->userID)->update([
-            'name' => $request->name,
-            'surname' => $request->surname,
-            'std_no' => $request->std_no,
-            'email' => $request->email,
-            'updated_at' => now()
-        ]);
+    $user = User::findOrFail($id); // ID'ye göre kullanıcıyı al
 
-        // Roller güncelleniyor
-        DB::table('role_user')->where('userID', $request->userID)->delete();
-        foreach ($request->roles as $roleID) {
-            DB::table('role_user')->insert([
-                'userID' => $request->userID,
-                'roleID' => $roleID
-            ]);
-        }
+    $user->update($validated); // Kullanıcıyı güncelle
 
-        return redirect()->back()->with('success', 'User updated successfully!');
-    }
+    $user->roles()->sync($request->input('roles', [])); // Roller
+
+    return redirect()->route('admin.user_list')
+                     ->with('success', 'User updated successfully!');
 }
+}
+?>

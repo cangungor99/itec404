@@ -168,7 +168,7 @@ Route::middleware(['auth', 'role:admin'])
         // User List
         Route::get('/user_list', [UserController::class, 'index'])->name('user_list');
         Route::delete('/user_list/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-        Route::put('/users/update/{userID}', [UserController::class, 'update'])->name('users.update');
+        Route::put('/user_list/update/{id}', [UserController::class, 'update'])->name('users.update');
 
 
 

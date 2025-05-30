@@ -112,25 +112,27 @@
                             <td><em>Clubs to be implemented</em></td>
                             <td>{{ $user->created_at }}</td>
                             <td>
-                            <button class="btn btn-sm btn-warning me-1 btn-edit-user"
-    data-id="{{ $user->userID }}"
-    data-stdno="{{ $user->std_no }}"
-    data-name="{{ $user->name }}"
-    data-surname="{{ $user->surname }}"
-    data-email="{{ $user->email }}"
-    data-roles="{{ implode(',', $user->roles) }}"
-    data-bs-toggle="modal" data-bs-target="#editUserModal">
-    <i class="bi bi-pencil-fill"></i> Edit
-</button>
+                                <button class="btn btn-sm btn-warning me-1 btn-edit-user"
+                                    data-id="{{ $user->userID }}"
+                                    data-stdno="{{ $user->std_no }}"
+                                    data-name="{{ $user->name }}"
+                                    data-surname="{{ $user->surname }}"
+                                    data-email="{{ $user->email }}"
+                                    data-roles="{{ implode(',', $user->roles->pluck('roleID')->toArray()) }}"
+
+                                    data-bs-toggle="modal" data-bs-target="#editUserModal">
+                                    <i class="bi bi-pencil-fill"></i> Edit
+                                </button>
 
 
-                                <form action="{{ route('admin.users.destroy', $user->userID) }}" method="POST" class="d-inline">
+                                <form action="{{ route('admin.users.destroy', $user->userID) }}" method="POST" class="d-inline delete-user-form" data-id="{{ $user->userID }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger">
                                         <i class="bi bi-trash-fill"></i> Delete
                                     </button>
                                 </form>
+
                             </td>
                         </tr>
                         @endforeach
@@ -144,81 +146,108 @@
 </main>
 <!-- Edit User Modal -->
 <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content animate__animated animate__fadeIn">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editUserModalLabel"><i class="bi bi-pencil-fill"></i> Edit User</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content animate__animated animate__fadeIn">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel"><i class="bi bi-pencil-fill"></i> Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
 
-      <form method="POST" id="editUserForm">
-    @csrf
-    @method('PUT')
-    <input type="hidden" name="userID">
-    <input type="text" name="std_no" id="studentNo">
-    <input type="text" name="name" id="firstName">
-    <input type="text" name="surname" id="lastName">
-    <input type="email" name="email" id="email">
-    
-    <label>Roles</label>
-    <select name="roles[]" id="roleSelect" class="form-select" multiple>
-        @foreach($roles as $role)
-            <option value="{{ $role->roleID }}">{{ $role->name }}</option>
-        @endforeach
-    </select>
+            <form method="POST" action="{{ route('admin.users.update', 0) }}" id="editUserForm">
+                @csrf
+                @method('PUT')
 
-    <button type="submit" class="btn btn-success">Update</button>
-</form>
+                <input type="hidden" name="userID" id="userID">
+                <input type="text" name="std_no" id="studentNo">
+                <input type="text" name="name" id="firstName">
+                <input type="text" name="surname" id="lastName">
+                <input type="email" name="email" id="email">
 
+                <label>Roles</label>
+                <select name="roles[]" id="roleSelect" class="form-select" multiple>
+                    @foreach($roles as $role)
+                    <option value="{{ $role->roleID }}">{{ $role->name }}</option>
+                    @endforeach
+                </select>
+
+                <button type="submit" class="btn btn-success">Update</button>
+            </form>
+
+
+        </div>
     </div>
-  </div>
 </div>
 
 
 <!--end page main-->
 @endsection
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-document.querySelectorAll('.edit-user-btn').forEach(button => {
-    button.addEventListener('click', function () {
-        const userID = this.dataset.id;
+    document.querySelectorAll('.edit-user-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const userID = this.dataset.id;
 
-        // Form action URL'sini güncelle
-        const form = document.getElementById('editUserForm');
-        form.action = `/admin/users/update/${userID}`; // Route yapına göre ayarlanmalı
+            // Form action URL'sini güncelle
+            const form = document.getElementById('editUserForm');
+            form.action = `/admin/users/update/${userID}`; // Route yapına göre ayarlanmalı
 
-        // Diğer inputları doldur (örnek)
-        document.getElementById('studentNo').value = this.dataset.stdno;
-        document.getElementById('firstName').value = this.dataset.name;
-        document.getElementById('lastName').value = this.dataset.surname;
-        document.getElementById('email').value = this.dataset.email;
+            // Diğer inputları doldur (örnek)
+            document.getElementById('studentNo').value = this.dataset.stdno;
+            document.getElementById('firstName').value = this.dataset.name;
+            document.getElementById('lastName').value = this.dataset.surname;
+            document.getElementById('email').value = this.dataset.email;
 
-        // Roller
-        const roles = this.dataset.roles.split(',');
-        const roleSelect = document.getElementById('roleSelect');
-        Array.from(roleSelect.options).forEach(option => {
-            option.selected = roles.includes(option.value);
+            // Roller
+            const roles = this.dataset.roles.split(',');
+            const roleSelect = document.getElementById('roleSelect');
+            Array.from(roleSelect.options).forEach(option => {
+                option.selected = roles.includes(option.value);
+            });
+
+            // Modalı göster
+            new bootstrap.Modal(document.getElementById('editUserModal')).show();
         });
-
-        // Modalı göster
-        new bootstrap.Modal(document.getElementById('editUserModal')).show();
     });
-});
 
-$('.btn-edit-user').on('click', function () {
-    const userID = $(this).data('id');
-    $('#editUserModal input[name="userID"]').val(userID);
-    $('#studentNo').val($(this).data('stdno'));
-    $('#firstName').val($(this).data('name'));
-    $('#lastName').val($(this).data('surname'));
-    $('#email').val($(this).data('email'));
+    $('.btn-edit-user').on('click', function() {
+        const userID = $(this).data('id');
+        $('#editUserModal input[name="userID"]').val(userID);
+        $('#studentNo').val($(this).data('stdno'));
+        $('#firstName').val($(this).data('name'));
+        $('#lastName').val($(this).data('surname'));
+        $('#email').val($(this).data('email'));
 
-    const roles = $(this).data('roles').toString().split(',');
-    $('#roleSelect option').prop('selected', false);
-    roles.forEach(role => {
-        $(`#roleSelect option[value="${role}"]`).prop('selected', true);
+        const roles = $(this).data('roles').toString().split(',');
+        $('#roleSelect option').prop('selected', false);
+        roles.forEach(role => {
+            $(`#roleSelect option[value="${role}"]`).prop('selected', true);
+        });
     });
-});
-
 </script>
+<script>
+    // SweetAlert ile silme onayı
+    document.querySelectorAll('.delete-user-form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Formun hemen gönderilmesini engelle
+
+            Swal.fire({
+                title: 'Are you sure you want to delete this user?',
+                text: "This action will delete the selected user!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Onaylandıysa formu gönder
+                }
+            });
+        });
+    });
+</script>
+
 @endpush

@@ -22,7 +22,11 @@ class Voting extends Model
         'end_date',
         'created_at',
     ];
-
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
+    
     public function club(): BelongsTo{
         return $this->belongsTo(Club::class, 'clubID');
     }
