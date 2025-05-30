@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController as NotificiationViewController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Student\ClubController as StudentClubController;
 use App\Http\Controllers\Student\ClubResourceController as StudentClubResourceController;
 use App\Http\Controllers\Student\StudentVoteController;
@@ -24,7 +25,7 @@ use App\Http\Controllers\Admin\ClubBudgetController;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('home');
 
 Route::get('/test', function () {
     return view('test');
@@ -35,7 +36,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/chat/club/{club}', [ChatController::class, 'indexClub'])->name('chat.club');
+    Route::post('/chat/club/{club}', [ChatController::class, 'storeClub'])->name('chat.club.send');
+
+    Route::get('/chat/private/{user}', [ChatController::class, 'indexPrivate'])->name('chat.private');
+    Route::post('/chat/private/{user}', [ChatController::class, 'storePrivate'])->name('chat.private.send');
+
+    Route::get('/chat/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::get('/chat/inbox', [ChatController::class, 'inbox'])->name('chat.inbox');
 });
+
+
 
 
 // Student Routes
@@ -181,7 +192,7 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::get('/budgets', [ClubBudgetController::class, 'index'])->name('budgets.index');
         Route::put('/budgets/{club}', [ClubBudgetController::class, 'update'])->name('budgets.update');
-        
+
         Route::get('/resources', function () {
             return view('admin.resources');
         })->name('resources');

@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Chat;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,15 +23,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Navbar’ı render eden view’e notifications verisini paylaş
+
         View::composer('layouts.navbar', function ($view) {
             $user = auth()->user();
-            if (! $user) {
+            if (!$user) {
                 $view->with('notifications', collect());
+                $view->with('recentMessages', collect());
                 return;
             }
 
-            // Admin ise tüm bildirimleri al, değilse üyesi olduğu kulüplerin bildirimlerini al
+            // NOTIFICATIONS
             if ($user->hasRole('admin')) {
                 $notifications = Notification::latest()->take(5)->get();
             } else {
@@ -40,7 +43,41 @@ class AppServiceProvider extends ServiceProvider
                     ->get();
             }
 
+            $approvedClubIDs = $user->memberships->where('status', 'approved')->pluck('clubID')->values()->all();
+
+
+            $allMessages = Chat::with(['sender', 'club.memberships'])
+                ->where(function ($q) use ($user, $approvedClubIDs) {
+                    $q->where(function ($q1) use ($user) {
+                        $q1->where('senderID', $user->userID)
+                            ->orWhere('receiverID', $user->userID);
+                    })->orWhere(function ($q2) use ($approvedClubIDs) {
+                        $q2->whereNull('receiverID')
+                            ->whereIn('clubID', $approvedClubIDs);
+                    });
+                })
+                ->latest('created_at')
+                ->get();
+
+            $messagesMap = [];
+
+            foreach ($allMessages as $msg) {
+                if ($msg->clubID && !in_array($msg->clubID, $approvedClubIDs)) {
+                    continue;
+                }
+                $key = $msg->clubID
+                    ? 'club_' . $msg->clubID
+                    : 'user_' . ($msg->senderID == $user->userID ? $msg->receiverID : $msg->senderID);
+
+                if (!isset($messagesMap[$key])) {
+                    $messagesMap[$key] = $msg;
+                }
+            }
+
+            $recentMessages = collect(array_values($messagesMap))->take(5);
+
             $view->with('notifications', $notifications);
+            $view->with('recentMessages', $recentMessages);
         });
     }
 }
