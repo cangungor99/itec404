@@ -6,31 +6,33 @@ use Illuminate\Database\Seeder;
 use App\Models\Voting;
 use App\Models\VotingOption;
 use App\Models\Vote;
-use App\Models\User;
+use App\Models\Club;
 
 class VotingSeeder extends Seeder
 {
     public function run(): void
     {
-        // 5 oylama oluştur
-        Voting::factory(5)->create()->each(function ($voting) {
+        $clubs = Club::has('memberships')->get();
 
-            // Her oylama için 3 seçenek üret
+        foreach ($clubs as $club) {
+            $voting = Voting::factory()->create([
+                'clubID' => $club->clubID,
+            ]);
+
             $options = VotingOption::factory(3)->create([
                 'votingID' => $voting->votingID,
             ]);
 
-            // 5 kullanıcı oy kullansın
-            $users = User::inRandomOrder()->limit(5)->get();
+            $voters = $club->memberships()->inRandomOrder()->limit(5)->pluck('userID');
 
-            foreach ($users as $user) {
+            foreach ($voters as $userID) {
                 Vote::create([
                     'votingID' => $voting->votingID,
-                    'userID' => $user->userID,
+                    'userID'   => $userID,
                     'optionID' => $options->random()->optionID,
-                    'timestamp' => now(),
+                    'timestamp'=> now(),
                 ]);
             }
-        });
+        }
     }
 }

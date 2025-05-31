@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Attachment;
 use App\Models\Chat;
+use App\Models\EventParticipant;
 use App\Models\Forum;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -26,6 +27,8 @@ class DatabaseSeeder extends Seeder
             VotingSeeder::class,
             AttachmentSeeder::class,
             RoleSeeder::class,
+            ClubEventSeeder::class,
+            EventParticipantSeeder::class,
         ]);
     }
 }

@@ -10,8 +10,8 @@ class VotingOptionFactory extends Factory
     public function definition(): array
     {
         return [
-            'votingID' => Voting::inRandomOrder()->first()->votingID,
-            'option_text' => $this->faker->name(),
+            'votingID'    => Voting::inRandomOrder()->first()?->votingID,
+            'option_text' => $this->faker->words(2, true),
         ];
     }
 }

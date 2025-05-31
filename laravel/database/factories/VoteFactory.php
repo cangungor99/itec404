@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Vote;
 use App\Models\User;
 use App\Models\Voting;
 use App\Models\VotingOption;
@@ -14,10 +15,10 @@ class VoteFactory extends Factory
         $voting = Voting::inRandomOrder()->first();
 
         return [
-            'votingID' => $voting->votingID,
-            'userID' => User::inRandomOrder()->first()->userID,
-            'optionID' => VotingOption::where('votingID', $voting->votingID)->inRandomOrder()->first()->optionID ?? 1,
-            'timestamp' => now(),
+            'votingID' => $voting?->votingID,
+            'userID'   => User::inRandomOrder()->first()?->userID,
+            'optionID' => VotingOption::where('votingID', $voting?->votingID)->inRandomOrder()->first()?->optionID,
+            'timestamp'=> now(),
         ];
     }
 }

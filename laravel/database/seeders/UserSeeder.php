@@ -9,40 +9,43 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1) Garantili sabit kullanıcı (userID = 1001)
-        User::create([
-            'userID'   => 1001,
-            'std_no'   => '20000161',
-            'name'     => 'Sabit',
-            'surname'  => 'Yönetici',
-            'email'    => 'admin@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        // Özel rollerle 4 kullanıcı
+        $specialUsers = [
+            [
+                'std_no'   => '20000162',
+                'name'     => 'Admin',
+                'surname'  => 'User',
+                'email'    => 'admin@local',
+                'password' => bcrypt('secret123'),
+            ],
+            [
+                'std_no'   => '20000163',
+                'name'     => 'Leader',
+                'surname'  => 'User',
+                'email'    => 'leader@local',
+                'password' => bcrypt('secret123'),
+            ],
+            [
+                'std_no'   => '20000164',
+                'name'     => 'Manager',
+                'surname'  => 'User',
+                'email'    => 'manager@local',
+                'password' => bcrypt('secret123'),
+            ],
+            [
+                'std_no'   => '20000165',
+                'name'     => 'Student',
+                'surname'  => 'User',
+                'email'    => 'student@local',
+                'password' => bcrypt('secret123'),
+            ]
+        ];
 
-        // 2) Admin, Leader ve Student olarak 3 özel kullanıcı
-        User::create([
-            'std_no'   => '20000162',
-            'name'     => 'Admin',
-            'surname'  => 'User',
-            'email'    => 'admin@local',
-            'password' => bcrypt('secret123'),
-        ]);
-        User::create([
-            'std_no'   => '20000163',
-            'name'     => 'Leader',
-            'surname'  => 'User',
-            'email'    => 'leader@local',
-            'password' => bcrypt('secret123'),
-        ]);
-        User::create([
-            'std_no'   => '20000164',
-            'name'     => 'Student',
-            'surname'  => 'User',
-            'email'    => 'student@local',
-            'password' => bcrypt('secret123'),
-        ]);
+        foreach ($specialUsers as $user) {
+            User::create($user);
+        }
 
-        // Diğer 9 kullanıcı rastgele
-        User::factory(9)->create();
+
+        User::factory(10)->create();
     }
 }
