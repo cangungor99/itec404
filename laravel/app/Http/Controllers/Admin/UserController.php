@@ -33,23 +33,22 @@ class UserController extends Controller
 
     // === Kullanıcıyı Güncelle ===
     public function update(Request $request, $id)
-{
-    $validated = $request->validate([
-        'std_no'  => 'required|string',
-        'name'    => 'required|string',
-        'surname' => 'required|string',
-        'email'   => 'required|email',
-        'roles'   => 'array'
-    ]);
+    {
+        $validated = $request->validate([
+            'std_no'  => 'required|string',
+            'name'    => 'required|string',
+            'surname' => 'required|string',
+            'email'   => 'required|email',
+            'roles'   => 'array'
+        ]);
 
-    $user = User::findOrFail($id); // ID'ye göre kullanıcıyı al
+        $user = User::findOrFail($id);
 
-    $user->update($validated); // Kullanıcıyı güncelle
+        $user->update($validated);
 
-    $user->roles()->sync($request->input('roles', [])); // Roller
+        $user->roles()->sync($request->input('roles', []));
 
-    return redirect()->route('admin.user_list')
-                     ->with('success', 'User updated successfully!');
+        return redirect()->route('admin.user_list')
+            ->with('success', 'User updated successfully!');
+    }
 }
-}
-?>

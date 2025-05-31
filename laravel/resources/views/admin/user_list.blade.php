@@ -153,10 +153,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form method="POST" action="{{ route('admin.users.update', 0) }}" id="editUserForm">
+            <form method="POST" action="" id="editUserForm">
                 @csrf
                 @method('PUT')
-
                 <input type="hidden" name="userID" id="userID">
                 <input type="text" name="std_no" id="studentNo">
                 <input type="text" name="name" id="firstName">
@@ -185,35 +184,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    document.querySelectorAll('.edit-user-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const userID = this.dataset.id;
-
-            // Form action URL'sini güncelle
-            const form = document.getElementById('editUserForm');
-            form.action = `/admin/users/update/${userID}`; // Route yapına göre ayarlanmalı
-
-            // Diğer inputları doldur (örnek)
-            document.getElementById('studentNo').value = this.dataset.stdno;
-            document.getElementById('firstName').value = this.dataset.name;
-            document.getElementById('lastName').value = this.dataset.surname;
-            document.getElementById('email').value = this.dataset.email;
-
-            // Roller
-            const roles = this.dataset.roles.split(',');
-            const roleSelect = document.getElementById('roleSelect');
-            Array.from(roleSelect.options).forEach(option => {
-                option.selected = roles.includes(option.value);
-            });
-
-            // Modalı göster
-            new bootstrap.Modal(document.getElementById('editUserModal')).show();
-        });
-    });
-
-    $('.btn-edit-user').on('click', function() {
+    $('.btn-edit-user').on('click', function () {
         const userID = $(this).data('id');
-        $('#editUserModal input[name="userID"]').val(userID);
+
+        $('#editUserForm').attr('action', `/admin/user_list/update/${userID}`);
+
+        $('#userID').val(userID);
         $('#studentNo').val($(this).data('stdno'));
         $('#firstName').val($(this).data('name'));
         $('#lastName').val($(this).data('surname'));
@@ -224,12 +200,16 @@
         roles.forEach(role => {
             $(`#roleSelect option[value="${role}"]`).prop('selected', true);
         });
+
+        const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
+        modal.show();
     });
 </script>
+
 <script>
     // SweetAlert ile silme onayı
     document.querySelectorAll('.delete-user-form').forEach(form => {
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault(); // Formun hemen gönderilmesini engelle
 
             Swal.fire({

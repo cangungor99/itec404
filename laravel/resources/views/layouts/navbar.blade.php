@@ -172,7 +172,10 @@
     <div class="dropdown dropdown-user-setting">
         <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="user-setting d-flex align-items-center gap-3">
-                <img src="{{ asset('assets/images/avatars/avatar-1.png') }}" class="user-img" alt="user">
+                <img
+                    src="{{ asset('storage/profile_photos/' . (auth()->user()->profile_photo ?? 'default.png')) }}"
+                    class="user-img"
+                    alt="{{ auth()->user()->name }}">
                 <div class="d-none d-sm-block">
                     <p class="user-name mb-0">{{ auth()->user()->name }}</p>
                     {{-- İstersen kullanıcı tipine göre unvan da getirebilirsin --}}

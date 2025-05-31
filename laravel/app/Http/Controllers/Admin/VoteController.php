@@ -24,12 +24,12 @@ class VoteController extends Controller
             )
             ->orderByDesc('votings.created_at')
             ->get();
-    
+
         $clubs = DB::table('clubs')->select('clubID', 'name')->get();
-    
+
         return view('admin.manage_votes', compact('votings', 'clubs'));
     }
-    
+
 
 
 
@@ -44,7 +44,6 @@ class VoteController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validasyon
         $request->validate([
             'clubID' => 'required|integer',
             'title' => 'required|string|max:255',
@@ -55,30 +54,22 @@ class VoteController extends Controller
             'options.*' => 'required|string|max:255',
         ]);
 
-        // 1. Önce votings tablosuna kayıt
         $votingID = DB::table('votings')->insertGetId([
             'clubID' => $request->clubID,
             'title' => $request->title,
             'description' => $request->description,
             'start_date' => \Carbon\Carbon::parse($request->start_date)->format('Y-m-d H:i:s'),
-
             'end_date'   => \Carbon\Carbon::parse($request->end_date)->format('Y-m-d H:i:s'),
-
-            'created_at' => now()
-
         ]);
 
 
-        // 3. Oy seçeneklerini kaydet
         foreach ($request->options as $option) {
             DB::table('voting_options')->insert([
                 'votingID' => $votingID,
                 'option_text' => $option
-
             ]);
         }
 
-        // 4. Başarıyla geri dön
         return redirect()->route('admin.create_vote')->with('success', 'Voting created successfully!');
     }
 
@@ -86,25 +77,23 @@ class VoteController extends Controller
 
 
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date|after:start_date',
-        'clubID' => 'required|integer'
-    ]);
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'clubID' => 'required|integer'
+        ]);
 
-    DB::table('votings')->where('votingID', $id)->update([
-        'title' => $request->title,
-        'description' => $request->description,
-        'start_date' => $request->start_date,
-        'end_date' => $request->end_date,
-        'clubID' => $request->clubID,
-        'updated_at' => now()
-    ]);
+        DB::table('votings')->where('votingID', $id)->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'clubID' => $request->clubID,
+        ]);
 
-    return redirect()->route('admin.manage_votes')->with('success', 'Voting updated successfully!');
-}
-
+        return redirect()->route('admin.manage_votes')->with('success', 'Voting updated successfully!');
+    }
 }

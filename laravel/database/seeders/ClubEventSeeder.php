@@ -4,16 +4,16 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Club;
-use App\Models\Chat;
+use App\Models\ClubEvent;
 
-class ChatSeeder extends Seeder
+class ClubEventSeeder extends Seeder
 {
     public function run(): void
     {
-        $clubs = Club::has('memberships', '>=', 2)->get();
+        $clubs = Club::all();
 
         foreach ($clubs as $club) {
-            Chat::factory(5)->create([
+            ClubEvent::factory(rand(1, 2))->create([
                 'clubID' => $club->clubID,
             ]);
         }

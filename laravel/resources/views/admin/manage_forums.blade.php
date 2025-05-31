@@ -46,13 +46,13 @@
                             <td>{{ $forum->club->name }}</td>
                             <td>{{ \Carbon\Carbon::parse($forum->created_at)->format('Y-m-d') }}</td>
                             <td>
-                                <form method="POST" action="{{ route('forums.approve', $forum->forumID) }}" class="d-inline">
+                                <form method="POST" action="{{ route('admin.forums.approve', $forum->forumID) }}" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-success btn-sm">
                                         <i class="bi bi-check-circle"></i> Approve
                                     </button>
                                 </form>
-                                <form method="POST" action="{{ route('forums.reject', $forum->forumID) }}" class="d-inline">
+                                <form method="POST" action="{{ route('admin.forums.reject', $forum->forumID) }}" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="bi bi-x-circle"></i> Reject
@@ -96,7 +96,7 @@
                                 <button class="btn btn-outline-secondary btn-sm">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <form method="POST" action="{{ route('forums.reject', $forum->forumID) }}" class="d-inline">
+                                <form method="POST" action="{{ route('admin.forums.reject', $forum->forumID) }}" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-outline-danger btn-sm">
                                         <i class="bi bi-trash"></i>

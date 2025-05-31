@@ -23,7 +23,6 @@ class ProfileUpdateRequest extends FormRequest
                 'required',
                 'string',
                 'max:20',
-                // kendi kaydını hariç tut
                 Rule::unique('users', 'std_no')
                     ->ignore($userId, 'userID'),
             ],
@@ -36,6 +35,7 @@ class ProfileUpdateRequest extends FormRequest
             ],
             'name'    => ['required','string','max:255'],
             'surname' => ['required','string','max:255'],
+            'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 }
