@@ -2,5 +2,9 @@
   {
     "type": "sqlite",
     "path": "c:\\Users\\musta\\Desktop\\itec404\\laravel\\database\\database.sqlite"
+  },
+  {
+    "type": "sqlite",
+    "path": "/Applications/XAMPP/xamppfiles/htdocs/itec404/laravel/database/database.sqlite"
   }
 ]

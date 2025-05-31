@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ForumController;
 use App\Http\Controllers\Admin\ClubBudgetController;
+use App\Models\Chat;
+use App\Http\Controllers\ChatController2;
 
 
 Route::get('/', function () {
@@ -46,6 +48,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat/inbox', [ChatController::class, 'inbox'])->name('chat.inbox');
 });
 
+
+
+
+Route::get('/chat2', function () {
+    $messages = Chat::with('sender')->orderBy('created_at')->take(10)->get();
+    return view('chat2.chat', compact('messages'));
+})->name('chat2');
+
+Route::get('/chat/user-search', [ChatController::class, 'searchUser'])->name('chat.userSearch');
 
 
 
@@ -90,6 +101,30 @@ Route::middleware(['auth', 'role:leader'])
             return view('students.leader.dashboard');
         })->name('dashboard');
 
+        Route::get('/my-resources', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
+            return redirect()->route('leader.resources', $club->clubID);
+        })->name('resources.my');
+
+        Route::get('/my-votes', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
+            return redirect()->route('leader.votes.index', $club->clubID);
+        })->name('votes.my');
+
+        Route::get('/my-events', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
+            return redirect()->route('leader.events.index', $club->clubID);
+        })->name('events.my');
+
+        Route::get('/leader/test-event-redirect', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->first();
+            dd($club);
+        });
+
         Route::get('/memberships', [MembershipController::class, 'index'])->name('memberships.index');
         Route::post('/memberships/{id}/approve', [MembershipController::class, 'approve'])->name('memberships.approve');
         Route::post('/memberships/{id}/reject', [MembershipController::class, 'reject'])->name('memberships.reject');
@@ -118,21 +153,7 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('{club}/events/{event}/edit', [LeaderEventController::class, 'edit'])->name('events.edit');
         Route::put('{club}/events/{event}', [LeaderEventController::class, 'update'])->name('events.update');
         Route::delete('{club}/events/{event}', [LeaderEventController::class, 'destroy'])->name('events.destroy');
-
-        Route::get('/resources', function () {
-            $leader = auth()->user();
-            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
-
-            return redirect()->route('leader.resources', $club->clubID);
-        })->name('my_resources');
-
         Route::get('/clubs', [ClubController::class, 'index'])->name('clubs.index');
-
-        Route::get('/votes', function () {
-            $leader = auth()->user();
-            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
-            return redirect()->route('leader.votes.index', $club->clubID);
-        })->name('votes.my');
     });
 
 
@@ -205,7 +226,7 @@ Route::middleware(['auth', 'role:admin'])
 
 
 Route::get('/sensitive', function () {
-    return 'Hassas işlem';
+    return 'Sensitive Case';
 })->middleware(['auth', 'password.confirm']);
 
 Route::middleware(['auth'])
