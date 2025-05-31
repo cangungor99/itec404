@@ -3,9 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Resource;
 use App\Models\Forum;
-use App\Models\User;
+use App\Models\Resource;
 
 class AttachmentFactory extends Factory
 {
@@ -14,18 +13,10 @@ class AttachmentFactory extends Factory
         $attachToForum = $this->faker->boolean();
 
         if ($attachToForum) {
-            $forum = \App\Models\Forum::inRandomOrder()->first();
+            $forum = Forum::has('user')->inRandomOrder()->first();
 
             if (!$forum || !$forum->userID) {
-                // Hiçbir değer dönme — Laravel'e bu kaydı atla demeliyiz
-                return [
-                    'forumID' => null,
-                    'resourceID' => null,
-                    'userID' => null,
-                    'file_path' => null,
-                    'file_type' => null,
-                    'uploaded_at' => null,
-                ];
+                throw new \Exception("Forum bulunamadı veya userID eksik");
             }
 
             return [
@@ -37,17 +28,10 @@ class AttachmentFactory extends Factory
                 'uploaded_at' => now(),
             ];
         } else {
-            $resource = \App\Models\Resource::inRandomOrder()->first();
+            $resource = Resource::has('user')->inRandomOrder()->first();
 
             if (!$resource || !$resource->userID) {
-                return [
-                    'forumID' => null,
-                    'resourceID' => null,
-                    'userID' => null,
-                    'file_path' => null,
-                    'file_type' => null,
-                    'uploaded_at' => null,
-                ];
+                throw new \Exception("Resource bulunamadı veya userID eksik");
             }
 
             return [

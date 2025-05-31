@@ -37,5 +37,22 @@ class RoleSeeder extends Seeder
         User::whereNotIn('email', $excludedEmails)->each(function ($user) use ($studentRoleID) {
             $user->roles()->syncWithoutDetaching([$studentRoleID]);
         });
+
+        $leaderRoleID = Role::where('name', 'leader')->value('roleID');
+        $managerRoleID = Role::where('name', 'manager')->value('roleID');
+
+        User::whereNotIn('email', $excludedEmails)
+            ->inRandomOrder()
+            ->limit(3)
+            ->each(function ($user) use ($leaderRoleID) {
+                $user->roles()->syncWithoutDetaching([$leaderRoleID]);
+            });
+
+        User::whereNotIn('email', $excludedEmails)
+            ->inRandomOrder()
+            ->limit(3)
+            ->each(function ($user) use ($managerRoleID) {
+                $user->roles()->syncWithoutDetaching([$managerRoleID]);
+            });
     }
 }
