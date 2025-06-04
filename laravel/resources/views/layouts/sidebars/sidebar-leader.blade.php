@@ -27,6 +27,13 @@
     </li>
 
     <li>
+        <a href="{{ route('leader.members.index', optional(\App\Models\Club::where('leaderID', auth()->id())->first())->clubID) }}">
+            <div class="parent-icon"><i class="bi bi-person"></i></div>
+            <div class="menu-title">Members</div>
+        </a>
+    </li>
+
+    <li>
         <a href="{{ route('leader.my_resources') }}">
             <div class="parent-icon"><i class="bi bi-folder-fill"></i></div>
             <div class="menu-title">Manage Resources</div>
@@ -44,6 +51,13 @@
         <a href="{{ route('leader.events.index', optional(\App\Models\Club::where('leaderID', auth()->id())->first())->clubID) }}">
             <div class="parent-icon"><i class="bi bi-calendar-event"></i></div>
             <div class="menu-title">Manage Events</div>
+        </a>
+    </li>
+
+    <li>
+        <a href="{{ route('leader.forums.approved') }}">
+            <div class="parent-icon"><i class="bi bi-chat-left-text-fill"></i></div>
+            <div class="menu-title">Approved Forums</div>
         </a>
     </li>
 
@@ -99,4 +113,3 @@
         </a>
     </li>
 </ul>
-

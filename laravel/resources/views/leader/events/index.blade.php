@@ -4,6 +4,11 @@
 <main class="page-content">
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Events</div>
+        <div class="ms-auto">
+            <a href="{{ route('leader.events.create', $club->clubID) }}" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-1"></i> Create Event
+            </a>
+        </div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
@@ -19,13 +24,16 @@
 
         @forelse($events as $index => $event)
         <div class="row g-0 {{ $index % 2 === 0 ? '' : 'flex-row-reverse' }}">
+            <div class="col-sm">
+                <!--spacer-->
+            </div>
             <div class="col-sm-1 text-center flex-column d-none d-sm-flex">
                 <div class="row h-50">
                     <div class="col border-end">&nbsp;</div>
                     <div class="col">&nbsp;</div>
                 </div>
                 <h5 class="m-2">
-                    <span class="badge rounded-pill bg-{{ $index % 2 === 0 ? 'primary' : 'light' }}">{{ $index + 1 }}</span>
+                    <span class="badge rounded-pill bg-primary">{{ $index + 1 }}</span>
                 </h5>
                 <div class="row h-50">
                     <div class="col border-end">&nbsp;</div>
