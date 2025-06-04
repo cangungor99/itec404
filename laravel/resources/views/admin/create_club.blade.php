@@ -65,7 +65,8 @@
     <div class="card shadow-sm radius-10 border-0 mb-4 animate__animated animate__fadeInUp">
         <div class="card-body">
             <h5 class="card-title mb-4"><i class="bi bi-plus-circle-fill me-1"></i> Create New Club</h5>
-            <form action="{{ route('admin.clubs.store') }}" method="post">
+            <form method="POST" action="{{ route('admin.clubs.store') }}" enctype="multipart/form-data">
+
 
                 @csrf
 
@@ -88,9 +89,10 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="clubPhoto" class="form-label">Club Logo URL</label>
-                    <input type="url" class="form-control" id="clubPhoto" name="clubPhoto" placeholder="https://example.com/logo.png">
+                    <label for="clubPhoto" class="form-label">Club Logo</label>
+                    <input type="file" class="form-control" id="clubPhoto" name="clubPhoto" accept="image/*">
                 </div>
+
 
                 <div class="d-flex justify-content-end gap-2">
                     <a href="clubs.php" class="btn btn-secondary">

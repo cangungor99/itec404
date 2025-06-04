@@ -16,6 +16,7 @@ use App\Http\Controllers\Leader\ForumApprovalController;
 use App\Http\Controllers\Leader\CommentApprovalController;
 use App\Http\Controllers\Leader\LeaderForumController;
 use App\Http\Controllers\Leader\LeaderEventController;
+use App\Http\Controllers\Leader\ClubMemberController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\UserController;
@@ -145,7 +146,9 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('/comments/pending', [CommentApprovalController::class, 'index'])->name('comments.pending');
         Route::post('/comments/{comment}/approve', [CommentApprovalController::class, 'approve'])->name('comments.approve');
         Route::post('/comments/{comment}/reject', [CommentApprovalController::class, 'reject'])->name('comments.reject');
+        Route::get('/forums/approved', [LeaderForumController::class, 'published'])->name('forums.approved');
         Route::get('/forums/{forum}', [LeaderForumController::class, 'show'])->name('forums.show');
+        Route::delete('/forums/{forum}', [LeaderForumController::class, 'destroy'])->name('forums.destroy');
 
         Route::get('{club}/events', [LeaderEventController::class, 'index'])->name('events.index');
         Route::get('{club}/events/create', [LeaderEventController::class, 'create'])->name('events.create');
@@ -153,6 +156,19 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('{club}/events/{event}/edit', [LeaderEventController::class, 'edit'])->name('events.edit');
         Route::put('{club}/events/{event}', [LeaderEventController::class, 'update'])->name('events.update');
         Route::delete('{club}/events/{event}', [LeaderEventController::class, 'destroy'])->name('events.destroy');
+        Route::get('{club}/members', [ClubMemberController::class, 'index'])->name('members.index');
+        Route::delete('{club}/members/{membership}', [ClubMemberController::class, 'destroy'])->name('members.destroy');
+
+
+
+
+        Route::get('/resources', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
+
+            return redirect()->route('leader.resources', $club->clubID);
+        })->name('my_resources');
+
         Route::get('/clubs', [ClubController::class, 'index'])->name('clubs.index');
     });
 

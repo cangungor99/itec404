@@ -14,18 +14,24 @@ class StudentEventController extends Controller
     public function index(): View
     {
         $user = Auth::user();
+        $selectedClubID = request()->get('club_id');
 
-        // Öğrencinin üye olduğu kulüplerin ID'lerini al
-        $clubIDs = $user->memberships()->pluck('clubID');
+        $clubs = $user->memberships()->with('club')->get()->pluck('club');
 
-        // O kulüplere ait etkinlikleri getir
-        $events = ClubEvent::whereIn('clubID', $clubIDs)
-            ->with(['club', 'participants'])
-            ->orderBy('start_time', 'asc')
-            ->get();
+        $eventsQuery = ClubEvent::whereIn('clubID', $clubs->pluck('clubID'))
+            ->with(['club', 'participants']);
 
-        return view('students.events.index', compact('events'));
+        if ($selectedClubID) {
+            $eventsQuery->where('clubID', $selectedClubID);
+        }
+
+        $events = $eventsQuery->orderBy('start_time')->get();
+
+        return view('students.events.index', compact('events', 'clubs', 'selectedClubID'));
     }
+
+
+
     public function join(ClubEvent $event): RedirectResponse
     {
         $userID = auth()->id();

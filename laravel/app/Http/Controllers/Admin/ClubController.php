@@ -10,71 +10,82 @@ class ClubController extends Controller
 {
     public function store(Request $request)
     {
-        // 1. Formdan gelen verileri doğrula
         $request->validate([
             'clubName' => 'required|string|max:255',
             'clubDescription' => 'required|string',
             'clubStatus' => 'required|in:0,1',
-            'clubPhoto' => 'nullable|url'
+            'clubPhoto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // 2. Veritabanına yeni kulüp kaydını ekle
+        if ($request->hasFile('clubPhoto')) {
+            $photo = $request->file('clubPhoto')->store('club-logos', 'public');
+        } else {
+            $photo = 'club-logos/default.jpg';
+        }
+
+
         DB::table('clubs')->insert([
             'name' => $request->clubName,
             'description' => $request->clubDescription,
             'status' => $request->clubStatus,
-            'photo' => $request->clubPhoto ?: 'default.jpg',
-            'created_at' => now()
+            'photo' => $photo,
+            'created_at' => now(),
         ]);
 
-        // 3. Başarıyla geri yönlendir
         return redirect()->back()->with('success', 'Club created successfully!');
     }
 
     public function index()
-{
-    $clubs = DB::table('clubs')->orderBy('created_at', 'desc')->get();
-    return view('admin.manage_clubs', compact('clubs'));
-}
-
-
-public function edit($id)
-{
-    $club = DB::table('clubs')->where('clubID', $id)->first();
-
-    if (!$club) {
-        return redirect()->route('admin.manage_clubs')->with('error', 'Club not found.');
+    {
+        $clubs = DB::table('clubs')->orderBy('created_at', 'desc')->get();
+        return view('admin.manage_clubs', compact('clubs'));
     }
 
-    return response()->json($club); // Modal'da kullanmak için JSON döndür
-}
 
-public function update(Request $request, $id)
-{
-    $request->validate([
-        'clubName' => 'required|string|max:255',
-        'clubDescription' => 'required|string',
-        'clubStatus' => 'required|in:0,1',
-        'clubPhoto' => 'nullable|string',
-    ]);
+    public function edit($id)
+    {
+        $club = DB::table('clubs')->where('clubID', $id)->first();
 
-    DB::table('clubs')->where('clubID', $id)->update([
-        'name' => $request->clubName,
-        'description' => $request->clubDescription,
-        'status' => $request->clubStatus,
-        'photo' => $request->clubPhoto
-        
-    ]);
+        if (!$club) {
+            return redirect()->route('admin.manage_clubs')->with('error', 'Club not found.');
+        }
 
-    return redirect()->route('admin.manage_clubs')->with('success', 'Club updated successfully!');
-}
+        return response()->json($club); // Modal'da kullanmak için JSON döndür
+    }
 
-public function destroy($id)
-{
-    DB::table('clubs')->where('clubID', $id)->delete();
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'clubName' => 'required|string|max:255',
+            'clubDescription' => 'required|string',
+            'clubStatus' => 'required|in:0,1',
+            'clubPhoto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    return redirect()->route('admin.manage_clubs')->with('success', 'Club deleted successfully!');
-}
+        $club = DB::table('clubs')->where('clubID', $id)->first();
+
+        if ($request->hasFile('clubPhoto')) {
+            $photo = $request->file('clubPhoto')->store('club-logos', 'public');
+        } else {
+            $photo = 'club-logos/default.jpg'; // burada düzeltme
+        }
 
 
+        DB::table('clubs')->where('clubID', $id)->update([
+            'name' => $request->clubName,
+            'description' => $request->clubDescription,
+            'status' => $request->clubStatus,
+            'photo' => $photo,
+        ]);
+
+        return redirect()->route('admin.manage_clubs')->with('success', 'Club updated successfully!');
+    }
+
+
+    public function destroy($id)
+    {
+        DB::table('clubs')->where('clubID', $id)->delete();
+
+        return redirect()->route('admin.manage_clubs')->with('success', 'Club deleted successfully!');
+    }
 }
