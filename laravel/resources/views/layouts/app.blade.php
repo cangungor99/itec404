@@ -45,6 +45,8 @@
             @include('layouts.sidebars.sidebar-admin')
             @elseif(auth()->user()->hasRole('leader'))
             @include('layouts.sidebars.sidebar-leader')
+            @elseif(auth()->user()->hasRole('manager'))
+            @include('layouts.sidebars.sidebar-manager')
             @elseif(auth()->user()->hasRole('student'))
             @include('layouts.sidebars.sidebar-student')
             @endif
