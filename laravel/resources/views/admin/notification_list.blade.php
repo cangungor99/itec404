@@ -50,7 +50,7 @@
                 <div>
                     <h4 class="fw-bold mb-2"><i class="fas fa-bell me-2 text-primary"></i>All Notifications</h4>
                 </div>
-                <a href="create_notifications_admin.php" class="btn btn-primary shadow-sm d-flex align-items-center mt-2 mt-md-0">
+                <a href="create_notification" class="btn btn-primary shadow-sm d-flex align-items-center mt-2 mt-md-0">
                     <i class="fas fa-plus me-2"></i> Create Notification
                 </a>
             </div>

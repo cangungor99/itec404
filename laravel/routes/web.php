@@ -24,6 +24,8 @@ use App\Http\Controllers\Admin\ClubBudgetController;
 use App\Models\Chat;
 use App\Http\Controllers\ChatController2;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Leader\LeaderDashboardController;
 
 
 
@@ -58,7 +60,7 @@ Route::get('/chat2', function () {
     return view('chat2.chat', compact('messages'));
 })->name('chat2');
 
-Route::get('/chat/user-search', [ChatController::class, 'searchUser'])->name('chat.userSearch');
+Route::get('/chat/user-search', [ChatController2::class, 'searchUser'])->name('chat.userSearch');
 
 
 
@@ -68,9 +70,10 @@ Route::middleware(['auth', 'role:student,leader'])
     ->prefix('students')
     ->name('students.')
     ->group(function () {
-        Route::get('/dashboard', function () {
-            return view('students.dashboard');
-        })->name('dashboard');
+        
+
+        Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
+
 
         Route::get('/clubs', [StudentClubController::class, 'index'])->name('clubs.index');
         Route::get('/club/{club}', [StudentClubController::class, 'show'])->name('clubs.show');
@@ -99,9 +102,8 @@ Route::middleware(['auth', 'role:leader'])
     ->prefix('leader')
     ->name('leader.')
     ->group(function () {
-        Route::get('/dashboard', function () {
-            return view('students.leader.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [LeaderDashboardController::class, 'index'])->name('dashboard');
+        
 
         Route::get('/my-resources', function () {
             $leader = auth()->user();

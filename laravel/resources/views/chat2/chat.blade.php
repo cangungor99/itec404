@@ -84,7 +84,9 @@
                                     <div class="dropdown-menu p-3" style="min-width: 250px;">
                                         <!-- Arama kutusu burada olacak -->
                                         <div class="mb-2">
-                                            <input type="text" class="form-control form-control-sm" placeholder="Search user...">
+                                        <input type="text" id="userSearchInput" class="form-control form-control-sm" placeholder="Search user...">
+                                        <div id="searchResults" class="search-results mt-2"></div>
+
                                         </div>
                                         <div>
                                             <small class="text-muted">Enter a name to start chatting</small>
@@ -138,7 +140,10 @@
             <div class="chat-toggle-btn"><i class='bx bx-menu-alt-left'></i>
             </div>
             <div>
-                <h4 class="mb-1 font-weight-bold">Harvey Inspector</h4>
+            <h4 class="mb-1 font-weight-bold" id="selectedUserName">Seçilen Kişi</h4>
+            <input type="hidden" id="selectedUserID" name="receiver_id">
+
+
 
             </div>
 
@@ -176,14 +181,14 @@
         </div>
         <div class="chat-footer d-flex align-items-center">
             <div class="flex-grow-1 pe-2">
-                <div class="input-group"> <span class="input-group-text"><i class='bx bx-smile'></i></span>
+                <div class="input-group"> 
                     <input type="text" class="form-control" placeholder="Type a message">
                 </div>
             </div>
             <div class="chat-footer-menu">
-                <a href="javascript:;"><i class='bx bx-file'></i></a>
+                
 
-                <a href="javascript:;"><i class='bx bx-dots-horizontal-rounded'></i></a>
+                <a href="javascript:;"><i class='bx bx-send'></i></a>
             </div>
         </div>
         <!--start chat overlay-->
@@ -235,4 +240,47 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById('userSearchInput');
+    const resultsContainer = document.getElementById('searchResults');
+
+    searchInput.addEventListener('input', function () {
+        const query = this.value.trim();
+
+        if (query.length < 2) {
+            resultsContainer.innerHTML = '';
+            return;
+        }
+
+        fetch(`/chat/user-search?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                resultsContainer.innerHTML = '';
+
+                if (data.length === 0) {
+                    resultsContainer.innerHTML = '<p class="text-muted mb-0">No users found.</p>';
+                } else {
+                    data.forEach(user => {
+                        const item = document.createElement('div');
+                        item.className = 'search-result-item p-1 border-bottom';
+                        item.innerHTML = `
+                            <strong>${user.name} ${user.surname}</strong><br>
+                            <small class="text-muted">${user.email}</small>
+                        `;
+                        item.style.cursor = 'pointer';
+                        item.onclick = function () {
+                            document.getElementById('selectedUserName').innerText = `${user.name} ${user.surname}`;
+                            document.getElementById('selectedUserID').value = user.userID;
+                            resultsContainer.innerHTML = '';
+                        };
+                        resultsContainer.appendChild(item);
+                    });
+                }
+            });
+    });
+});
+</script>
+
 @endpush
