@@ -14,9 +14,21 @@ use Illuminate\Support\Facades\Storage;
 
 class ClubResourceController extends Controller
 {
+
+    protected function authorizeClubAccess(Club $club): void
+    {
+        $userID = auth()->user()->userID;
+
+        if ($club->leaderID !== $userID && $club->managerID !== $userID) {
+            abort(403, 'You are not authorized to access this club.');
+        }
+    }
+
+
     public function index(Club $club, Request $request): View
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
+
 
         $query = $club->resources()->with('user')->latest();
 
@@ -59,7 +71,8 @@ class ClubResourceController extends Controller
 
     public function store(Request $request, Club $club): RedirectResponse
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
+
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -84,7 +97,8 @@ class ClubResourceController extends Controller
 
     public function destroy(Club $club, Resource $resource): RedirectResponse
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
+
 
         if ($resource->clubID !== $club->clubID) {
             abort(403, 'This resource does not belong to your club.');
@@ -94,12 +108,5 @@ class ClubResourceController extends Controller
         $resource->delete();
 
         return back()->with('success', 'Resource deleted.');
-    }
-
-    protected function authorizeLeader(Club $club): void
-    {
-        if (auth()->user()->userID !== $club->leaderID) {
-            abort(403, 'You are not the leader of this club.');
-        }
     }
 }

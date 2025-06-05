@@ -10,14 +10,24 @@ use Illuminate\View\View;
 
 class MembershipController extends Controller
 {
+
+    protected function authorizeClubAccessByMembership(Membership $membership): void
+    {
+        $userID = auth()->id();
+
+        if ($membership->club->leaderID !== $userID && $membership->club->managerID !== $userID) {
+            abort(403, 'You are not authorized to approve/reject this membership.');
+        }
+    }
+
     public function index(): View
     {
-        $leader = Auth::user();
+        $user = Auth::user();
 
-        // Sadece kendi kulüplerine gelen pending başvurular
         $pendingMemberships = Membership::where('status', 'pending')
-            ->whereHas('club', function ($query) use ($leader) {
-                $query->where('leaderID', $leader->userID);
+            ->whereHas('club', function ($query) use ($user) {
+                $query->where('leaderID', $user->userID)
+                    ->orWhere('managerID', $user->userID);
             })
             ->with(['user', 'club'])
             ->get();
@@ -25,9 +35,12 @@ class MembershipController extends Controller
         return view('leader.memberships.index', compact('pendingMemberships'));
     }
 
+
     public function approve($id): RedirectResponse
     {
-        $membership = Membership::findOrFail($id);
+        $membership = Membership::with('club')->findOrFail($id);
+        $this->authorizeClubAccessByMembership($membership);
+
         $membership->status = 'approved';
         $membership->save();
 
@@ -36,7 +49,9 @@ class MembershipController extends Controller
 
     public function reject($id): RedirectResponse
     {
-        $membership = Membership::findOrFail($id);
+        $membership = Membership::with('club')->findOrFail($id);
+        $this->authorizeClubAccessByMembership($membership);
+
         $membership->status = 'rejected';
         $membership->save();
 

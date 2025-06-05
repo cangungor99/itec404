@@ -192,10 +192,33 @@ Route::middleware(['auth', 'role:manager'])
 
         Route::get('/club', [ManagerClubController::class, 'show'])->name('club.show');
 
-        Route::get('/resources', [\App\Http\Controllers\Manager\ResourceController::class, 'index'])->name('resources.index');
 
         Route::get('/budget', [\App\Http\Controllers\Manager\BudgetController::class, 'index'])->name('budget.index');
+        Route::get('club/{club}/members', [ClubMemberController::class, 'index'])->name('members');
+        Route::delete('club/{club}/members/{membership}', [ClubMemberController::class, 'destroy'])->name('members.destroy');
+        Route::post('club/{club}/set-leader/{userID}', [ClubMemberController::class, 'setLeader'])->name('club.set_leader');
+        Route::get('{club}/resources', [LeaderClubResourceController::class, 'index'])->name('resources.index');
+        Route::post('{club}/resources', [LeaderClubResourceController::class, 'store'])->name('resources.store');
+        Route::delete('{club}/resources/{resource}', [LeaderClubResourceController::class, 'destroy'])->name('resources.destroy');
+        Route::get('{club}/events', [LeaderEventController::class, 'index'])->name('events.index');
+        Route::get('{club}/events/create', [LeaderEventController::class, 'create'])->name('events.create');
+        Route::post('{club}/events', [LeaderEventController::class, 'store'])->name('events.store');
+        Route::get('{club}/events/{event}/edit', [LeaderEventController::class, 'edit'])->name('events.edit');
+        Route::put('{club}/events/{event}', [LeaderEventController::class, 'update'])->name('events.update');
+        Route::delete('{club}/events/{event}', [LeaderEventController::class, 'destroy'])->name('events.destroy');
+        Route::get('{club}/votes', [LeaderVoteController::class, 'index'])->name('votes.index');
+        Route::get('{club}/votes/create', [LeaderVoteController::class, 'create'])->name('votes.create');
+        Route::post('{club}/votes', [LeaderVoteController::class, 'store'])->name('votes.store');
+        Route::get('{club}/votes/{voting}/edit', [LeaderVoteController::class, 'edit'])->name('votes.edit');
+        Route::put('{club}/votes/{voting}', [LeaderVoteController::class, 'update'])->name('votes.update');
+        Route::delete('{club}/votes/{voting}', [LeaderVoteController::class, 'destroy'])->name('votes.destroy');
+        Route::get('{club}/votes/{voting}/results', [LeaderVoteController::class, 'results'])->name('votes.results');
+        Route::get('/memberships', [MembershipController::class, 'index'])->name('memberships.index');
+        Route::post('/memberships/{id}/approve', [MembershipController::class, 'approve'])->name('memberships.approve');
+        Route::post('/memberships/{id}/reject', [MembershipController::class, 'reject'])->name('memberships.reject');
     });
+
+
 
 
 

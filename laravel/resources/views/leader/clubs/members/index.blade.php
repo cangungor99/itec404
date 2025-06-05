@@ -2,7 +2,8 @@
 @section('title', 'Club Members')
 @push('styles')
 <style>
-    .table td, .table th {
+    .table td,
+    .table th {
         vertical-align: middle;
         text-align: center;
         padding: 0.75rem;
@@ -60,6 +61,15 @@
                                         <i class="bi bi-person-dash-fill"></i> Remove
                                     </button>
                                 </form>
+
+                                @if($canManageRoles && $membership->user->userID !== $club->leaderID)
+                                <form method="POST" action="{{ route('manager.club.set_leader', ['club' => $club->clubID, 'userID' => $membership->user->userID]) }}" class="d-inline ms-2">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-primary">
+                                        <i class="bi bi-person-check-fill"></i> Make Leader
+                                    </button>
+                                </form>
+                                @endif
                             </td>
                         </tr>
                         @empty

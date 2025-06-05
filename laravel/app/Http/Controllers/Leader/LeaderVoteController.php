@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Auth;
 
 class LeaderVoteController extends Controller
 {
+    protected function authorizeClubAccess(Club $club): void
+    {
+        $userID = auth()->id();
+
+        if ($club->leaderID !== $userID && $club->managerID !== $userID) {
+            abort(403, 'You are not authorized to access this club.');
+        }
+    }
+
     public function index(Club $club): View
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         $votings = $club->votings()->with('options')->latest()->get();
         return view('leader.votes.index', compact('club', 'votings'));
@@ -23,13 +32,13 @@ class LeaderVoteController extends Controller
 
     public function create(Club $club): View
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
         return view('leader.votes.create', compact('club'));
     }
 
     public function store(Request $request, Club $club): RedirectResponse
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -61,7 +70,7 @@ class LeaderVoteController extends Controller
 
     public function destroy(Club $club, Voting $voting): RedirectResponse
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         if ($voting->clubID !== $club->clubID) {
             abort(403);
@@ -73,7 +82,7 @@ class LeaderVoteController extends Controller
 
     public function edit(Club $club, Voting $voting): View
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         if ($voting->clubID !== $club->clubID) {
             abort(403);
@@ -85,7 +94,7 @@ class LeaderVoteController extends Controller
 
     public function update(Request $request, Club $club, Voting $voting): RedirectResponse
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         if ($voting->clubID !== $club->clubID) {
             abort(403);
@@ -108,15 +117,12 @@ class LeaderVoteController extends Controller
             'end_date' => $validated['end_date'],
         ]);
 
-        // Seçenek güncelleme ve ekleme
         foreach ($validated['options'] as $option) {
             if (!empty($option['id'])) {
-                // Güncelle
                 VotingOption::where('optionID', $option['id'])->update([
                     'option_text' => $option['text'],
                 ]);
             } else {
-                // Yeni seçenek
                 VotingOption::create([
                     'votingID' => $voting->votingID,
                     'option_text' => $option['text'],
@@ -129,7 +135,7 @@ class LeaderVoteController extends Controller
 
     public function results(Club $club, Voting $voting): View
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         if ($voting->clubID !== $club->clubID) {
             abort(403);
@@ -139,12 +145,5 @@ class LeaderVoteController extends Controller
         $totalVotes = $options->sum('votes_count');
 
         return view('leader.votes.results', compact('club', 'voting', 'options', 'totalVotes'));
-    }
-
-    protected function authorizeLeader(Club $club): void
-    {
-        if (Auth::id() !== $club->leaderID) {
-            abort(403);
-        }
     }
 }

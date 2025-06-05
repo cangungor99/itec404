@@ -21,6 +21,13 @@ class NotificationController extends Controller
                 ->paginate(15);
         }
 
+        foreach ($notifications as $notif) {
+            $user->notificationsWithStatus()->syncWithoutDetaching([
+                $notif->notificationID => ['is_read' => true]
+            ]);
+        }
+
+
         return view('notifications.index', compact('notifications'));
     }
 }
