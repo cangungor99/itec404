@@ -97,22 +97,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-    @forelse ($recentEvents as $event)
-        <tr>
-            <td>{{ $event->title }}</td>
-            <td>{{ \Carbon\Carbon::parse($event->start_time)->format('Y-m-d H:i') }}</td>
-            <td>{{ $event->location }}</td>
-            <td>
-                <a href="#" class="text-warning"><i class="bi bi-pencil-square"></i></a>
-                <a href="#" class="text-danger ms-2"><i class="bi bi-trash"></i></a>
-            </td>
-        </tr>
-    @empty
-        <tr>
-            <td colspan="4" class="text-center">No recent events found.</td>
-        </tr>
-    @endforelse
-</tbody>
+                                @forelse ($recentEvents as $event)
+                                <tr>
+                                    <td>{{ $event->title }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($event->start_time)->format('Y-m-d H:i') }}</td>
+                                    <td>{{ $event->location }}</td>
+                                    <td>
+                                        <a href="#" class="text-warning"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="#" class="text-danger ms-2"><i class="bi bi-trash"></i></a>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="text-center">No recent events found.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
 
                         </table>
                     </div>
@@ -124,20 +124,31 @@
                 <div class="card-body">
                     <h6 class="mb-3">Pending Membership Requests</h6>
                     <ul class="list-group list-group-flush">
-    @forelse ($pendingMembers as $member)
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-            <span>{{ $member->user->name }} {{ $member->user->surname }}</span>
-            <span>
-                <button class="btn btn-sm btn-success"><i class="bi bi-check2"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-x"></i></button>
-            </span>
-        </li>
-    @empty
-        <li class="list-group-item text-center">
-            No pending membership requests.
-        </li>
-    @endforelse
-</ul>
+                        @forelse ($pendingMembers as $member)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ $member->user->name }} {{ $member->user->surname }}</span>
+                            <span class="d-flex gap-1">
+                                <form action="{{ route('leader.memberships.approve', $member->membershipID) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-success" title="Approve">
+                                        <i class="bi bi-check2"></i>
+                                    </button>
+                                </form>
+                                <form action="{{ route('leader.memberships.reject', $member->membershipID) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Reject">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </form>
+                            </span>
+                        </li>
+                        @empty
+                        <li class="list-group-item text-center">
+                            No pending membership requests.
+                        </li>
+                        @endforelse
+
+                    </ul>
                 </div>
             </div>
         </div>
@@ -145,26 +156,26 @@
 
     <!-- Extra Widgets -->
     <div class="row mt-4">
-    <div class="col-12 col-xl-6 d-flex">
-    <div class="card radius-10 w-100">
-        <div class="card-body">
-            <h6 class="mb-1">Poll Participation</h6>
+        <div class="col-12 col-xl-6 d-flex">
+            <div class="card radius-10 w-100">
+                <div class="card-body">
+                    <h6 class="mb-1">Poll Participation</h6>
 
-            @if($pollTitle)
-                <p class="text-muted mb-3">
-                    <strong>Question:</strong> {{ $pollTitle }}
-                </p>
-                <canvas id="pollChart" height="180"></canvas>
-            @else
-                <p class="text-muted">No recent poll available.</p>
-            @endif
+                    @if($pollTitle)
+                    <p class="text-muted mb-3">
+                        <strong>Question:</strong> {{ $pollTitle }}
+                    </p>
+                    <canvas id="pollChart" height="180"></canvas>
+                    @else
+                    <p class="text-muted">No recent poll available.</p>
+                    @endif
 
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
 
-<div class="col-12 col-xl-6">
+        <div class="col-12 col-xl-6">
             <div class="card radius-10">
                 <div class="card-body">
                     <h6 class="mb-3">Quick Actions</h6>
@@ -180,7 +191,7 @@
 
     </div>
 
-    
+
 </main>
 <!--end page content-->
 @endsection
@@ -191,10 +202,14 @@
         new Chart(ctxPoll, {
             type: 'bar',
             data: {
-                labels: {!! json_encode($pollLabels) !!},
+                labels: {
+                    !!json_encode($pollLabels) !!
+                },
                 datasets: [{
                     label: 'Votes',
-                    data: {!! json_encode($pollData) !!},
+                    data: {
+                        !!json_encode($pollData) !!
+                    },
                     backgroundColor: ['#0d6efd', '#ffc107', '#198754', '#dc3545', '#6f42c1']
                 }]
             },
@@ -203,7 +218,9 @@
                 plugins: {
                     title: {
                         display: true,
-                        text: {!! json_encode($pollTitle) !!}
+                        text: {
+                            !!json_encode($pollTitle) !!
+                        }
                     }
                 },
                 scales: {
@@ -219,20 +236,20 @@
     }
 </script>
 
-    <script>
-        const ctxRole = document.getElementById('roleChart').getContext('2d');
-        new Chart(ctxRole, {
-            type: 'pie',
-            data: {
-                labels: ['Member', 'Manager', 'President', 'Leader'],
-                datasets: [{
-                    data: [65, 10, 5, 20],
-                    backgroundColor: ['#0dcaf0', '#ffc107', '#dc3545', '#198754']
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-    </script>
+<script>
+    const ctxRole = document.getElementById('roleChart').getContext('2d');
+    new Chart(ctxRole, {
+        type: 'pie',
+        data: {
+            labels: ['Member', 'Manager', 'President', 'Leader'],
+            datasets: [{
+                data: [65, 10, 5, 20],
+                backgroundColor: ['#0dcaf0', '#ffc107', '#dc3545', '#198754']
+            }]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
 @endpush

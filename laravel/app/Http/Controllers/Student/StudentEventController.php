@@ -16,7 +16,12 @@ class StudentEventController extends Controller
         $user = Auth::user();
         $selectedClubID = request()->get('club_id');
 
-        $clubs = $user->memberships()->with('club')->get()->pluck('club');
+        $clubs = $user->memberships()
+            ->where('status', 'approved')
+            ->with('club')
+            ->get()
+            ->pluck('club');
+
 
         $eventsQuery = ClubEvent::whereIn('clubID', $clubs->pluck('clubID'))
             ->with(['club', 'participants']);
@@ -34,14 +39,15 @@ class StudentEventController extends Controller
 
     public function join(ClubEvent $event): RedirectResponse
     {
+        $this->ensureApprovedMemberOfClub($event->clubID);
+
         $userID = auth()->id();
 
-        // Zaten katılmış mı kontrol
         $exists = EventParticipant::where('eventID', $event->eventID)
             ->where('userID', $userID)
             ->exists();
 
-        if (!$exists) {
+        if (! $exists) {
             EventParticipant::create([
                 'eventID' => $event->eventID,
                 'userID' => $userID,
@@ -52,8 +58,12 @@ class StudentEventController extends Controller
         return back()->with('success', 'You have joined the event.');
     }
 
+
+
     public function leave(ClubEvent $event): RedirectResponse
     {
+        $this->ensureApprovedMemberOfClub($event->clubID);
+
         $userID = auth()->id();
 
         EventParticipant::where('eventID', $event->eventID)
