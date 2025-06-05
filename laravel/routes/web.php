@@ -23,6 +23,10 @@ use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ForumController;
 use App\Http\Controllers\Admin\ClubBudgetController;
+use App\Models\Chat;
+use App\Http\Controllers\ChatController2;
+use App\Http\Controllers\Admin\AdminDashboardController;
+
 
 
 Route::get('/', function () {
@@ -48,6 +52,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat/inbox', [ChatController::class, 'inbox'])->name('chat.inbox');
 });
 
+
+
+
+Route::get('/chat2', function () {
+    $messages = Chat::with('sender')->orderBy('created_at')->take(10)->get();
+    return view('chat2.chat', compact('messages'));
+})->name('chat2');
+
+Route::get('/chat/user-search', [ChatController::class, 'searchUser'])->name('chat.userSearch');
 
 
 
@@ -91,6 +104,30 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('/dashboard', function () {
             return view('students.leader.dashboard');
         })->name('dashboard');
+
+        Route::get('/my-resources', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
+            return redirect()->route('leader.resources', $club->clubID);
+        })->name('resources.my');
+
+        Route::get('/my-votes', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
+            return redirect()->route('leader.votes.index', $club->clubID);
+        })->name('votes.my');
+
+        Route::get('/my-events', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
+            return redirect()->route('leader.events.index', $club->clubID);
+        })->name('events.my');
+
+        Route::get('/leader/test-event-redirect', function () {
+            $leader = auth()->user();
+            $club = \App\Models\Club::where('leaderID', $leader->userID)->first();
+            dd($club);
+        });
 
         Route::get('/memberships', [MembershipController::class, 'index'])->name('memberships.index');
         Route::post('/memberships/{id}/approve', [MembershipController::class, 'approve'])->name('memberships.approve');
@@ -167,9 +204,12 @@ Route::middleware(['auth', 'role:admin'])
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+
+
+
+
+
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         // Clubs
         Route::post('/clubs/create', [ClubController::class, 'store'])->name('clubs.store');
@@ -231,7 +271,7 @@ Route::middleware(['auth', 'role:admin'])
 
 
 Route::get('/sensitive', function () {
-    return 'Hassas işlem';
+    return 'Sensitive Case';
 })->middleware(['auth', 'password.confirm']);
 
 Route::middleware(['auth'])

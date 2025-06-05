@@ -66,11 +66,11 @@
                 @if($club->budget)
                     <p class="mb-1">
                         <i class="bi bi-cash-coin text-success me-1"></i>
-                        <strong>Total Budget:</strong> {{ number_format($club->budget->total_budget, 2) }}₺
+                        <strong>Total Budget:</strong> ${{ number_format($club->budget->total_budget, 2) }}
                     </p>
                     <p class="mb-3">
                         <i class="bi bi-wallet2 text-warning me-1"></i>
-                        <strong>Budget Left:</strong> {{ number_format($club->budget->budget_left, 2) }}₺
+                        <strong>Budget Left:</strong> ${{ number_format($club->budget->budget_left, 2) }}
                     </p>
                 @else
                     <p class="text-muted mb-3">No budget assigned yet.</p>

@@ -58,7 +58,7 @@ class LeaderEventController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('leader.events.index', $club->clubID)
+        return redirect()->route('leader.events.index', ['club' => $club->clubID])
             ->with('success', 'Event created successfully.');
     }
 
@@ -82,7 +82,7 @@ class LeaderEventController extends Controller
 
         $event->update($validated);
 
-        return redirect()->route('leader.events.index', $club->clubID)
+        return redirect()->route('leader.events.index', ['club' => $club->clubID])
             ->with('success', 'Event updated successfully.');
     }
 

@@ -95,7 +95,8 @@
 
                                 <!-- Delete butonu -->
                                 <form action="{{ route('admin.notifications.destroy', $notif->notificationID) }}"
-                                    method="POST" onsubmit="return confirm('Are you sure you want to delete this notification?');">
+      method="POST" 
+      class="delete-notification-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger" title="Delete">
@@ -188,3 +189,30 @@
     });
 </script>
 @endpush
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.querySelectorAll('.delete-notification-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will permanently delete the notification.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+@endpush
+

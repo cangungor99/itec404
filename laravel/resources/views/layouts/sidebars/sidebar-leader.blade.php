@@ -34,7 +34,7 @@
     </li>
 
     <li>
-        <a href="{{ route('leader.my_resources') }}">
+        <a href="{{ route('leader.resources.my') }}">
             <div class="parent-icon"><i class="bi bi-folder-fill"></i></div>
             <div class="menu-title">Manage Resources</div>
         </a>
@@ -48,7 +48,7 @@
     </li>
 
     <li>
-        <a href="{{ route('leader.events.index', optional(\App\Models\Club::where('leaderID', auth()->id())->first())->clubID) }}">
+        <a href="{{ route('leader.events.my') }}">
             <div class="parent-icon"><i class="bi bi-calendar-event"></i></div>
             <div class="menu-title">Manage Events</div>
         </a>
@@ -113,3 +113,4 @@
         </a>
     </li>
 </ul>
+
