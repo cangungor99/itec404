@@ -4,45 +4,14 @@
         <i class="bi bi-list"></i>
     </div>
 
-    <form class="searchbar">
-        <div class="position-absolute top-50 translate-middle-y search-icon ms-3">
-            <i class="bi bi-search"></i>
-        </div>
-        <input class="form-control" type="text" placeholder="Type here to search">
-        <div class="position-absolute top-50 translate-middle-y search-close-icon">
-            <i class="bi bi-x-lg"></i>
-        </div>
-    </form>
+    
 
     <div class="top-navbar-right ms-auto">
         <ul class="navbar-nav align-items-center gap-1">
             {{-- mobil arama butonu --}}
-            <li class="nav-item search-toggle-icon d-flex d-lg-none">
-                <a class="nav-link" href="javascript:;">
-                    <i class="bi bi-search"></i>
-                </a>
-            </li>
+            
 
-            {{-- dil seçimi --}}
-            <li class="nav-item dropdown dropdown-language d-none d-sm-flex">
-                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
-                    <img src="{{ asset('assets/images/county/02.png') }}" width="22" alt="">
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end p-2">
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center py-2" href="#">
-                            <img src="{{ asset('assets/images/county/01.png') }}" width="20" alt="">
-                            <span class="ms-2">English</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center py-2" href="#">
-                            <img src="{{ asset('assets/images/county/02.png') }}" width="20" alt="">
-                            <span class="ms-2">Turkish</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+
 
             {{-- karanlık mod --}}
             <li class="nav-item dark-mode d-none d-sm-flex">
@@ -51,15 +20,7 @@
                 </a>
             </li>
 
-            {{-- uygulama kısayolları --}}
-            <li class="nav-item dropdown dropdown-large">
-                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
-                    <i class="bi bi-grid-3x3-gap-fill projects"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end">
-                    {{-- … uygulama ikonları burada kalabilir … --}}
-                </div>
-            </li>
+
 
             {{-- mesajlar --}}
             <li class="nav-item dropdown dropdown-large">

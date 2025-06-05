@@ -24,6 +24,8 @@ use App\Http\Controllers\Admin\ForumController;
 use App\Http\Controllers\Admin\ClubBudgetController;
 use App\Models\Chat;
 use App\Http\Controllers\ChatController2;
+use App\Http\Controllers\Admin\AdminDashboardController;
+
 
 
 Route::get('/', function () {
@@ -173,14 +175,25 @@ Route::middleware(['auth', 'role:leader'])
     });
 
 
+
+
+
+
+
+
+    // Admin Routes
+
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+
+
+
+
+
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
         // Clubs
         Route::post('/clubs/create', [ClubController::class, 'store'])->name('clubs.store');

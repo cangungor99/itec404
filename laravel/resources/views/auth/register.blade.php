@@ -14,7 +14,7 @@
             <div class="card shadow rounded-0 overflow-hidden">
                 <div class="row g-0">
                     <div class="col-lg-6 bg-login d-flex align-items-center justify-content-center">
-                        <img src="assets/images/error/login-img.jpg" class="img-fluid" alt="">
+                        <img src="assets/images/error/login-page.png" class="img-fluid" alt="">
                     </div>
                     <div class="col-lg-6">
                         <div class="card-body p-4 p-sm-5">
@@ -65,12 +65,12 @@
                                             <input type="password" name="password_confirmation" class="form-control radius-30 ps-5" id="inputChoosePasswordConfirmation" placeholder="Enter Password Confirmation" required>
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <!-- <div class="col-12">
                                         <div class="form-check form-switch">
                                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked">
                                             <label class="form-check-label" for="flexSwitchCheckChecked">I Agree to the Terms & Conditions</label>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-12">
                                         <div class="d-grid">
                                             <button type="submit" class="btn btn-primary radius-30">Sign Up</button>
