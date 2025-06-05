@@ -103,5 +103,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->roles->pluck('name')->intersect($roleNames)->isNotEmpty();
     }
-
+    public function notificationsWithStatus()
+    {
+        return $this->belongsToMany(Notification::class, 'notification_user', 'userID', 'notificationID')
+            ->withPivot('is_read')
+            ->withTimestamps();
+    }
 }

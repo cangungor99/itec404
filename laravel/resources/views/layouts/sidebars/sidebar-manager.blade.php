@@ -24,16 +24,48 @@
     </li>
 
     <li>
-        <a href="{{ route('manager.resources.index') }}">
+        <a href="{{ route('manager.budget.index') }}">
+            <div class="parent-icon"><i class="bi bi-cash"></i></div>
+            <div class="menu-title">Budget</div>
+        </a>
+    </li>
+
+    @php
+    $club = \App\Models\Club::where('managerID', auth()->id())->first();
+    @endphp
+
+    @if($club)
+    <li>
+        <a href="{{ route('manager.resources.index', $club->clubID) }}">
             <div class="parent-icon"><i class="bi bi-folder"></i></div>
             <div class="menu-title">Resources</div>
         </a>
     </li>
 
     <li>
-        <a href="{{ route('manager.budget.index') }}">
-            <div class="parent-icon"><i class="bi bi-cash"></i></div>
-            <div class="menu-title">Budget</div>
+        <a href="{{ route('manager.members', $club->clubID) }}">
+            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="menu-title">Club Members</div>
         </a>
     </li>
+    <li>
+        <a href="{{ route('manager.events.index', $club->clubID) }}">
+            <div class="parent-icon"><i class="bi bi-calendar-event"></i></div>
+            <div class="menu-title">Manage Events</div>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('manager.votes.index', $club->clubID) }}">
+            <div class="parent-icon"><i class="bi bi-bar-chart-line-fill"></i></div>
+            <div class="menu-title">Manage Votes</div>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('manager.memberships.index') }}">
+            <div class="parent-icon"><i class="bi bi-person-check"></i></div>
+            <div class="menu-title">Membership Approvals</div>
+        </a>
+    </li>
+
+    @endif
 </ul>

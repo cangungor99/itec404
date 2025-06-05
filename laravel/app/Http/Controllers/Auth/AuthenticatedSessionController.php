@@ -34,9 +34,11 @@ class AuthenticatedSessionController extends Controller
         $home = match ($role) {
             'admin'   => route('admin.dashboard'),
             'leader'  => route('leader.dashboard'),
+            'manager' => route('manager.dashboard'),
             'student' => route('students.dashboard'),
             default   => RouteServiceProvider::HOME,
         };
+
 
         return redirect()->intended($home);
     }

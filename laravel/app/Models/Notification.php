@@ -21,6 +21,7 @@ class Notification extends Model
     ];
 
     protected $casts = [
+        'is_read' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -33,5 +34,11 @@ class Notification extends Model
     public function club(): BelongsTo
     {
         return $this->belongsTo(Club::class, 'clubID');
+    }
+    public function readers()
+    {
+        return $this->belongsToMany(User::class, 'notification_user', 'notificationID', 'userID')
+            ->withPivot('is_read')
+            ->withTimestamps();
     }
 }

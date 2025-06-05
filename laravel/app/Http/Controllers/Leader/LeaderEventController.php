@@ -12,16 +12,19 @@ use Illuminate\Http\RedirectResponse;
 
 class LeaderEventController extends Controller
 {
-    protected function authorizeLeader(Club $club): void
+    protected function authorizeClubAccess(Club $club): void
     {
-        if (Auth::id() !== $club->leaderID) {
+        $userID = auth()->user()->userID;
+
+        if ($club->leaderID !== $userID && $club->managerID !== $userID) {
             abort(403, 'You are not authorized to access this club.');
         }
     }
 
+
     public function index(Club $club): View
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         $events = $club->events()
             ->with(['participants.user'])
@@ -32,13 +35,13 @@ class LeaderEventController extends Controller
 
     public function create(Club $club): View
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
         return view('leader.events.create', compact('club'));
     }
 
     public function store(Request $request, Club $club): RedirectResponse
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -64,13 +67,13 @@ class LeaderEventController extends Controller
 
     public function edit(Club $club, ClubEvent $event): View
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
         return view('leader.events.edit', compact('club', 'event'));
     }
 
     public function update(Request $request, Club $club, ClubEvent $event): RedirectResponse
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -88,7 +91,7 @@ class LeaderEventController extends Controller
 
     public function destroy(Club $club, ClubEvent $event): RedirectResponse
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
         $event->delete();
 
         return back()->with('success', 'Event deleted.');

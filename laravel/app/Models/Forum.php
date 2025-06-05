@@ -22,6 +22,10 @@ class Forum extends Model
         'status',
         'created_at',
     ];
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
+
 
     public function club(): BelongsTo
     {

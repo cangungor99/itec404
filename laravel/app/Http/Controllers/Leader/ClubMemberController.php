@@ -12,28 +12,58 @@ use Illuminate\Http\RedirectResponse;
 
 class ClubMemberController extends Controller
 {
+
+    protected function authorizeClubAccess(Club $club): void
+    {
+        $userID = Auth::id();
+
+        if ($club->leaderID !== $userID && $club->managerID !== $userID) {
+            abort(403, 'You are not authorized to access this club.');
+        }
+    }
+
+
     public function index(Club $club): View
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         $memberships = Membership::where('clubID', $club->clubID)
             ->where('status', 'approved')
             ->with('user')
             ->get();
 
-        return view('leader.clubs.members.index', compact('club', 'memberships'));
+        $canManageRoles = $club->managerID === Auth::id();
+
+        return view('leader.clubs.members.index', compact('club', 'memberships', 'canManageRoles'));
     }
 
-    protected function authorizeLeader(Club $club): void
+
+    public function setLeader(Club $club, $userID): RedirectResponse
     {
-        if (Auth::id() !== $club->leaderID) {
-            abort(403, 'You are not authorized to access this club.');
+        if (Auth::id() !== $club->managerID) {
+            abort(403, 'Only manager can assign leader.');
         }
+
+        $isMember = $club->memberships()
+            ->where('userID', $userID)
+            ->where('status', 'approved')
+            ->exists();
+
+        if (!$isMember) {
+            return back()->withErrors('Selected user is not an approved club member.');
+        }
+
+        $club->leaderID = $userID;
+        $club->save();
+
+        return back()->with('success', 'New leader assigned successfully.');
     }
+
+
 
     public function destroy(Club $club, Membership $membership): RedirectResponse
     {
-        $this->authorizeLeader($club);
+        $this->authorizeClubAccess($club);
 
         if ($membership->clubID !== $club->clubID) {
             abort(403, 'This membership does not belong to your club.');
