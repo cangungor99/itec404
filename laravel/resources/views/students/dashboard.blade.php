@@ -15,12 +15,9 @@
                     <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                         <div class="w-50">
                             <p>Total Forums</p>
-                            <h4 class="">12</h4>
+                            <h4 class="">{{ $totalForums }}</h4>
                         </div>
-                        <div class="w-50">
-                            <p class="mb-3 float-end text-success">+ 10% <i class="bi bi-arrow-up"></i></p>
-                            <div id="chart1"></div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -31,12 +28,9 @@
                     <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                         <div class="w-50">
                             <p>Total Forum Posts</p>
-                            <h4 class="">148</h4>
+                            <h4 class="">{{ $totalPosts }}</h4>
                         </div>
-                        <div class="w-50">
-                            <p class="mb-3 float-end text-danger">- 5% <i class="bi bi-arrow-down"></i></p>
-                            <div id="chart2"></div>
-                        </div>
+                       
                     </div>
                 </div>
             </div>
@@ -47,12 +41,9 @@
                     <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                         <div class="w-50">
                             <p>Upcoming Events</p>
-                            <h4 class="">6</h4>
+                            <h4 class="">{{ $upcomingEvents }}</h4>
                         </div>
-                        <div class="w-50">
-                            <p class="mb-3 float-end text-success">+ 20% <i class="bi bi-arrow-up"></i></p>
-                            <div id="chart3"></div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -63,12 +54,9 @@
                     <div class="d-flex align-items-stretch justify-content-between overflow-hidden">
                         <div class="w-50">
                             <p>Notifications</p>
-                            <h4 class="">25</h4>
+                            <h4 class="">{{ $totalNotifications }}</h4>
                         </div>
-                        <div class="w-50">
-                            <p class="mb-3 float-end text-success">+ 12% <i class="bi bi-arrow-up"></i></p>
-                            <div id="chart4"></div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -104,28 +92,21 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($recentNotifications as $index => $notification)
                                 <tr>
-                                    <td>1</td>
-                                    <td>Meeting Today at 5PM</td>
-                                    <td>Debate Club</td>
-                                    <td><span class="badge bg-success">Read</span></td>
-                                    <td>2025-05-07</td>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $notification->title }}</td>
+                                    <td>{{ $notification->club->name ?? 'N/A' }}</td>
+                                    <td>
+                                        <span class="badge {{ $notification->is_read ? 'bg-success' : 'bg-warning text-dark' }}">
+                                            {{ $notification->is_read ? 'Read' : 'Unread' }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $notification->created_at->format('Y-m-d') }}</td>
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>New Event Announcement</td>
-                                    <td>Drama Club</td>
-                                    <td><span class="badge bg-warning text-dark">Unread</span></td>
-                                    <td>2025-05-06</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Budget Report Uploaded</td>
-                                    <td>Science Club</td>
-                                    <td><span class="badge bg-success">Read</span></td>
-                                    <td>2025-05-05</td>
-                                </tr>
+                                @endforeach
                             </tbody>
+
                         </table>
                     </div>
                 </div>
@@ -136,32 +117,35 @@
             <div class="card radius-10 w-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
-                        <h6 class="mb-0">Event Participation</h6>
+                        <h6 class="mb-0">My Club Roles</h6>
                     </div>
-                    <div class="mt-3" id="chart5"></div>
-                    <div class="traffic-widget">
-                        <div class="progress-wrapper mb-3">
-                            <p class="mb-1">Going <span class="float-end">75%</span></p>
-                            <div class="progress rounded-0" style="height: 8px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 75%;"></div>
+                    <div class="mt-3">
+                        @forelse ($myClubRoles as $role)
+                        <div class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+                            <div>
+                                <h6 class="mb-0">{{ $role['club']->name }}</h6>
+                                <small class="text-muted">
+                                    {{-- Eğer category varsa göster, yoksa General yaz --}}
+                                    {{ $role['club']->category->name ?? 'General' }}
+                                </small>
                             </div>
+                            <span class="badge 
+                            @if ($role['type'] === 'leader') bg-primary 
+                            @elseif ($role['type'] === 'manager') bg-success 
+                            @else bg-secondary 
+                            @endif">
+                                {{ ucfirst($role['type']) }}
+                            </span>
                         </div>
-                        <div class="progress-wrapper mb-3">
-                            <p class="mb-1">Maybe <span class="float-end">15%</span></p>
-                            <div class="progress rounded-0" style="height: 8px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 15%;"></div>
-                            </div>
-                        </div>
-                        <div class="progress-wrapper mb-0">
-                            <p class="mb-1">Not Going <span class="float-end">10%</span></p>
-                            <div class="progress rounded-0" style="height: 8px;">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 10%;"></div>
-                            </div>
-                        </div>
+                        @empty
+                        <p class="text-muted mt-2">You are not part of any club yet.</p>
+                        @endforelse
                     </div>
                 </div>
             </div>
         </div>
+
+
     </div><!--end row-->
 
 </main>

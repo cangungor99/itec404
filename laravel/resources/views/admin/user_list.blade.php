@@ -109,7 +109,18 @@
                             <td>{{ $user->std_no }}</td>
                             <td>{{ $user->name }} {{ $user->surname }}</td>
                             <td>{{ $user->email }}</td>
-                            <td><em>Clubs to be implemented</em></td>
+                            <td>
+                                @foreach ($user->memberships as $membership)
+                                <div>
+                                    <strong>{{ $membership->club->name }}</strong>
+                                    <small class="text-muted">({{ ucfirst($membership->role) }})</small>
+                                </div>
+                                @endforeach
+                                @if ($user->memberships->isEmpty())
+                                <em>No club</em>
+                                @endif
+                            </td>
+
                             <td>{{ $user->created_at }}</td>
                             <td>
                                 <button class="btn btn-sm btn-warning me-1 btn-edit-user"
@@ -119,11 +130,10 @@
                                     data-surname="{{ $user->surname }}"
                                     data-email="{{ $user->email }}"
                                     data-roles="{{ implode(',', $user->roles->pluck('roleID')->toArray()) }}"
-
+                                    data-clubid="{{ optional($user->memberships->first())->clubID }}" {{-- Bu satırı ekledik --}}
                                     data-bs-toggle="modal" data-bs-target="#editUserModal">
                                     <i class="bi bi-pencil-fill"></i> Edit
                                 </button>
-
 
                                 <form action="{{ route('admin.users.destroy', $user->userID) }}" method="POST" class="d-inline delete-user-form" data-id="{{ $user->userID }}">
                                     @csrf
@@ -132,8 +142,8 @@
                                         <i class="bi bi-trash-fill"></i> Delete
                                     </button>
                                 </form>
-
                             </td>
+
                         </tr>
                         @endforeach
                     </tbody>
@@ -144,39 +154,93 @@
         </div>
     </div>
 </main>
+
 <!-- Edit User Modal -->
 <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content animate__animated animate__fadeIn">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editUserModalLabel"><i class="bi bi-pencil-fill"></i> Edit User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content animate__animated animate__fadeIn shadow rounded-4">
+            <div class="modal-header bg-primary text-white rounded-top-4">
+                <h5 class="modal-title" id="editUserModalLabel"><i class="bi bi-pencil-square me-2"></i>Edit User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form method="POST" action="" id="editUserForm">
+            <form method="POST" action="" id="editUserForm" class="p-4">
                 @csrf
                 @method('PUT')
                 <input type="hidden" name="userID" id="userID">
-                <input type="text" name="std_no" id="studentNo">
-                <input type="text" name="name" id="firstName">
-                <input type="text" name="surname" id="lastName">
-                <input type="email" name="email" id="email">
 
-                <label>Roles</label>
-                <select name="roles[]" id="roleSelect" class="form-select" multiple>
-                    @foreach($roles as $role)
-                    <option value="{{ $role->roleID }}">{{ $role->name }}</option>
-                    @endforeach
-                </select>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="studentNo" class="form-label">Student No</label>
+                        <input type="text" class="form-control" id="studentNo" name="std_no">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                </div>
 
-                <button type="submit" class="btn btn-success">Update</button>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" name="name">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" name="surname">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="roleSelect" class="form-label">Roles</label>
+                    <select class="form-select" name="roles[]" id="roleSelect" multiple>
+                        @foreach($roles as $role)
+                        <option value="{{ $role->roleID }}">{{ $role->name }}</option>
+                        @endforeach
+                    </select>
+                    <small class="text-muted">Tip: Hold Ctrl / Command to select multiple roles.</small>
+                </div>
+
+                <!-- Leader-specific section, shown conditionally -->
+                <div class="mb-3 d-none" id="clubSelectionBox">
+                    <label for="clubSelect" class="form-label">Select Club for Leadership</label>
+                    <select class="form-select" name="clubID" id="clubSelect">
+                        <option value="">-- Select Club --</option>
+                        @foreach ($clubs as $club)
+                        <option value="{{ $club->clubID }}">{{ $club->name }}</option>
+                        @endforeach
+                    </select>
+
+
+                    <small class="text-muted">Only required if role is Leader.</small>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="bi bi-check-circle me-1"></i>Update User
+                    </button>
+                </div>
             </form>
-
-
         </div>
     </div>
 </div>
 
+
+
+@if (session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: '{{ session('
+            success ') }}',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
+        });
+    });
+</script>
+@endif
 
 <!--end page main-->
 @endsection
@@ -184,27 +248,39 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    $('.btn-edit-user').on('click', function () {
+    $('.btn-edit-user').on('click', function() {
         const userID = $(this).data('id');
 
         $('#editUserForm').attr('action', `/admin/user_list/update/${userID}`);
-
         $('#userID').val(userID);
         $('#studentNo').val($(this).data('stdno'));
         $('#firstName').val($(this).data('name'));
         $('#lastName').val($(this).data('surname'));
         $('#email').val($(this).data('email'));
 
+        // Roller
         const roles = $(this).data('roles').toString().split(',');
         $('#roleSelect option').prop('selected', false);
         roles.forEach(role => {
             $(`#roleSelect option[value="${role}"]`).prop('selected', true);
         });
 
+        // Club ID (varsa seç, yoksa boş bırak)
+        const clubID = $(this).data('clubid');
+        if (clubID) {
+            $('#clubSelect').val(clubID);
+            $('#clubSelectionBox').removeClass('d-none');
+        } else {
+            $('#clubSelect').val('');
+            $('#clubSelectionBox').addClass('d-none');
+        }
+
+        // Modalı aç
         const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
         modal.show();
     });
 </script>
+
 
 <script>
     // SweetAlert ile silme onayı
@@ -230,4 +306,13 @@
     });
 </script>
 
+@endpush
+@push('scripts')
+<script>
+    document.getElementById('roleSelect').addEventListener('change', function() {
+        const selectedRoles = Array.from(this.selectedOptions).map(opt => opt.text.toLowerCase());
+        const showClubBox = selectedRoles.includes('leader') || selectedRoles.includes('manager');
+        document.getElementById('clubSelectionBox').classList.toggle('d-none', !showClubBox);
+    });
+</script>
 @endpush
