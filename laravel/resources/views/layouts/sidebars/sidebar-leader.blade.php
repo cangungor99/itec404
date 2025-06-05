@@ -54,24 +54,11 @@
         </a>
     </li>
 
-    <li>
-        <a href="{{ route('leader.forums.approved') }}">
-            <div class="parent-icon"><i class="bi bi-chat-left-text-fill"></i></div>
-            <div class="menu-title">Approved Forums</div>
-        </a>
-    </li>
 
     <li>
-        <a href="{{ route('leader.forums.pending') }}">
-            <div class="parent-icon"><i class="bi bi-chat-dots"></i></div>
-            <div class="menu-title">Pending Forums</div>
-        </a>
-    </li>
-
-    <li>
-        <a href="{{ route('leader.comments.pending') }}">
-            <div class="parent-icon"><i class="bi bi-chat-left-text"></i></div>
-            <div class="menu-title">Pending Comments</div>
+        <a href="{{ route('leader.forums.manage') }}">
+            <div class="parent-icon"><i class="bi bi-layout-text-sidebar-reverse"></i></div>
+            <div class="menu-title">Manage Forums & Comments</div>
         </a>
     </li>
 
@@ -113,4 +100,3 @@
         </a>
     </li>
 </ul>
-

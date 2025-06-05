@@ -1,0 +1,164 @@
+@extends('layouts.app')
+@section('title', 'Manage Forums & Comments')
+
+@section('content')
+<main class="page-content">
+
+    <!-- Breadcrumb -->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Forums</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Manage Forums</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    @if (session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    {{-- Pending Forums --}}
+    <div class="card shadow-sm radius-10 border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3"><i class="bi bi-hourglass-split text-warning me-2"></i>Pending Forum Requests</h5>
+            @if($pendingForums->isEmpty())
+            <div class="alert alert-info">No pending forums.</div>
+            @else
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Created By</th>
+                            <th>Club</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pendingForums as $forum)
+                        <tr>
+                            <td>{{ $forum->title }}</td>
+                            <td>{{ $forum->user->name }} {{ $forum->user->surname }}</td>
+                            <td>{{ $forum->club->name }}</td>
+                            <td>{{ $forum->created_at->format('Y-m-d H:i') }}</td>
+                            <td>
+                                <form method="POST" action="{{ route('leader.forums.approve', $forum->forumID) }}" class="d-inline">
+                                    @csrf
+                                    <button class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i></button>
+                                </form>
+                                <form method="POST" action="{{ route('leader.forums.reject', $forum->forumID) }}" class="d-inline">
+                                    @csrf
+                                    <button class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                                <a href="{{ route('leader.forums.show', $forum->forumID) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @endif
+        </div>
+    </div>
+
+
+    {{-- Pending Comments --}}
+    <div class="card shadow-sm radius-10 border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3"><i class="bi bi-chat-left-dots text-info me-2"></i>Pending Comments</h5>
+            @if($pendingComments->isEmpty())
+            <div class="alert alert-info">No pending comments.</div>
+            @else
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Message</th>
+                            <th>Forum</th>
+                            <th>Club</th>
+                            <th>User</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($pendingComments as $comment)
+                        <tr>
+                            <td>{{ Str::limit($comment->message, 100) }}</td>
+                            <td>{{ $comment->forum->title }}</td>
+                            <td>{{ $comment->forum->club->name }}</td>
+                            <td>{{ $comment->user->name }} {{ $comment->user->surname }}</td>
+                            <td>{{ $comment->created_at->format('Y-m-d H:i') }}</td>
+                            <td>
+                                <form method="POST" action="{{ route('leader.comments.approve', $comment->commentID) }}" class="d-inline">
+                                    @csrf
+                                    <button class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i></button>
+                                </form>
+                                <form method="POST" action="{{ route('leader.comments.reject', $comment->commentID) }}" class="d-inline">
+                                    @csrf
+                                    <button class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @endif
+        </div>
+    </div>
+
+    {{-- Approved Forums --}}
+    <div class="card shadow-sm radius-10 border-0 mb-4">
+        <div class="card-body">
+            <h5 class="card-title mb-3"><i class="bi bi-chat-dots text-success me-2"></i>Approved Forums</h5>
+            @if($approvedForums->isEmpty())
+            <div class="alert alert-info">No approved forums.</div>
+            @else
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Title</th>
+                            <th>Created By</th>
+                            <th>Club</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($approvedForums as $forum)
+                        <tr>
+                            <td>{{ $forum->title }}</td>
+                            <td>{{ $forum->user->name }} {{ $forum->user->surname }}</td>
+                            <td>{{ $forum->club->name }}</td>
+                            <td>{{ $forum->created_at->format('Y-m-d') }}</td>
+                            <td>
+                                <a href="{{ route('students.forums.show', $forum->forumID) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <form method="POST" action="{{ route('leader.forums.destroy', $forum->forumID) }}" class="d-inline"
+                                    onsubmit="return confirm('Delete this forum and all related content?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @endif
+        </div>
+    </div>
+
+</main>
+@endsection

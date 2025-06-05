@@ -12,8 +12,6 @@ use App\Http\Controllers\Student\StudentEventController;
 use App\Http\Controllers\Leader\ClubResourceController as LeaderClubResourceController;
 use App\Http\Controllers\Leader\MembershipController;
 use App\Http\Controllers\Leader\LeaderVoteController;
-use App\Http\Controllers\Leader\ForumApprovalController;
-use App\Http\Controllers\Leader\CommentApprovalController;
 use App\Http\Controllers\Leader\LeaderForumController;
 use App\Http\Controllers\Leader\LeaderEventController;
 use App\Http\Controllers\Leader\ClubMemberController;
@@ -142,13 +140,11 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('{club}/votes/{voting}/edit', [LeaderVoteController::class, 'edit'])->name('votes.edit');
         Route::put('{club}/votes/{voting}', [LeaderVoteController::class, 'update'])->name('votes.update');
         Route::get('{club}/votes/{voting}/results', [LeaderVoteController::class, 'results'])->name('votes.results');
-        Route::get('/forums/pending', [ForumApprovalController::class, 'index'])->name('forums.pending');
-        Route::post('/forums/{forum}/approve', [ForumApprovalController::class, 'approve'])->name('forums.approve');
-        Route::post('/forums/{forum}/reject', [ForumApprovalController::class, 'reject'])->name('forums.reject');
-
-        Route::get('/comments/pending', [CommentApprovalController::class, 'index'])->name('comments.pending');
-        Route::post('/comments/{comment}/approve', [CommentApprovalController::class, 'approve'])->name('comments.approve');
-        Route::post('/comments/{comment}/reject', [CommentApprovalController::class, 'reject'])->name('comments.reject');
+        Route::get('/forums/manage', [LeaderForumController::class, 'manage'])->name('forums.manage');
+        Route::post('/forums/{forum}/approve', [LeaderForumController::class, 'approve'])->name('forums.approve');
+        Route::post('/forums/{forum}/reject', [LeaderForumController::class, 'reject'])->name('forums.reject');
+        Route::post('/comments/{comment}/approve', [LeaderForumController::class, 'approveComment'])->name('comments.approve');
+        Route::post('/comments/{comment}/reject', [LeaderForumController::class, 'rejectComment'])->name('comments.reject');
         Route::get('/forums/approved', [LeaderForumController::class, 'published'])->name('forums.approved');
         Route::get('/forums/{forum}', [LeaderForumController::class, 'show'])->name('forums.show');
         Route::delete('/forums/{forum}', [LeaderForumController::class, 'destroy'])->name('forums.destroy');
