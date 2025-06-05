@@ -14,21 +14,58 @@
     }
 
     .chat-content {
-        flex-grow: 1;
-        overflow-y: auto;
-        padding: 1rem;
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow-y: auto;
+    padding: 1rem;
+    max-height: 750px;
+    scroll-behavior: smooth;
+}
+
+.chat-message-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
 
     .search-results {
-    border-top: 1px solid #eee;
-    padding-top: 5px;
-}
+        border-top: 1px solid #eee;
+        padding-top: 5px;
+    }
 
-.search-result-item:hover {
-    background-color: #f8f9fa;
-    cursor: pointer;
-}
+    .search-result-item:hover {
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+</style>
+<style>
+    .chat-message-wrapper {
+        flex-grow: 1;
+        overflow-y: auto;
+        max-height: 500px;
+        /* İstersen dinamik hale getirebilirsin */
+        padding: 1rem;
+        scroll-behavior: smooth;
+    }
 
+    /* Mobil görünüm için */
+    @media (max-width: 768px) {
+        .chat-wrapper {
+            flex-direction: column;
+        }
+
+        .chat-sidebar {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .chat-message-wrapper {
+            max-height: 300px;
+            padding: 0.75rem;
+        }
+    }
 </style>
 
 
@@ -84,8 +121,8 @@
                                     <div class="dropdown-menu p-3" style="min-width: 250px;">
                                         <!-- Arama kutusu burada olacak -->
                                         <div class="mb-2">
-                                        <input type="text" id="userSearchInput" class="form-control form-control-sm" placeholder="Search user...">
-                                        <div id="searchResults" class="search-results mt-2"></div>
+                                            <input type="text" id="userSearchInput" class="form-control form-control-sm" placeholder="Search user...">
+                                            <div id="searchResults" class="search-results mt-2"></div>
 
                                         </div>
                                         <div>
@@ -105,33 +142,15 @@
                         </div>
                         <div class="chat-list">
                             <div class="list-group list-group-flush">
-                                <a href="javascript:;" class="list-group-item">
-                                    <div class="d-flex">
-                                        <div class="chat-user-online">
-                                            <img src="../assets/images/avatars/avatar-2.png" width="42" height="42" class="rounded-circle" alt="" />
-                                        </div>
-                                        <div class="flex-grow-1 ms-2">
-                                            <h6 class="mb-0 chat-title">Louis Litt</h6>
-                                            <p class="mb-0 chat-msg">You just got LITT up, Mike.</p>
-                                        </div>
-                                        <div class="chat-time">9:51 AM</div>
-                                    </div>
-                                </a>
-                                <a href="javascript:;" class="list-group-item active">
-                                    <div class="d-flex">
-                                        <div class="chat-user-online">
-                                            <img src="../assets/images/avatars/avatar-3.png" width="42" height="42" class="rounded-circle" alt="" />
-                                        </div>
-                                        <div class="flex-grow-1 ms-2">
-                                            <h6 class="mb-0 chat-title">Harvey Specter</h6>
-                                            <p class="mb-0 chat-msg">Wrong. You take the gun....</p>
-                                        </div>
-                                        <div class="chat-time">4:32 PM</div>
-                                    </div>
-                                </a>
-
+                                @isset($recentChats)
+                                @include('chat2.components.recent-chats')
+                                @else
+                                <p class="text-muted p-3">Henüz sohbet yok.</p>
+                                @endisset
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -140,55 +159,29 @@
             <div class="chat-toggle-btn"><i class='bx bx-menu-alt-left'></i>
             </div>
             <div>
-            <h4 class="mb-1 font-weight-bold" id="selectedUserName">Seçilen Kişi</h4>
-            <input type="hidden" id="selectedUserID" name="receiver_id">
+                <h4 class="mb-1 font-weight-bold" id="selectedUserName"></h4>
+                <input type="hidden" id="selectedUserID" name="receiver_id">
 
 
 
             </div>
 
         </div>
-        <div class="chat-content">
-
-            <div class="chat-content">
-                @foreach ($messages as $msg)
-                @if ($msg->senderID === auth()->id())
-                <!-- Kullanıcıdan gelen mesaj -->
-                <div class="chat-content-rightside">
-                    <div class="d-flex ms-auto">
-                        <div class="flex-grow-1 me-2">
-                            <p class="mb-0 chat-time text-end">you, {{ $msg->created_at->format('H:i') }}</p>
-                            <p class="chat-right-msg">{{ $msg->message }}</p>
-                        </div>
-                    </div>
-                </div>
-                @else
-                <!-- Karşıdan gelen mesaj -->
-                <div class="chat-content-leftside">
-                    <div class="d-flex">
-                        <img src="{{ asset('assets/images/avatars/avatar-3.png') }}" width="48" height="48" class="rounded-circle" alt="" />
-                        <div class="flex-grow-1 ms-2">
-                            <p class="mb-0 chat-time">{{ $msg->sender->name ?? 'Kullanıcı' }}, {{ $msg->created_at->format('H:i') }}</p>
-                            <p class="chat-left-msg">{{ $msg->message }}</p>
-                        </div>
-                    </div>
-                </div>
-                @endif
-                @endforeach
-            </div>
+        <div class="chat-message-wrapper" id="chatMessages">
+    <p class="text-muted">Select an user ...</p>
+</div>
 
 
-        </div>
         <div class="chat-footer d-flex align-items-center">
             <div class="flex-grow-1 pe-2">
-                <div class="input-group"> 
-                    <input type="text" class="form-control" placeholder="Type a message">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="messageInput" placeholder="Type a message">
                 </div>
             </div>
             <div class="chat-footer-menu">
-                
 
-                <a href="javascript:;"><i class='bx bx-send'></i></a>
+
+                <a href="javascript:;" id="sendButton"><i class='bx bx-send'></i></a>
             </div>
         </div>
         <!--start chat overlay-->
@@ -201,86 +194,208 @@
 @endsection
 @push('scripts')
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.querySelector('.dropdown-menu input[type="text"]');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.querySelector('.dropdown-menu input[type="text"]');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
 
-    let resultsContainer = document.createElement('div');
-    resultsContainer.classList.add('search-results');
-    resultsContainer.style.maxHeight = "200px";
-    resultsContainer.style.overflowY = "auto";
-    resultsContainer.style.marginTop = "10px";
-    dropdownMenu.appendChild(resultsContainer);
+        let resultsContainer = document.createElement('div');
+        resultsContainer.classList.add('search-results');
+        resultsContainer.style.maxHeight = "200px";
+        resultsContainer.style.overflowY = "auto";
+        resultsContainer.style.marginTop = "10px";
+        dropdownMenu.appendChild(resultsContainer);
 
-    searchInput.addEventListener('input', function() {
-        const query = this.value.trim();
-        if (query.length < 2) {
-            resultsContainer.innerHTML = '';
-            return;
-        }
-
-        fetch(`/chat/user-search?q=${encodeURIComponent(query)}`)
-            .then(response => response.json())
-            .then(data => {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            if (query.length < 2) {
                 resultsContainer.innerHTML = '';
-                if (data.length === 0) {
-                    resultsContainer.innerHTML = '<p class="text-muted mb-0">No users found.</p>';
-                } else {
-                    data.forEach(user => {
-                        const item = document.createElement('div');
-                        item.className = 'search-result-item p-1';
-                        item.innerHTML = `
+                return;
+            }
+
+            fetch(`/chat/user-search?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultsContainer.innerHTML = '';
+                    if (data.length === 0) {
+                        resultsContainer.innerHTML = '<p class="text-muted mb-0">No users found.</p>';
+                    } else {
+                        data.forEach(user => {
+                            const item = document.createElement('div');
+                            item.className = 'search-result-item p-1';
+                            item.innerHTML = `
                             <strong>${user.name} ${user.surname}</strong><br>
                             <small class="text-muted">${user.email}</small>
                         `;
-                        resultsContainer.appendChild(item);
-                    });
-                }
-            });
+                            resultsContainer.appendChild(item);
+                        });
+                    }
+                });
+        });
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const chatBox = document.getElementById('chatMessages');
+        const userIDInput = document.getElementById('selectedUserID');
+
+        function fetchMessages() {
+            const receiverID = userIDInput.value;
+            if (!receiverID) return;
+
+            fetch(`/chat/fetch-messages?receiverID=${receiverID}`)
+                .then(response => response.text())
+                .then(html => {
+                    chatBox.innerHTML = html;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                });
+        }
+
+        // Her 5 saniyede bir mesajları yenile
+        setInterval(fetchMessages, 5000);
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const sendBtn = document.getElementById('sendButton');
+    const input = document.getElementById('messageInput');
+    const userIDInput = document.getElementById('selectedUserID');
+    const chatBox = document.getElementById('chatMessages');
+
+    function sendMessage() {
+        const message = input.value.trim();
+        const receiverID = userIDInput.value;
+
+        if (!message || !receiverID) return;
+
+        // --- Mesajı hemen göster (Optimistik UI)
+        const tempHTML = `
+            <div class="chat-content-rightside">
+                <div class="d-flex ms-auto">
+                    <div class="flex-grow-1 me-2">
+                        <p class="mb-0 chat-time text-end">you, şimdi</p>
+                        <p class="chat-right-msg">${message}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        chatBox.insertAdjacentHTML('beforeend', tempHTML);
+
+        // Mesaj kutusunu temizle
+        input.value = "";
+        input.focus();
+
+        // Scroll en aşağı
+        setTimeout(() => {
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 10);
+
+        // Sunucuya gerçek mesajı gönder
+        fetch("/chat/send", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                message: message,
+                receiverID: receiverID
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Gerekirse, optimistik mesajı silip sunucudan geleni tekrar ekleyebilirsin.
+            // Ama hızlı görünmesi için yukarıdaki sistem yeterlidir.
+        });
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
     });
 });
+
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const searchInput = document.getElementById('userSearchInput');
-    const resultsContainer = document.getElementById('searchResults');
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById('userSearchInput');
+        const resultsContainer = document.getElementById('searchResults');
 
-    searchInput.addEventListener('input', function () {
-        const query = this.value.trim();
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
 
-        if (query.length < 2) {
-            resultsContainer.innerHTML = '';
-            return;
-        }
-
-        fetch(`/chat/user-search?q=${encodeURIComponent(query)}`)
-            .then(response => response.json())
-            .then(data => {
+            if (query.length < 2) {
                 resultsContainer.innerHTML = '';
+                return;
+            }
 
-                if (data.length === 0) {
-                    resultsContainer.innerHTML = '<p class="text-muted mb-0">No users found.</p>';
-                } else {
-                    data.forEach(user => {
-                        const item = document.createElement('div');
-                        item.className = 'search-result-item p-1 border-bottom';
-                        item.innerHTML = `
+            fetch(`/chat/user-search?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultsContainer.innerHTML = '';
+
+                    if (data.length === 0) {
+                        resultsContainer.innerHTML = '<p class="text-muted mb-0">No users found.</p>';
+                    } else {
+                        data.forEach(user => {
+                            const item = document.createElement('div');
+                            item.className = 'search-result-item p-1 border-bottom';
+                            item.innerHTML = `
                             <strong>${user.name} ${user.surname}</strong><br>
                             <small class="text-muted">${user.email}</small>
                         `;
-                        item.style.cursor = 'pointer';
-                        item.onclick = function () {
-                            document.getElementById('selectedUserName').innerText = `${user.name} ${user.surname}`;
-                            document.getElementById('selectedUserID').value = user.userID;
-                            resultsContainer.innerHTML = '';
-                        };
-                        resultsContainer.appendChild(item);
-                    });
-                }
-            });
+                            item.style.cursor = 'pointer';
+                            item.onclick = function() {
+                                document.getElementById('selectedUserName').innerText = `${user.name} ${user.surname}`;
+                                document.getElementById('selectedUserID').value = user.userID;
+                                resultsContainer.innerHTML = '';
+                            };
+                            resultsContainer.appendChild(item);
+                        });
+                    }
+                });
+        });
     });
-});
+
+
+    function selectUser(userID, fullName) {
+        document.getElementById('selectedUserID').value = userID;
+        document.getElementById('selectedUserName').innerText = fullName;
+
+        // Eski mesajları temizle
+        const chatBox = document.getElementById('chatMessages');
+        chatBox.innerHTML = '<p class="text-muted">Loading...</p>';
+
+        // Fetch mesajlar
+        fetch(`/chat/fetch-messages?receiverID=${userID}`)
+            .then(response => response.text())
+            .then(html => {
+                chatBox.innerHTML = html;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+    }
+
+
+
+
+    function loadRecentChats() {
+        fetch("/chat/recent-chats")
+            .then(res => res.text())
+            .then(html => {
+                document.querySelector('.chat-list .list-group').innerHTML = html;
+            });
+    }
+
+
+
+    
+    // İlk sayfa yüklenince ve her 10 saniyede bir güncelle
+    loadRecentChats();
+    setInterval(loadRecentChats, 10000);
 </script>
 
 @endpush

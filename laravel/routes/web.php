@@ -42,13 +42,26 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/chat/club/{club}', [ChatController::class, 'indexClub'])->name('chat.club');
-    Route::post('/chat/club/{club}', [ChatController::class, 'storeClub'])->name('chat.club.send');
+    // Route::get('/chat/club/{club}', [ChatController::class, 'indexClub'])->name('chat.club');
+    // Route::post('/chat/club/{club}', [ChatController::class, 'storeClub'])->name('chat.club.send');
 
-    Route::get('/chat/private/{user}', [ChatController::class, 'indexPrivate'])->name('chat.private');
-    Route::post('/chat/private/{user}', [ChatController::class, 'storePrivate'])->name('chat.private.send');
+    // Route::get('/chat/private/{user}', [ChatController::class, 'indexPrivate'])->name('chat.private');
+    // Route::post('/chat/private/{user}', [ChatController::class, 'storePrivate'])->name('chat.private.send');
 
-    Route::get('/chat/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+    // Route::get('/chat/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::get('/chat/messages/{receiverID}', [ChatController2::class, 'getPrivateMessages'])->name('chat.getMessages');
+    Route::post('/chat/send', [ChatController2::class, 'storePrivateMessage'])->name('chat.sendPrivate');
+    Route::get('/chat/fetch-messages', [ChatController2::class, 'getMessagesBetween'])->name('chat.fetchMessages');
+    Route::get('/chat/private/{user}', [ChatController2::class, 'showPrivateChat'])->name('chat.private');
+    Route::get('/chat2', [ChatController2::class, 'index'])->name('chat2');
+    
+
+    Route::get('/chat/recent-chats', [ChatController2::class, 'getRecentChats']);
+    
+    
+
+
+
     Route::get('/chat/inbox', [ChatController::class, 'inbox'])->name('chat.inbox');
 });
 
