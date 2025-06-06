@@ -273,7 +273,10 @@ Route::middleware(['auth', 'role:admin'])
         Route::delete('/user_list/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy');
         Route::put('/user_list/update/{id}', [UserController::class, 'update'])->name('users.update');
 
-
+        //view report
+        Route::get('/admin/view-report', function () {
+            return view('admin.view_report');
+        })->name('admin.view_report')->middleware(['auth', 'role:admin']);
 
         Route::get('/manage_votes', [App\Http\Controllers\Admin\VoteController::class, 'index'])->name('manage_votes');
 
