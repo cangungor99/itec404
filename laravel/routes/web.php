@@ -16,6 +16,7 @@ use App\Http\Controllers\Leader\LeaderForumController;
 use App\Http\Controllers\Leader\LeaderEventController;
 use App\Http\Controllers\Leader\ClubMemberController;
 use App\Http\Controllers\Manager\ManagerClubController;
+use App\Http\Controllers\Manager\BudgetController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\UserController;
@@ -197,9 +198,13 @@ Route::middleware(['auth', 'role:manager'])
         })->name('dashboard');
 
         Route::get('/club', [ManagerClubController::class, 'show'])->name('club.show');
+        Route::get('/club/edit', [ManagerClubController::class, 'edit'])->name('club.edit');
+        Route::post('/club/update', [ManagerClubController::class, 'update'])->name('club.update');
 
 
-        Route::get('/budget', [\App\Http\Controllers\Manager\BudgetController::class, 'index'])->name('budget.index');
+        Route::get('/budget', [BudgetController::class, 'index'])->name('budget.index');
+        Route::post('/budget/update', [BudgetController::class, 'update'])->name('budget.update');
+
         Route::get('club/{club}/members', [ClubMemberController::class, 'index'])->name('members');
         Route::delete('club/{club}/members/{membership}', [ClubMemberController::class, 'destroy'])->name('members.destroy');
         Route::post('club/{club}/set-leader/{userID}', [ClubMemberController::class, 'setLeader'])->name('club.set_leader');
@@ -240,11 +245,6 @@ Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-
-
-
-
-
 
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 

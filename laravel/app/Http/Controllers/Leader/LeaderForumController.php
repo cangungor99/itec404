@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Forum;
 use App\Models\ForumComment;
+use App\Models\Club;
 use Illuminate\Http\RedirectResponse;
 
 class LeaderForumController extends Controller
 {
 
-    protected function authorizeClubAccess(\App\Models\Club $club): void
+    protected function authorizeClubAccess($club): void
     {
         $userID = auth()->user()->userID;
 
@@ -23,8 +24,14 @@ class LeaderForumController extends Controller
 
     public function manage()
     {
-        $leaderID = auth()->id();
-        $club = \App\Models\Club::where('leaderID', $leaderID)->firstOrFail();
+        $userID = auth()->user()->userID;
+
+        $club = \App\Models\Club::where(function ($q) use ($userID) {
+            $q->where('leaderID', $userID)
+                ->orWhere('managerID', $userID);
+        })->firstOrFail();
+
+        $this->authorizeClubAccess($club);
 
         $pendingForums = Forum::with('user', 'club')
             ->where('clubID', $club->clubID)
@@ -39,7 +46,7 @@ class LeaderForumController extends Controller
             ->get();
 
         $pendingComments = ForumComment::where('status', 'pending')
-            ->whereHas('forum.club', fn($q) => $q->where('leaderID', $leaderID))
+            ->whereHas('forum.club', fn($q) => $q->where('clubID', $club->clubID))
             ->with('user', 'forum.club')
             ->latest()
             ->get();
@@ -65,7 +72,7 @@ class LeaderForumController extends Controller
 
     public function approve(Forum $forum)
     {
-       $this->authorizeClubAccess($forum->club);
+        $this->authorizeClubAccess($forum->club);
         $forum->update(['status' => 'approved']);
 
         return back()->with('success', 'Forum approved.');
@@ -96,5 +103,4 @@ class LeaderForumController extends Controller
 
         return back()->with('success', 'Comment rejected and deleted.');
     }
-
 }
