@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    // Route::get('/chat/club/{club}', [ChatController::class, 'indexClub'])->name('chat.club');
+    Route::get('/chat/club/{club}', [ChatController::class, 'indexClub'])->name('chat.club');
     // Route::post('/chat/club/{club}', [ChatController::class, 'storeClub'])->name('chat.club.send');
 
     // Route::get('/chat/private/{user}', [ChatController::class, 'indexPrivate'])->name('chat.private');
@@ -54,12 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat/fetch-messages', [ChatController2::class, 'getMessagesBetween'])->name('chat.fetchMessages');
     Route::get('/chat/private/{user}', [ChatController2::class, 'showPrivateChat'])->name('chat.private');
     Route::get('/chat2', [ChatController2::class, 'index'])->name('chat2');
-    
-
     Route::get('/chat/recent-chats', [ChatController2::class, 'getRecentChats']);
-    
-    
-
 
 
     Route::get('/chat/inbox', [ChatController::class, 'inbox'])->name('chat.inbox');
@@ -83,7 +78,7 @@ Route::middleware(['auth', 'role:student,leader'])
     ->prefix('students')
     ->name('students.')
     ->group(function () {
-        
+
 
         Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
 
@@ -116,7 +111,7 @@ Route::middleware(['auth', 'role:leader'])
     ->name('leader.')
     ->group(function () {
         Route::get('/dashboard', [LeaderDashboardController::class, 'index'])->name('dashboard');
-        
+
 
         Route::get('/my-resources', function () {
             $leader = auth()->user();
@@ -227,6 +222,14 @@ Route::middleware(['auth', 'role:manager'])
         Route::get('/memberships', [MembershipController::class, 'index'])->name('memberships.index');
         Route::post('/memberships/{id}/approve', [MembershipController::class, 'approve'])->name('memberships.approve');
         Route::post('/memberships/{id}/reject', [MembershipController::class, 'reject'])->name('memberships.reject');
+        Route::get('/forums/manage', [LeaderForumController::class, 'manage'])->name('forums.manage');
+        Route::post('/forums/{forum}/approve', [LeaderForumController::class, 'approve'])->name('forums.approve');
+        Route::post('/forums/{forum}/reject', [LeaderForumController::class, 'reject'])->name('forums.reject');
+        Route::post('/comments/{comment}/approve', [LeaderForumController::class, 'approveComment'])->name('comments.approve');
+        Route::post('/comments/{comment}/reject', [LeaderForumController::class, 'rejectComment'])->name('comments.reject');
+        Route::get('/forums/approved', [LeaderForumController::class, 'published'])->name('forums.approved');
+        Route::get('/forums/{forum}', [LeaderForumController::class, 'show'])->name('forums.show');
+        Route::delete('/forums/{forum}', [LeaderForumController::class, 'destroy'])->name('forums.destroy');
     });
 
 

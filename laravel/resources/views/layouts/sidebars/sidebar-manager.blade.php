@@ -66,6 +66,11 @@
             <div class="menu-title">Membership Approvals</div>
         </a>
     </li>
-
+    <li>
+        <a href="{{ route('manager.forums.manage') }}">
+            <div class="parent-icon"><i class="bi bi-chat-left-text"></i></div>
+            <div class="menu-title">Forum Management</div>
+        </a>
+    </li>
     @endif
 </ul>
