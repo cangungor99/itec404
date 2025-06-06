@@ -11,6 +11,16 @@ use Illuminate\Http\RedirectResponse;
 
 class LeaderForumController extends Controller
 {
+
+    protected function authorizeClubAccess(\App\Models\Club $club): void
+    {
+        $userID = auth()->user()->userID;
+
+        if ($club->leaderID !== $userID && $club->managerID !== $userID) {
+            abort(403, 'You are not authorized to access this club.');
+        }
+    }
+
     public function manage()
     {
         $leaderID = auth()->id();
@@ -39,7 +49,7 @@ class LeaderForumController extends Controller
 
     public function show(Forum $forum)
     {
-        $this->authorizeLeader($forum);
+        $this->authorizeClubAccess($forum->club);
 
         $forum->load([
             'user',
@@ -55,7 +65,7 @@ class LeaderForumController extends Controller
 
     public function approve(Forum $forum)
     {
-        $this->authorizeLeader($forum);
+       $this->authorizeClubAccess($forum->club);
         $forum->update(['status' => 'approved']);
 
         return back()->with('success', 'Forum approved.');
@@ -63,7 +73,7 @@ class LeaderForumController extends Controller
 
     public function reject(Forum $forum)
     {
-        $this->authorizeLeader($forum);
+        $this->authorizeClubAccess($forum->club);
         $forum->comments()->delete();
         $forum->attachments()->delete();
         $forum->delete();
@@ -73,7 +83,7 @@ class LeaderForumController extends Controller
 
     public function approveComment(ForumComment $comment)
     {
-        $this->authorizeLeader($comment);
+        $this->authorizeClubAccess($comment->forum->club);
         $comment->update(['status' => 'approved']);
 
         return back()->with('success', 'Comment approved.');
@@ -81,20 +91,10 @@ class LeaderForumController extends Controller
 
     public function rejectComment(ForumComment $comment)
     {
-        $this->authorizeLeader($comment);
+        $this->authorizeClubAccess($comment->forum->club);
         $comment->delete();
 
         return back()->with('success', 'Comment rejected and deleted.');
     }
 
-    protected function authorizeLeader($model)
-    {
-        $club = $model instanceof Forum
-            ? $model->club
-            : ($model instanceof ForumComment ? $model->forum->club : null);
-
-        if (!$club || Auth::id() !== $club->leaderID) {
-            abort(403, 'Unauthorized');
-        }
-    }
 }

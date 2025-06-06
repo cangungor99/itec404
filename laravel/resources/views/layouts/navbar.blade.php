@@ -4,12 +4,12 @@
         <i class="bi bi-list"></i>
     </div>
 
-    
+
 
     <div class="top-navbar-right ms-auto">
         <ul class="navbar-nav align-items-center gap-1">
             {{-- mobil arama butonu --}}
-            
+
 
 
 

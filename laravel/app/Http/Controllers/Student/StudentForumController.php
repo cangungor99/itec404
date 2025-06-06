@@ -10,26 +10,51 @@ use Illuminate\Support\Facades\Auth;
 
 class StudentForumController extends Controller
 {
+    protected function ensureApprovedMemberOfClub($clubID)
+    {
+        $user = auth()->user();
+
+        $isMember = $user->memberships()
+            ->where('clubID', $clubID)
+            ->where('status', 'approved')
+            ->exists();
+
+        if (! $isMember) {
+            abort(403, 'You are not an approved member of this club.');
+        }
+    }
+
     public function index()
     {
         $user = Auth::user();
-        $clubIDs = $user->memberships()->pluck('clubID');
+
+        $approvedMemberships = $user->memberships()
+            ->where('status', 'approved')
+            ->with('club')
+            ->get();
+
+        $clubIDs = $approvedMemberships->pluck('clubID');
+
+        $clubs = $approvedMemberships->pluck('club', 'clubID');
 
         $forums = Forum::whereIn('clubID', $clubIDs)
-            ->where('status', 'approved') // ✅ sadece onaylı olanlar
+            ->where('status', 'approved')
             ->with('user', 'club')
             ->latest()
             ->get();
 
-        // ✅ Katıldığı kulüplerin bilgilerini ekle
-        $clubs = $user->memberships()->with('club')->get()->pluck('club', 'clubID');
-
         return view('students.forums.index', compact('forums', 'clubs'));
     }
 
+
     public function create()
     {
-        $clubs = Auth::user()->memberships()->with('club')->get()->pluck('club', 'clubID');
+        $clubs = Auth::user()->memberships()
+            ->where('status', 'approved')
+            ->with('club')
+            ->get()
+            ->pluck('club', 'clubID');
+
         return view('students.forums.create', compact('clubs'));
     }
 
@@ -40,6 +65,8 @@ class StudentForumController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
+
+        $this->ensureApprovedMemberOfClub($validated['clubID']);
 
         Forum::create([
             'clubID' => $validated['clubID'],
@@ -55,6 +82,8 @@ class StudentForumController extends Controller
 
     public function show(Forum $forum)
     {
+        $this->ensureApprovedMemberOfClub($forum->clubID);
+
         $forum->load([
             'user',
             'club',
@@ -65,8 +94,11 @@ class StudentForumController extends Controller
         ]);
         return view('students.forums.show', compact('forum'));
     }
+
     public function comment(Request $request, Forum $forum)
     {
+        $this->ensureApprovedMemberOfClub($forum->clubID);
+
         $validated = $request->validate([
             'message' => 'required|string|max:1000',
             'parentID' => 'nullable|exists:forum_comments,commentID',
