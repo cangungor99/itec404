@@ -1,18 +1,21 @@
 @extends('layouts.app')
 @section('title', 'Club Events')
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
 <main class="page-content">
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Events</div>
         <div class="ms-auto">
-            <a href="{{ route('leader.events.create', $club->clubID) }}" class="btn btn-primary">
+            <a href="{{ route($prefix.'.events.create', $club->clubID) }}" class="btn btn-primary">
                 <i class="bi bi-plus-circle me-1"></i> Create Event
             </a>
         </div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Event List</li>
                 </ol>
             </nav>
@@ -67,8 +70,8 @@
 
                         <p><i class="bi bi-geo-alt me-1"></i>{{ $event->location }}</p>
                         <div class="mt-2">
-                            <a href="{{ route('leader.events.edit', [$club->clubID, $event->eventID]) }}" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="{{ route('leader.events.destroy', [$club->clubID, $event->eventID]) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this event?')">
+                            <a href="{{ route($prefix.'.events.edit', [$club->clubID, $event->eventID]) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <form action="{{ route($prefix.'.events.destroy', [$club->clubID, $event->eventID]) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this event?')">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-sm btn-danger">Delete</button>

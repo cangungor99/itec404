@@ -35,7 +35,6 @@ class StudentVoteController extends Controller
 
         $votings = Voting::whereIn('clubID', $clubIDs)
             ->where('start_date', '<=', now())
-            ->where('end_date', '>=', now())
             ->with('club')
             ->latest()
             ->get();
@@ -50,11 +49,12 @@ class StudentVoteController extends Controller
         $hasVoted = Vote::where('userID', Auth::id())
             ->where('votingID', $voting->votingID)
             ->exists();
+        $isVotingEnded = now()->gt($voting->end_date);
 
         $options = $voting->options()->withCount('votes')->get();
         $totalVotes = $options->sum('votes_count');
 
-        return view('students.votes.show', compact('voting', 'options', 'hasVoted', 'totalVotes'));
+        return view('students.votes.show', compact('voting', 'options', 'hasVoted', 'totalVotes', 'isVotingEnded'));
     }
 
 
@@ -76,10 +76,22 @@ class StudentVoteController extends Controller
             return back()->with('error', 'You have already voted.');
         }
 
+        if (now()->gt($voting->end_date)) {
+            return back()->with('error', 'Voting has ended.');
+        }
+
+        $option = VotingOption::where('optionID', $request->option_id)
+            ->where('votingID', $voting->votingID)
+            ->first();
+
+        if (! $option) {
+            return back()->with('error', 'Invalid voting option.');
+        }
+
         Vote::create([
             'votingID' => $voting->votingID,
             'userID' => $userID,
-            'optionID' => $request->option_id,
+            'optionID' => $option->optionID,
             'timestamp' => now(),
         ]);
 

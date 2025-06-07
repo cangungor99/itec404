@@ -17,7 +17,7 @@
                             <p>Total Forums</p>
                             <h4 class="">{{ $totalForums }}</h4>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                             <p>Total Forum Posts</p>
                             <h4 class="">{{ $totalPosts }}</h4>
                         </div>
-                       
+
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                             <p>Upcoming Events</p>
                             <h4 class="">{{ $upcomingEvents }}</h4>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@
                             <p>Notifications</p>
                             <h4 class="">{{ $totalNotifications }}</h4>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -96,15 +96,16 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $notification->title }}</td>
-                                    <td>{{ $notification->club->name ?? 'N/A' }}</td>
+                                    <td>{{ $notification->club_name ?? 'N/A' }}</td>
                                     <td>
                                         <span class="badge {{ $notification->is_read ? 'bg-success' : 'bg-warning text-dark' }}">
                                             {{ $notification->is_read ? 'Read' : 'Unread' }}
                                         </span>
                                     </td>
-                                    <td>{{ $notification->created_at->format('Y-m-d') }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($notification->created_at)->format('Y-m-d') }}</td>
                                 </tr>
                                 @endforeach
+
                             </tbody>
 
                         </table>
@@ -129,10 +130,10 @@
                                     {{ $role['club']->category->name ?? 'General' }}
                                 </small>
                             </div>
-                            <span class="badge 
-                            @if ($role['type'] === 'leader') bg-primary 
-                            @elseif ($role['type'] === 'manager') bg-success 
-                            @else bg-secondary 
+                            <span class="badge
+                            @if ($role['type'] === 'leader') bg-primary
+                            @elseif ($role['type'] === 'manager') bg-success
+                            @else bg-secondary
                             @endif">
                                 {{ ucfirst($role['type']) }}
                             </span>

@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Create Event')
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
 <main class="page-content">
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -7,7 +10,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Create Event</li>
                 </ol>
             </nav>
@@ -17,7 +20,7 @@
     <div class="card shadow-sm radius-10 border-0 animate__animated animate__fadeInUp">
         <div class="card-body">
             <h5 class="card-title mb-4"><i class="bi bi-calendar-plus me-2 text-primary"></i>Create New Event</h5>
-            <form action="{{ route('leader.events.store', $club->clubID) }}" method="POST">
+            <form action="{{ route($prefix.'.events.store', $club->clubID) }}" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label for="eventTitle" class="form-label">Event Title</label>

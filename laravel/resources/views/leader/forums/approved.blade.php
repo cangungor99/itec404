@@ -1,7 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Approved Forums')
 @section('content')
-
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 <main class="page-content">
 
     <!-- Breadcrumb -->
@@ -11,7 +13,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item">
-                        <a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a>
+                        <a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">Approved Forums</li>
                 </ol>
@@ -49,10 +51,10 @@
                                 <td>{{ \Carbon\Carbon::parse($forum->created_at)->format('Y-m-d') }}</td>
                                 <td>{{ $forum->club->name }}</td>
                                 <td>
-                                    <a href="{{ route('leader.forums.show', $forum->forumID) }}" class="btn btn-sm btn-outline-primary">
+                                    <a href="{{ route($prefix.'.forums.show', $forum->forumID) }}" class="btn btn-sm btn-outline-primary">
                                         <i class="bi bi-eye"></i> View
                                     </a>
-                                    <form method="POST" action="{{ route('leader.forums.destroy', $forum->forumID) }}" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this forum and all its content?')">
+                                    <form method="POST" action="{{ route($prefix.'.forums.destroy', $forum->forumID) }}" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this forum and all its content?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger">

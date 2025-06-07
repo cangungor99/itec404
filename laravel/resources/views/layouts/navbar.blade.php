@@ -95,13 +95,16 @@
                     </div>
                     <div class="header-notifications-list p-2">
                         @forelse($notifications as $notification)
-                        <a class="dropdown-item" href="#">
+                        @php
+                        $isUnread = in_array($notification->notificationID, $unreadNotificationIDs ?? []);
+                        @endphp
+                        <a class="dropdown-item {{ $isUnread ? 'bg-light' : '' }}" href="{{ route('notifications.index') }}">
                             <div class="d-flex align-items-center">
-                                <div class="notification-box bg-light-primary text-primary">
+                                <div class="notification-box {{ $isUnread ? 'bg-warning text-dark' : 'bg-light-primary text-primary' }}">
                                     <i class="bi bi-bell-fill"></i>
                                 </div>
                                 <div class="ms-3 flex-grow-1">
-                                    <h6 class="mb-0 dropdown-msg-user">
+                                    <h6 class="mb-0 dropdown-msg-user {{ $isUnread ? 'fw-bold' : '' }}">
                                         {{ $notification->title }}
                                         <span class="msg-time float-end text-secondary">
                                             {{ $notification->created_at->diffForHumans() }}
@@ -116,6 +119,7 @@
                         @empty
                         <p class="text-center text-secondary">No notifications</p>
                         @endforelse
+
                     </div>
                     <div class="p-2">
                         <hr class="dropdown-divider">

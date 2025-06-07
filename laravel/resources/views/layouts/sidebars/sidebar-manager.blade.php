@@ -41,7 +41,12 @@
             <div class="menu-title">Resources</div>
         </a>
     </li>
-
+    <li>
+        <a href="{{ route('notifications.create', ['role' => 'manager']) }}">
+            <div class="parent-icon"><i class="bi bi-bell"></i></div>
+            <div class="menu-title">Notifications</div>
+        </a>
+    </li>
     <li>
         <a href="{{ route('manager.members', $club->clubID) }}">
             <div class="parent-icon"><i class="bi bi-people-fill"></i></div>

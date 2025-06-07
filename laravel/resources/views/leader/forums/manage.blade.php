@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Manage Forums & Comments')
-
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
 <main class="page-content">
 
@@ -10,7 +12,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Manage Forums</li>
                 </ol>
             </nav>
@@ -47,15 +49,15 @@
                             <td>{{ $forum->club->name }}</td>
                             <td>{{ $forum->created_at->format('Y-m-d H:i') }}</td>
                             <td>
-                                <form method="POST" action="{{ route('leader.forums.approve', $forum->forumID) }}" class="d-inline">
+                                <form method="POST" action="{{ route($prefix.'.forums.approve', $forum->forumID) }}" class="d-inline">
                                     @csrf
                                     <button class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i></button>
                                 </form>
-                                <form method="POST" action="{{ route('leader.forums.reject', $forum->forumID) }}" class="d-inline">
+                                <form method="POST" action="{{ route($prefix.'.forums.reject', $forum->forumID) }}" class="d-inline">
                                     @csrf
                                     <button class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></button>
                                 </form>
-                                <a href="{{ route('leader.forums.show', $forum->forumID) }}" class="btn btn-outline-primary btn-sm">
+                                <a href="{{ route($prefix.'.forums.show', $forum->forumID) }}" class="btn btn-outline-primary btn-sm">
                                     <i class="bi bi-eye"></i>
                                 </a>
                             </td>
@@ -95,13 +97,13 @@
                             <td>{{ $comment->forum->title }}</td>
                             <td>{{ $comment->forum->club->name }}</td>
                             <td>{{ $comment->user->name }} {{ $comment->user->surname }}</td>
-                            <td>{{ $comment->created_at->format('Y-m-d H:i') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($comment->created_at)->format('Y-m-d H:i') }}</td>
                             <td>
-                                <form method="POST" action="{{ route('leader.comments.approve', $comment->commentID) }}" class="d-inline">
+                                <form method="POST" action="{{ route($prefix.'.comments.approve', $comment->commentID) }}" class="d-inline">
                                     @csrf
                                     <button class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i></button>
                                 </form>
-                                <form method="POST" action="{{ route('leader.comments.reject', $comment->commentID) }}" class="d-inline">
+                                <form method="POST" action="{{ route($prefix.'.comments.reject', $comment->commentID) }}" class="d-inline">
                                     @csrf
                                     <button class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></button>
                                 </form>
@@ -144,7 +146,7 @@
                                 <a href="{{ route('students.forums.show', $forum->forumID) }}" class="btn btn-outline-primary btn-sm">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <form method="POST" action="{{ route('leader.forums.destroy', $forum->forumID) }}" class="d-inline"
+                                <form method="POST" action="{{ route($prefix.'.forums.destroy', $forum->forumID) }}" class="d-inline"
                                     onsubmit="return confirm('Delete this forum and all related content?')">
                                     @csrf
                                     @method('DELETE')

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use App\Models\VotingOption;
 
 class VoteController extends Controller
 {
@@ -32,9 +35,6 @@ class VoteController extends Controller
 
 
 
-
-
-
     public function create()
     {
         $clubs = DB::table('clubs')->select('clubID', 'name')->get();
@@ -58,8 +58,8 @@ class VoteController extends Controller
             'clubID' => $request->clubID,
             'title' => $request->title,
             'description' => $request->description,
-            'start_date' => \Carbon\Carbon::parse($request->start_date)->format('Y-m-d H:i:s'),
-            'end_date'   => \Carbon\Carbon::parse($request->end_date)->format('Y-m-d H:i:s'),
+            'start_date' => Carbon::parse($request->start_date)->format('Y-m-d H:i'),
+            'end_date'   => Carbon::parse($request->end_date)->format('Y-m-d H:i'),
         ]);
 
 
@@ -72,8 +72,6 @@ class VoteController extends Controller
 
         return redirect()->route('admin.create_vote')->with('success', 'Voting created successfully!');
     }
-
-
 
 
     public function update(Request $request, $id)
@@ -89,11 +87,34 @@ class VoteController extends Controller
         DB::table('votings')->where('votingID', $id)->update([
             'title' => $request->title,
             'description' => $request->description,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
+            'start_date' => Carbon::parse($request->start_date)->format('Y-m-d H:i'),
+            'end_date' => Carbon::parse($request->end_date)->format('Y-m-d H:i'),
             'clubID' => $request->clubID,
         ]);
 
         return redirect()->route('admin.manage_votes')->with('success', 'Voting updated successfully!');
+    }
+
+
+    public function results($id): JsonResponse
+    {
+        $options = VotingOption::where('votingID', $id)
+            ->withCount('votes')
+            ->get();
+
+        $totalVotes = $options->sum('votes_count');
+
+        $data = $options->map(function ($option) use ($totalVotes) {
+            return [
+                'option' => $option->option_text,
+                'votes' => $option->votes_count,
+                'percent' => $totalVotes > 0 ? round(($option->votes_count / $totalVotes) * 100) : 0,
+            ];
+        });
+
+        return response()->json([
+            'total' => $totalVotes,
+            'results' => $data,
+        ]);
     }
 }

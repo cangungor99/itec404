@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Vote Detail')
-
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
 <main class="page-content">
     <!--breadcrumb-->
@@ -9,7 +11,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Vote Results</li>
                 </ol>
             </nav>

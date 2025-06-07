@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('title', 'Manage Votes')
-
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
+
 <!--start content-->
 <main class="page-content">
 
@@ -11,7 +14,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Manage Votes</li>
                 </ol>
             </nav>
@@ -69,9 +72,9 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         {{-- Edit opsiyonu opsiyonel: gerekirse eklenir --}}
-                                        <a href="{{ route('leader.votes.edit', [$club->clubID, $voting->votingID]) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="{{ route('leader.votes.results', [$club->clubID, $voting->votingID]) }}" class="btn btn-outline-info btn-sm"><i class="bi bi-bar-chart-line"></i></a>
-                                        <form action="{{ route('leader.votes.destroy', [$club->clubID, $voting->votingID]) }}" method="POST" onsubmit="return confirm('Are you sure?');">
+                                        <a href="{{ route($prefix.'.votes.edit', [$club->clubID, $voting->votingID]) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                                        <a href="{{ route($prefix.'.votes.results', [$club->clubID, $voting->votingID]) }}" class="btn btn-outline-info btn-sm"><i class="bi bi-bar-chart-line"></i></a>
+                                        <form action="{{ route($prefix.'.votes.destroy', [$club->clubID, $voting->votingID]) }}" method="POST" onsubmit="return confirm('Are you sure?');">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
@@ -89,7 +92,7 @@
             </div>
 
             <div class="text-end mt-4">
-                <a href="{{ route('leader.votes.create', $club->clubID) }}" class="btn btn-primary">
+                <a href="{{ route($prefix.'.votes.create', $club->clubID) }}" class="btn btn-primary">
                     <i class="bi bi-plus-circle me-1"></i> New Voting
                 </a>
             </div>

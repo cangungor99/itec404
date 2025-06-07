@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Pending Forums')
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
 
 <main class="page-content">
@@ -9,7 +12,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Pending Forums</li>
                 </ol>
             </nav>
@@ -42,7 +45,7 @@
                                     <td>{{ $forum->user->name }} {{ $forum->user->surname }}</td>
                                     <td>{{ \Carbon\Carbon::parse($forum->created_at)->format('Y-m-d H:i') }}</td>
                                     <td>
-                                        <a href="{{ route('leader.forums.show', $forum->forumID) }}" class="btn btn-sm btn-outline-primary">
+                                        <a href="{{ route($prefix.'.forums.show', $forum->forumID) }}" class="btn btn-sm btn-outline-primary">
                                             <i class="bi bi-eye"></i> View
                                         </a>
                                     </td>

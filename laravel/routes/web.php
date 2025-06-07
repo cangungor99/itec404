@@ -15,6 +15,7 @@ use App\Http\Controllers\Leader\LeaderVoteController;
 use App\Http\Controllers\Leader\LeaderForumController;
 use App\Http\Controllers\Leader\LeaderEventController;
 use App\Http\Controllers\Leader\ClubMemberController;
+use App\Http\Controllers\Leader\LeaderNotificationController;
 use App\Http\Controllers\Manager\ManagerClubController;
 use App\Http\Controllers\Manager\BudgetController;
 use App\Http\Controllers\Admin\NotificationController;
@@ -238,7 +239,13 @@ Route::middleware(['auth', 'role:manager'])
     });
 
 
-
+Route::middleware(['auth', 'role:leader,manager'])
+    ->prefix('{role}/notifications')
+    ->name('notifications.')
+    ->group(function () {
+        Route::get('/create', [LeaderNotificationController::class, 'create'])->name('create');
+        Route::post('/store', [LeaderNotificationController::class, 'store'])->name('store');
+    });
 
 
 Route::middleware(['auth', 'role:admin'])
@@ -288,6 +295,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::post('/create_vote', [App\Http\Controllers\Admin\VoteController::class, 'store'])->name('store_vote');
         Route::delete('/admin/votings/{id}', [App\Http\Controllers\Admin\VoteController::class, 'destroy'])->name('votings.destroy');
         Route::put('/votings/{id}', [App\Http\Controllers\Admin\VoteController::class, 'update'])->name('votings.update');
+        Route::get('/votings/{id}/results', [App\Http\Controllers\Admin\VoteController::class, 'results'])->name('votings.results');
+
 
 
 
@@ -317,7 +326,7 @@ Route::get('/sensitive', function () {
 Route::middleware(['auth'])
     ->get('/notifications', [NotificiationViewController::class, 'index'])
     ->name('notifications.index');
-
+Route::middleware(['auth'])->post('/notifications/read/{id}', [NotificiationViewController::class, 'markAsRead'])->name('notifications.markAsRead');
 
 
 require __DIR__ . '/auth.php';

@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Edit Event')
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
 <main class="page-content">
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
@@ -7,7 +10,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Edit Event</li>
                 </ol>
             </nav>
@@ -17,7 +20,7 @@
     <div class="card shadow-sm radius-10 border-0 animate__animated animate__fadeInUp">
         <div class="card-body">
             <h5 class="card-title mb-4"><i class="bi bi-pencil-square me-2 text-warning"></i>Edit Event</h5>
-            <form action="{{ route('leader.events.update', [$club->clubID, $event->eventID]) }}" method="POST">
+            <form action="{{ route($prefix.'.events.update', [$club->clubID, $event->eventID]) }}" method="POST">
                 @csrf
                 @method('PUT')
 

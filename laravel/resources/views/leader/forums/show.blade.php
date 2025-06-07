@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Forum Detail')
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
 
 <main class="page-content">
@@ -9,7 +12,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.forums.pending') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.forums.pending') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Forum Detail</li>
                 </ol>
             </nav>
@@ -28,11 +31,11 @@
             <!-- Onay / Red Butonları -->
             @if($forum->status === 'pending')
                 <div class="mt-3">
-                    <form action="{{ route('leader.forums.approve', $forum->forumID) }}" method="POST" class="d-inline">
+                    <form action="{{ route($prefix.'.forums.approve', $forum->forumID) }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i> Approve</button>
                     </form>
-                    <form action="{{ route('leader.forums.reject', $forum->forumID) }}" method="POST" class="d-inline">
+                    <form action="{{ route($prefix.'.forums.reject', $forum->forumID) }}" method="POST" class="d-inline">
                         @csrf
                         <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i> Reject</button>
                     </form>

@@ -44,17 +44,24 @@ class LeaderVoteController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'end_date' => 'required|date',
             'options' => 'required|array|min:2',
             'options.*' => 'required|string|max:255',
         ]);
+
+        $start = \Carbon\Carbon::parse($validated['start_date']);
+        $end = \Carbon\Carbon::parse($validated['end_date']);
+
+        if ($end->lte($start)) {
+            return back()->withErrors(['end_date' => 'End date must be after the start date and time.'])->withInput();
+        }
 
         $voting = Voting::create([
             'clubID' => $club->clubID,
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'start_date' => $validated['start_date'],
-            'end_date' => $validated['end_date'],
+            'start_date' => $start,
+            'end_date' => $end,
             'created_at' => now(),
         ]);
 
@@ -67,6 +74,7 @@ class LeaderVoteController extends Controller
 
         return redirect()->route('leader.votes.index', $club->clubID)->with('success', 'Voting created.');
     }
+
 
     public function destroy(Club $club, Voting $voting): RedirectResponse
     {
@@ -104,17 +112,24 @@ class LeaderVoteController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'end_date' => 'required|date',
             'options' => 'required|array|min:2',
             'options.*.id' => 'nullable|integer|exists:voting_options,optionID',
             'options.*.text' => 'required|string|max:255',
         ]);
 
+        $start = \Carbon\Carbon::parse($validated['start_date']);
+        $end = \Carbon\Carbon::parse($validated['end_date']);
+
+        if ($end->lte($start)) {
+            return back()->withErrors(['end_date' => 'End date must be after the start date and time.'])->withInput();
+        }
+
         $voting->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'start_date' => $validated['start_date'],
-            'end_date' => $validated['end_date'],
+            'start_date' => $start,
+            'end_date' => $end,
         ]);
 
         foreach ($validated['options'] as $option) {
@@ -132,6 +147,7 @@ class LeaderVoteController extends Controller
 
         return redirect()->route('leader.votes.index', $club->clubID)->with('success', 'Voting updated.');
     }
+
 
     public function results(Club $club, Voting $voting): View
     {

@@ -12,25 +12,28 @@ class NotificationController extends Controller
 {
     public function store(Request $request)
     {
-        // 1. Doğrulama
         $request->validate([
             'notifTitle' => 'required|string|max:255',
             'notifContent' => 'required|string',
             'clubID' => 'required|integer'
         ]);
 
-        // 2. Bildirimi veritabanına kaydet
-        DB::table('notifications')->insert([
+        $notification = \App\Models\Notification::create([
             'title' => $request->notifTitle,
             'content' => $request->notifContent,
             'clubID' => $request->clubID,
             'creatorID' => Auth::id(),
-            'created_at' => now()
         ]);
 
-        // 3. Başarı mesajı ile geri dön
+        $userIDs = \App\Models\Membership::where('clubID', $request->clubID)
+            ->where('status', 'approved')
+            ->pluck('userID');
+
+        $notification->readers()->syncWithPivotValues($userIDs->toArray(), ['is_read' => false]);
+
         return redirect()->back()->with('success', 'Notification created successfully!');
     }
+
 
     public function create()
     {

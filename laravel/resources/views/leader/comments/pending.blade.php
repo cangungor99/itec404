@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Pending Comments')
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
 
 <main class="page-content">
@@ -9,7 +12,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Pending Comments</li>
                 </ol>
             </nav>
@@ -44,11 +47,11 @@
                                     <td>{{ $comment->user->name }} {{ $comment->user->surname }}</td>
                                     <td>{{ \Carbon\Carbon::parse($comment->created_at)->format('Y-m-d H:i') }}</td>
                                     <td>
-                                        <form action="{{ route('leader.comments.approve', $comment->commentID) }}" method="POST" class="d-inline">
+                                        <form action="{{ route($prefix.'.comments.approve', $comment->commentID) }}" method="POST" class="d-inline">
                                             @csrf
                                             <button class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i></button>
                                         </form>
-                                        <form action="{{ route('leader.comments.reject', $comment->commentID) }}" method="POST" class="d-inline">
+                                        <form action="{{ route($prefix.'.comments.reject', $comment->commentID) }}" method="POST" class="d-inline">
                                             @csrf
                                             <button class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></button>
                                         </form>

@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', 'EMU Digital Club | Leader Resource Management')
-
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
 <!--start content-->
 <main class="page-content">

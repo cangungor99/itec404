@@ -5,8 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Notification;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Chat;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,29 +23,41 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
         View::composer('layouts.navbar', function ($view) {
             $user = auth()->user();
+
             if (!$user) {
                 $view->with('notifications', collect());
+                $view->with('unreadNotificationIDs', []);
                 $view->with('recentMessages', collect());
                 return;
             }
 
+            $approvedClubIDs = $user->memberships
+                ->where('status', 'approved')
+                ->pluck('clubID')
+                ->values()
+                ->all();
+
             // NOTIFICATIONS
             if ($user->hasRole('admin')) {
                 $notifications = Notification::latest()->take(5)->get();
+                $unreadIDs = [];
             } else {
-                $clubIds = $user->memberships->pluck('clubID');
-                $notifications = Notification::whereIn('clubID', $clubIds)
+                $clubIDs = $user->memberships->pluck('clubID');
+
+                $notifications = Notification::whereIn('clubID', $clubIDs)
                     ->latest()
                     ->take(5)
                     ->get();
+
+                $unreadIDs = $user->notificationsWithStatus()
+                    ->wherePivot('is_read', false)
+                    ->pluck('notifications.notificationID')
+                    ->toArray();
             }
 
-            $approvedClubIDs = $user->memberships->where('status', 'approved')->pluck('clubID')->values()->all();
-
-
+            // MESAJLAR
             $allMessages = Chat::with(['sender', 'club.memberships'])
                 ->where(function ($q) use ($user, $approvedClubIDs) {
                     $q->where(function ($q1) use ($user) {
@@ -60,11 +72,11 @@ class AppServiceProvider extends ServiceProvider
                 ->get();
 
             $messagesMap = [];
-
             foreach ($allMessages as $msg) {
                 if ($msg->clubID && !in_array($msg->clubID, $approvedClubIDs)) {
                     continue;
                 }
+
                 $key = $msg->clubID
                     ? 'club_' . $msg->clubID
                     : 'user_' . ($msg->senderID == $user->userID ? $msg->receiverID : $msg->senderID);
@@ -77,6 +89,7 @@ class AppServiceProvider extends ServiceProvider
             $recentMessages = collect(array_values($messagesMap))->take(5);
 
             $view->with('notifications', $notifications);
+            $view->with('unreadNotificationIDs', $unreadIDs);
             $view->with('recentMessages', $recentMessages);
         });
     }

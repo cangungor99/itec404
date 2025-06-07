@@ -29,19 +29,29 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $role = Auth::user()->roles->pluck('name')->first();
+        $user = Auth::user();
 
-        $home = match ($role) {
-            'admin'   => route('admin.dashboard'),
-            'leader'  => route('leader.dashboard'),
-            'manager' => route('manager.dashboard'),
-            'student' => route('students.dashboard'),
-            default   => RouteServiceProvider::HOME,
-        };
+        switch (true) {
+            case $user->hasRole('admin'):
+                return redirect()->route('admin.dashboard');
 
+            case $user->hasRole('manager'):
+                return redirect()->route('manager.dashboard');
 
-        return redirect()->intended($home);
+            case $user->hasRole('leader'):
+                return redirect()->route('leader.dashboard');
+
+            case $user->hasRole('student'):
+                return redirect()->route('students.dashboard');
+
+            default:
+                Auth::logout();
+                return redirect()->route('login')->withErrors([
+                    'email' => 'Yetkili bir rolünüz bulunmamaktadır.',
+                ]);
+        }
     }
+
 
     /**
      * Destroy an authenticated session.
@@ -54,6 +64,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 }

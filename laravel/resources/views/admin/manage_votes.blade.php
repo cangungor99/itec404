@@ -204,7 +204,7 @@
                 <h6 class="mb-3">Voting Title: <span id="resultVoteTitle" class="fw-bold text-primary"></span></h6>
 
                 <div id="resultsContainer">
-                    <!-- Sonuçlar buraya JavaScript ile dinamik olarak yüklenecek -->
+
                 </div>
 
                 <div class="mt-4 text-end">
@@ -221,29 +221,80 @@
 
 @push('scripts')
 <script>
+    function removeSeconds(datetimeStr) {
+        const [datePart, timePart] = datetimeStr.split(' ');
+        const [hours, minutes] = timePart.split(':');
+        return `${datePart}T${hours}:${minutes}`;
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
+        const modalElement = document.getElementById('editVoteModal');
+        const modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
+
+        // Modal açıkken tekrar tıklama yapılırsa sorun çıkmasın
         document.querySelectorAll('.btn-edit-vote').forEach(button => {
             button.addEventListener('click', function() {
                 const vote = JSON.parse(this.dataset.vote);
 
-                // Form action'ı güncelleniyor
                 document.getElementById('editVoteForm').action = `/admin/votings/${vote.votingID}`;
-
-                // Alanlar dolduruluyor
                 document.getElementById('editVotingID').value = vote.votingID;
                 document.getElementById('editTitle').value = vote.title;
                 document.getElementById('editDescription').value = vote.description;
-                document.getElementById('editStartDate').value = vote.start_date.replace(' ', 'T');
-                document.getElementById('editEndDate').value = vote.end_date.replace(' ', 'T');
+                document.getElementById('editStartDate').value = removeSeconds(vote.start_date);
+                document.getElementById('editEndDate').value = removeSeconds(vote.end_date);
                 document.getElementById('editClubID').value = vote.clubID;
 
-                // Modal'ı aç
-                const modal = new bootstrap.Modal(document.getElementById('editVoteModal'));
-                modal.show();
+                modalInstance.show();
             });
         });
+
+        modalElement.addEventListener('hidden.bs.modal', function() {
+            document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style = '';
+        });
+
+
+        document.querySelectorAll('.btn-show-results').forEach(button => {
+            button.addEventListener('click', function() {
+                const votingID = this.dataset.id;
+
+                fetch(`/admin/votings/${votingID}/results`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('resultVoteTitle').textContent = `Total Votes: ${data.total}`;
+                        const container = document.getElementById('resultsContainer');
+                        container.innerHTML = '';
+
+                        data.results.forEach(result => {
+                            const bar = document.createElement('div');
+                            bar.classList.add('mb-2');
+                            bar.innerHTML = `
+                        <div class="d-flex justify-content-between">
+                            <span>${result.option}</span>
+                            <span>${result.votes} vote(s) - ${result.percent}%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-info" style="width: ${result.percent}%; min-width: 5%;">
+                                ${result.percent}%
+                            </div>
+                        </div>
+                    `;
+                            container.appendChild(bar);
+                        });
+
+                        const resultsModal = new bootstrap.Modal(document.getElementById('voteResultsModal'));
+                        resultsModal.show();
+                    })
+                    .catch(err => {
+                        console.error('Failed to fetch vote results:', err);
+                    });
+            });
+        });
+
     });
 </script>
+
 @endpush
 
 

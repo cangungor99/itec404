@@ -10,6 +10,7 @@ use App\Models\ClubEvent;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Membership;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -35,9 +36,18 @@ class StudentDashboardController extends Controller
             ->where('start_time', '>=', now())
             ->count();
 
-        $recentNotifications = Notification::whereIn('clubID', $clubIDs)
-            ->orderBy('created_at', 'desc')
-            ->take(5)
+        $recentNotifications = DB::table('notification_user')
+            ->join('notifications', 'notification_user.notificationID', '=', 'notifications.notificationID')
+            ->leftJoin('clubs', 'notifications.clubID', '=', 'clubs.clubID')
+            ->where('notification_user.userID', auth()->id())
+            ->select(
+                'notifications.title',
+                'notifications.created_at',
+                'notification_user.is_read',
+                'clubs.name as club_name'
+            )
+            ->orderBy('notifications.created_at', 'desc')
+            ->limit(5)
             ->get();
 
         $totalNotifications = $recentNotifications->count();

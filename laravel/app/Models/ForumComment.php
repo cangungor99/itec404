@@ -36,6 +36,8 @@ class ForumComment extends Model
 
     public function replies(): HasMany
     {
-        return $this->hasMany(ForumComment::class, 'parentID');
+        return $this->hasMany(ForumComment::class, 'parentID', 'commentID')
+            ->where('status', 'approved')
+            ->with('user');
     }
 }

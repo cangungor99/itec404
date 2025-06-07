@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Create Vote')
-
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 @section('content')
 <!--start content-->
 <main class="page-content">
@@ -11,7 +13,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Create Voting</li>
                 </ol>
             </nav>
@@ -23,7 +25,7 @@
         <div class="card-body">
             <h4 class="mb-3"><i class="bi bi-bar-chart-steps me-2 text-primary"></i> Create a New Voting Session</h4>
 
-            <form action="{{ route('leader.votes.store', $club->clubID) }}" method="POST">
+            <form action="{{ route($prefix.'.votes.store', $club->clubID) }}" method="POST">
                 @csrf
 
                 <div class="mb-3">
@@ -39,11 +41,11 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="start_date" class="form-label">Start Date</label>
-                        <input type="datetime-local" class="form-control" id="start_date" name="start_date" required>
+                        <input type="datetime-local" class="form-control" name="start_date" min="{{ now()->format('Y-m-d\TH:i') }}" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="end_date" class="form-label">End Date</label>
-                        <input type="datetime-local" class="form-control" id="end_date" name="end_date" required>
+                        <input type="datetime-local" class="form-control" name="end_date" min="{{ now()->format('Y-m-d\TH:i') }}" required>
                     </div>
                 </div>
 
@@ -75,7 +77,7 @@
 
 @push('scripts')
 <script>
-    document.querySelector('.add-option').addEventListener('click', function () {
+    document.querySelector('.add-option').addEventListener('click', function() {
         const container = document.getElementById('options-container');
         const optionIndex = container.querySelectorAll('.input-group').length + 1;
 
@@ -88,7 +90,7 @@
         container.appendChild(inputGroup);
     });
 
-    document.getElementById('options-container').addEventListener('click', function (e) {
+    document.getElementById('options-container').addEventListener('click', function(e) {
         if (e.target.closest('.remove-option')) {
             e.target.closest('.input-group').remove();
         }
