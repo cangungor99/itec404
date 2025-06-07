@@ -14,20 +14,20 @@
     }
 
     .chat-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    overflow-y: auto;
-    padding: 1rem;
-    max-height: 750px;
-    scroll-behavior: smooth;
-}
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        overflow-y: auto;
+        padding: 1rem;
+        max-height: 750px;
+        scroll-behavior: smooth;
+    }
 
-.chat-message-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
+    .chat-message-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 
     .search-results {
         border-top: 1px solid #eee;
@@ -161,16 +161,14 @@
             <div>
                 <h4 class="mb-1 font-weight-bold" id="selectedUserName"></h4>
                 <input type="hidden" id="selectedUserID" name="receiver_id">
-
-
-
             </div>
 
         </div>
-        <div class="chat-message-wrapper" id="chatMessages">
-    <p class="text-muted">Select an user ...</p>
-</div>
-
+        <div class="chat-content">
+            <div class="chat-message-wrapper" id="chatMessages">
+                <p class="text-muted">Select an user ...</p>
+            </div>
+        </div>
 
         <div class="chat-footer d-flex align-items-center">
             <div class="flex-grow-1 pe-2">
@@ -242,7 +240,7 @@
             const receiverID = userIDInput.value;
             if (!receiverID) return;
 
-            fetch(`/chat/fetch-messages?receiverID=${receiverID}`)
+            fetch(`{{ route('chat.messages') }}?receiverID=${receiverID}`)
                 .then(response => response.text())
                 .then(html => {
                     chatBox.innerHTML = html;
@@ -255,20 +253,20 @@
     });
 </script>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const sendBtn = document.getElementById('sendButton');
-    const input = document.getElementById('messageInput');
-    const userIDInput = document.getElementById('selectedUserID');
-    const chatBox = document.getElementById('chatMessages');
+    document.addEventListener("DOMContentLoaded", function() {
+        const sendBtn = document.getElementById('sendButton');
+        const input = document.getElementById('messageInput');
+        const userIDInput = document.getElementById('selectedUserID');
+        const chatBox = document.getElementById('chatMessages');
 
-    function sendMessage() {
-        const message = input.value.trim();
-        const receiverID = userIDInput.value;
+        function sendMessage() {
+            const message = input.value.trim();
+            const receiverID = userIDInput.value;
 
-        if (!message || !receiverID) return;
+            if (!message || !receiverID) return;
 
-        // --- Mesajı hemen göster (Optimistik UI)
-        const tempHTML = `
+            // --- Mesajı hemen göster (Optimistik UI)
+            const tempHTML = `
             <div class="chat-content-rightside">
                 <div class="d-flex ms-auto">
                     <div class="flex-grow-1 me-2">
@@ -278,46 +276,45 @@
                 </div>
             </div>
         `;
-        chatBox.insertAdjacentHTML('beforeend', tempHTML);
+            chatBox.insertAdjacentHTML('beforeend', tempHTML);
 
-        // Mesaj kutusunu temizle
-        input.value = "";
-        input.focus();
+            // Mesaj kutusunu temizle
+            input.value = "";
+            input.focus();
 
-        // Scroll en aşağı
-        setTimeout(() => {
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }, 10);
+            // Scroll en aşağı
+            setTimeout(() => {
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 10);
 
-        // Sunucuya gerçek mesajı gönder
-        fetch("/chat/send", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-            },
-            body: JSON.stringify({
-                message: message,
-                receiverID: receiverID
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            // Gerekirse, optimistik mesajı silip sunucudan geleni tekrar ekleyebilirsin.
-            // Ama hızlı görünmesi için yukarıdaki sistem yeterlidir.
-        });
-    }
-
-    sendBtn.addEventListener('click', sendMessage);
-
-    input.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
+            // Sunucuya gerçek mesajı gönder
+            fetch("{{ route('chat.send') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        receiverID: receiverID
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    // Gerekirse, optimistik mesajı silip sunucudan geleni tekrar ekleyebilirsin.
+                    // Ama hızlı görünmesi için yukarıdaki sistem yeterlidir.
+                });
         }
-    });
-});
 
+        sendBtn.addEventListener('click', sendMessage);
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    });
 </script>
 
 <script>
@@ -371,7 +368,7 @@
         chatBox.innerHTML = '<p class="text-muted">Loading...</p>';
 
         // Fetch mesajlar
-        fetch(`/chat/fetch-messages?receiverID=${userID}`)
+        fetch(`{{ route('chat.messages') }}?receiverID=${userID}`)
             .then(response => response.text())
             .then(html => {
                 chatBox.innerHTML = html;
@@ -392,10 +389,13 @@
 
 
 
-    
+
     // İlk sayfa yüklenince ve her 10 saniyede bir güncelle
     loadRecentChats();
     setInterval(loadRecentChats, 10000);
 </script>
 
 @endpush
+
+
+

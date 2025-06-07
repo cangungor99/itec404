@@ -13,7 +13,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('leader.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
                     <li class="breadcrumb-item active" aria-current="page">Club Resources</li>
                 </ol>
             </nav>
@@ -28,7 +28,7 @@
 
                 <div class="card">
                     <div class="card-body border-bottom">
-                        <form action="{{ route('leader.resources.store', $club->clubID) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route($prefix.'.resources.store', $club->clubID) }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="mb-3">
@@ -72,14 +72,14 @@
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3">
-                        <a href="{{ route('leader.resources', $club->clubID) }}" class="btn btn-sm btn-outline-secondary {{ request('type') === null ? 'active' : '' }}">All</a>
-                        <a href="{{ route('leader.resources', [$club->clubID, 'type' => 'word']) }}" class="btn btn-sm btn-outline-primary {{ request('type') === 'word' ? 'active' : '' }}">Word</a>
-                        <a href="{{ route('leader.resources', [$club->clubID, 'type' => 'pdf']) }}" class="btn btn-sm btn-outline-danger {{ request('type') === 'pdf' ? 'active' : '' }}">PDF</a>
-                        <a href="{{ route('leader.resources', [$club->clubID, 'type' => 'image']) }}" class="btn btn-sm btn-outline-warning {{ request('type') === 'image' ? 'active' : '' }}">Images</a>
-                        <a href="{{ route('leader.resources', [$club->clubID, 'type' => 'video']) }}" class="btn btn-sm btn-outline-info {{ request('type') === 'video' ? 'active' : '' }}">Videos</a>
-                        <a href="{{ route('leader.resources', [$club->clubID, 'type' => 'zip']) }}" class="btn btn-sm btn-outline-dark {{ request('type') === 'zip' ? 'active' : '' }}">ZIP</a>
+                        <a href="{{ route($prefix.'.resources', $club->clubID) }}" class="btn btn-sm btn-outline-secondary {{ request('type') === null ? 'active' : '' }}">All</a>
+                        <a href="{{ route($prefix.'.resources', [$club->clubID, 'type' => 'word']) }}" class="btn btn-sm btn-outline-primary {{ request('type') === 'word' ? 'active' : '' }}">Word</a>
+                        <a href="{{ route($prefix.'.resources', [$club->clubID, 'type' => 'pdf']) }}" class="btn btn-sm btn-outline-danger {{ request('type') === 'pdf' ? 'active' : '' }}">PDF</a>
+                        <a href="{{ route($prefix.'.resources', [$club->clubID, 'type' => 'image']) }}" class="btn btn-sm btn-outline-warning {{ request('type') === 'image' ? 'active' : '' }}">Images</a>
+                        <a href="{{ route($prefix.'.resources', [$club->clubID, 'type' => 'video']) }}" class="btn btn-sm btn-outline-info {{ request('type') === 'video' ? 'active' : '' }}">Videos</a>
+                        <a href="{{ route($prefix.'.resources', [$club->clubID, 'type' => 'zip']) }}" class="btn btn-sm btn-outline-dark {{ request('type') === 'zip' ? 'active' : '' }}">ZIP</a>
                     </div>
-                    <form method="GET" action="{{ route('leader.resources', $club->clubID) }}" class="mb-3 d-flex" role="search">
+                    <form method="GET" action="{{ route($prefix.'.resources', $club->clubID) }}" class="mb-3 d-flex" role="search">
                         <input type="text" name="search" value="{{ request('search') }}" class="form-control me-2" placeholder="Search resources...">
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
@@ -121,7 +121,7 @@
                                 <a href="{{ asset('storage/' . $resource->file_path) }}" class="btn btn-sm btn-outline-primary" target="_blank">
                                     View
                                 </a>
-                                <form action="{{ route('leader.resources.destroy', [$club->clubID, $resource->resourceID]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this file?');">
+                                <form action="{{ route($prefix.'.resources.destroy', [$club->clubID, $resource->resourceID]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this file?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger">

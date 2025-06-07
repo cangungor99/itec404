@@ -72,4 +72,18 @@ class StudentEventController extends Controller
 
         return back()->with('success', 'You have left the event.');
     }
+
+    protected function ensureApprovedMemberOfClub(int $clubID): void
+    {
+        $user = auth()->user();
+
+        $isMember = $user->memberships()
+            ->where('clubID', $clubID)
+            ->where('status', 'approved')
+            ->exists();
+
+        if (! $isMember) {
+            abort(403, 'Bu kulübe katılım izniniz yok.');
+        }
+    }
 }

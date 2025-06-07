@@ -38,22 +38,27 @@
 
                     <div class="header-notifications-list p-2" style="max-height: 300px; overflow-y: auto;">
                         @forelse($recentMessages as $message)
-                        {{-- Eğer kulüp mesajıysa ve user o kulübe üye değilse gösterme --}}
-                        @if (!$message->clubID || ($message->club && $message->club->memberships->contains('userID', auth()->id())))
-                        <a class="dropdown-item" href="{{ $message->clubID
-            ? route('chat.club', $message->clubID)
-            : route('chat.private', $message->senderID == auth()->id()
-                ? $message->receiverID
-                : $message->senderID) }}">
+                        @php
+                        $isClubMessage = $message->clubID !== null;
+                        $userIsMember = !$isClubMessage || ($message->club && $message->club->memberships->contains('userID', auth()->id()));
+                        $otherUserID = $message->senderID == auth()->id() ? $message->receiverID : $message->senderID;
+                        $otherUserName = $message->senderID == auth()->id()
+                        ? optional($message->receiver)->name
+                        : optional($message->sender)->name;
+                        $displayName = $isClubMessage
+                        ? optional($message->club)->name
+                        : $otherUserName;
+                        @endphp
+
+                        @if ($userIsMember)
+                        <a class="dropdown-item" href="javascript:;" onclick="selectUser({{ $otherUserID }}, '{{ $otherUserName }}')">
                             <div class="d-flex align-items-center">
                                 <div class="notification-box bg-light-info text-info">
                                     <i class="bi bi-chat-dots"></i>
                                 </div>
                                 <div class="ms-3 flex-grow-1">
                                     <h6 class="mb-0 dropdown-msg-user">
-                                        {{ $message->clubID
-    ? $message->club->name
-    : ($message->senderID == auth()->id() ? $message->receiver->name : $message->sender->name) }}
+                                        {{ $displayName }}
                                         <span class="msg-time float-end text-secondary">
                                             {{ $message->created_at->diffForHumans() }}
                                         </span>
@@ -69,11 +74,12 @@
                         <p class="text-center text-secondary">Yeni mesaj yok</p>
                         @endforelse
 
+
                     </div>
 
                     <div class="p-2">
                         <hr class="dropdown-divider">
-                        <a class="dropdown-item text-center" href="{{ route('chat.inbox') }}">
+                        <a class="dropdown-item text-center" href="{{ route('chat.index') }}">
                             Tüm Mesajları Gör
                         </a>
                     </div>

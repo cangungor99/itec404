@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Chat extends Model
 {
     protected $primaryKey = 'chatID';
-    public $timestamps = false;
+    public $timestamps = true;
     use HasFactory;
 
     protected $fillable = [

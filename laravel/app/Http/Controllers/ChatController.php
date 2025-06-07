@@ -10,68 +10,122 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    private function getSidebarData()
+    // Genel chat sayfası (modern UI)
+    public function index()
     {
-        if (!Auth::check()) {
-            return [
-                'clubChats' => collect(),
-                'privateChats' => collect(),
-            ];
-        }
-
-        $authID = Auth::id();
-
-        $clubChats = Club::whereHas('memberships', function ($q) use ($authID) {
-            $q->where('userID', $authID)->where('status', 'approved');
-        })->get();
-
-        $privateChats = User::where('userID', '!=', $authID)->get();
-        return compact('clubChats', 'privateChats');
+        return view('chat.index');
     }
 
-
-    private function isClubMember(?User $user, Club $club): bool
+    // ✅ Kullanıcı arama (yeni kişiyle mesaj başlatmak için)
+    public function searchUser(Request $request)
     {
-        if (!$user) {
-            \Log::warning("isClubMember: Kullanıcı null, erişim reddedildi.");
-            return false;
-        }
+        $query = $request->input('q');
 
-        \Log::info("isClubMember check: userID={$user->userID}, clubID={$club->clubID}");
+        $users = User::where(function ($q) use ($query) {
+            $q->where('name', 'like', "%{$query}%")
+              ->orWhere('surname', 'like', "%{$query}%")
+              ->orWhereRaw("CONCAT(name, ' ', surname) LIKE ?", ["%{$query}%"]);
+        })
+        ->where('userID', '!=', auth()->id())
+        ->limit(10)
+        ->get(['userID', 'name', 'surname', 'email']);
 
-        return $club->memberships()
-            ->where('userID', $user->userID)
-            ->where('status', 'approved')
-            ->exists();
+        return response()->json($users);
     }
 
+    // ✅ Özel mesaj gönderme (AJAX)
+    public function storePrivateMessage(Request $request)
+    {
+        $request->validate([
+            'receiverID' => 'required|exists:users,userID',
+            'message' => 'required|string|max:1000'
+        ]);
+
+        $chat = Chat::create([
+            'senderID' => Auth::id(),
+            'receiverID' => $request->receiverID,
+            'message' => $request->message,
+            'isRead' => false,
+        ]);
+
+        $chat->load('sender');
+
+        return response()->json([
+            'success' => true,
+            'message_html' => view('chat.components.single-message', ['msg' => $chat])->render()
+        ]);
+    }
+
+    // ✅ Belirli kullanıcıyla geçmiş mesajları getir
+    public function getMessages(Request $request)
+    {
+        $authID = auth()->id();
+        $receiverID = $request->input('receiverID');
+
+        if (!$receiverID) {
+            return response()->json(['html' => '']);
+        }
+
+        $messages = Chat::with('sender')
+            ->where(function ($q) use ($authID, $receiverID) {
+                $q->where('senderID', $authID)->where('receiverID', $receiverID);
+            })
+            ->orWhere(function ($q) use ($authID, $receiverID) {
+                $q->where('senderID', $receiverID)->where('receiverID', $authID);
+            })
+            ->orderBy('created_at')
+            ->get();
+
+        return view('chat.components.messages', compact('messages'))->render();
+    }
+
+    // ✅ Navbar ya da sidebar için son mesajlar
+    public function recentMessages()
+    {
+        $authID = auth()->id();
+
+        $chats = Chat::with(['sender', 'receiver'])
+            ->where(function ($q) use ($authID) {
+                $q->where('senderID', $authID)
+                  ->orWhere('receiverID', $authID);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $uniqueChats = collect();
+
+        foreach ($chats as $chat) {
+            $otherID = $chat->senderID == $authID ? $chat->receiverID : $chat->senderID;
+            if (!$uniqueChats->has($otherID)) {
+                $uniqueChats->put($otherID, $chat);
+            }
+        }
+
+        return view('chat.components.recent-chats', [
+            'recentChats' => $uniqueChats->values()
+        ]);
+    }
+
+    // ✅ Kulüp sohbet ekranı
     public function indexClub(Club $club)
     {
-        \Log::info("Test | Controller clubID={$club->clubID}, userID=" . Auth::id());
+        $this->authorizeClubAccess($club);
 
-        $memberIDs = $club->memberships()->pluck('userID')->toArray();
-        \Log::info("Test | This club's member IDs: " . implode(', ', $memberIDs));
-
-        if (!$this->isClubMember(Auth::user(), $club)) {
-            \Log::info("Erişim REDDEDİLDİ: userID=" . Auth::id() . ", clubID=" . $club->clubID);
-            abort(403, 'Bu kulübün sohbetine erişim yetkiniz yok.');
-        }
         $messages = Chat::with('sender')
             ->where('clubID', $club->clubID)
             ->orderBy('created_at')
             ->get();
 
-        return view('chat.club', array_merge(
-            ['club' => $club, 'messages' => $messages],
-            $this->getSidebarData()
-        ));
+        return view('chat.club', [
+            'club' => $club,
+            'messages' => $messages
+        ]);
     }
 
+    // ✅ Kulüp sohbetine mesaj gönderme
     public function storeClub(Request $request, Club $club)
     {
-        if (!$this->isClubMember(Auth::user(), $club)) {
-            return response()->json(['error' => 'Bu kulübe mesaj atamazsın.'], 403);
-        }
+        $this->authorizeClubAccess($club);
 
         $request->validate(['message' => 'required|string|max:1000']);
 
@@ -86,123 +140,13 @@ class ChatController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function indexPrivate(User $user)
+    // ❗ Kulüp yetkilendirmesi
+    private function authorizeClubAccess(Club $club)
     {
-        $authID = Auth::id();
+        $user = Auth::user();
 
-        $messages = Chat::with('sender')
-            ->where(function ($q) use ($authID, $user) {
-                $q->where('senderID', $authID)->where('receiverID', $user->userID);
-            })
-            ->orWhere(function ($q) use ($authID, $user) {
-                $q->where('senderID', $user->userID)->where('receiverID', $authID);
-            })
-            ->orderBy('created_at')
-            ->get();
-
-        return view('chat.private', array_merge(
-            ['user' => $user, 'messages' => $messages],
-            $this->getSidebarData()
-        ));
-    }
-
-    public function storePrivate(Request $request, User $user)
-    {
-        $request->validate(['message' => 'required|string|max:1000']);
-
-        Chat::create([
-            'senderID' => Auth::id(),
-            'receiverID' => $user->userID,
-            'message' => $request->message,
-            'isRead' => false,
-        ]);
-
-        return response()->json(['success' => true]);
-    }
-
-    public function getMessages(Request $request)
-    {
-        $authID = Auth::id();
-        $type = $request->type;
-        $id = $request->id;
-
-        if ($type === 'club') {
-            $messages = Chat::with('sender')
-                ->where('clubID', $id)
-                ->orderBy('created_at')
-                ->get();
-        } elseif ($type === 'private') {
-            $messages = Chat::with('sender')
-                ->where(function ($q) use ($authID, $id) {
-                    $q->where('senderID', $authID)->where('receiverID', $id);
-                })
-                ->orWhere(function ($q) use ($authID, $id) {
-                    $q->where('senderID', $id)->where('receiverID', $authID);
-                })
-                ->orderBy('created_at')
-                ->get();
-        } else {
-            return response()->json([], 400);
+        if (!$user || !$club->memberships()->where('userID', $user->userID)->where('status', 'approved')->exists()) {
+            abort(403, 'Bu kulübün sohbetine erişim yetkiniz yok.');
         }
-
-        return view('chat.components.messages', compact('messages'))->render();
-    }
-
-    public function recentMessages()
-    {
-        $authID = Auth::id();
-
-        if (!$authID) {
-            return view('chat.components.navbar-messages', ['recentMessages' => collect()]);
-        }
-
-        $approvedClubIDs = Club::whereHas('memberships', function ($q) use ($authID) {
-            $q->where('userID', $authID)->where('status', 'approved');
-        })->pluck('clubID');
-
-        $allMessages = Chat::with(['sender', 'club'])
-            ->where(function ($q) use ($authID, $approvedClubIDs) {
-                $q->where('receiverID', $authID)
-                    ->orWhere(function ($q2) use ($approvedClubIDs) {
-                        $q2->whereNull('receiverID')->whereIn('clubID', $approvedClubIDs);
-                    });
-            })
-            ->latest('created_at')
-            ->get();
-
-        $recentMessages = $allMessages
-            ->sortByDesc('created_at')
-            ->unique(function ($msg) use ($authID) {
-                return $msg->clubID
-                    ? 'club_' . $msg->clubID
-                    : 'user_' . ($msg->senderID == $authID ? $msg->receiverID : $msg->senderID);
-            })
-            ->take(5)
-            ->values();
-
-        return view('chat.components.navbar-messages', compact('recentMessages'));
-    }
-
-
-
-
-    public function inbox()
-    {
-        $authID = Auth::id();
-
-        if (!$authID) {
-            abort(403, 'Yetkisiz erişim.');
-        }
-
-        $privateMessages = Chat::with(['sender', 'receiver'])
-            ->where('senderID', $authID)
-            ->orWhere('receiverID', $authID)
-            ->latest('created_at')
-            ->get();
-
-        return view('chat.inbox', array_merge(
-            ['privateMessages' => $privateMessages],
-            $this->getSidebarData()
-        ));
     }
 }
