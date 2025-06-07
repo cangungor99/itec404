@@ -1,4 +1,3 @@
-{{-- chat2/components/messages.blade.php --}}
 @foreach ($messages as $msg)
     @if ($msg->senderID === auth()->id())
         <div class="chat-content-rightside">

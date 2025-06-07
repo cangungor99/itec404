@@ -88,21 +88,15 @@
                 <div class="chat-tab-menu mt-3">
                     <ul class="nav nav-pills nav-justified">
                         <li class="nav-item">
-                            <a class="nav-link active" data-bs-toggle="pill" href="javascript:;">
-                                <div class="font-24"><i class='bx bx-conversation'></i>
-                                </div>
-                                <div><small>Chats</small>
-                                </div>
+                            <a class="nav-link active" id="pills-chats-tab" data-bs-toggle="pill" href="#pills-Chats" role="tab" aria-controls="pills-Chats" aria-selected="true">
+                                <div class="font-24"><i class='bx bx-conversation'></i></div>
+                                <div><small>Chats</small></div>
                             </a>
                         </li>
-
-
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="pill" href="javascript:;">
-                                <div class="font-24"><i class='bx bx-bell'></i>
-                                </div>
-                                <div><small>Notifications</small>
-                                </div>
+                            <a class="nav-link" id="pills-club-tab" data-bs-toggle="pill" href="#pills-ClubChat" role="tab" aria-controls="pills-ClubChat" aria-selected="false">
+                                <div class="font-24"><i class='bx bx-conversation'></i></div>
+                                <div><small>Club Chat</small></div>
                             </a>
                         </li>
                     </ul>
@@ -110,7 +104,7 @@
             </div>
             <div class="chat-sidebar-content">
                 <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-Chats">
+                    <div class="tab-pane fade show active" id="pills-Chats" role="tabpanel" aria-labelledby="pills-chats-tab">
                         <div class="p-3">
                             <div class="meeting-button d-flex justify-content-between">
 
@@ -143,7 +137,7 @@
                         <div class="chat-list">
                             <div class="list-group list-group-flush">
                                 @isset($recentChats)
-                                @include('chat2.components.recent-chats')
+                                @include('chat.components.recent-chats')
                                 @else
                                 <p class="text-muted p-3">Henüz sohbet yok.</p>
                                 @endisset
@@ -152,6 +146,22 @@
 
 
                     </div>
+                    <div class="tab-pane fade" id="pills-ClubChat" role="tabpanel" aria-labelledby="pills-club-tab">
+                        <div class="p-3">
+                            <h6 class="text-muted mb-2">Katıldığın Kulüpler</h6>
+                            <ul class="list-group">
+                                @foreach(Auth::user()->memberships()->where('status', 'approved')->with('club')->get() as $membership)
+                                @if($membership->club)
+                                <li class="list-group-item d-flex justify-content-between align-items-center club-item" data-club-id="{{ $membership->club->clubID }}" data-club-name="{{ $membership->club->name }}">
+                                    {{ $membership->club->name }}
+                                    <i class="bx bx-right-arrow-alt"></i>
+                                </li>
+                                @endif
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -161,6 +171,7 @@
             <div>
                 <h4 class="mb-1 font-weight-bold" id="selectedUserName"></h4>
                 <input type="hidden" id="selectedUserID" name="receiver_id">
+                <h4 class="mb-1 font-weight-bold d-none" id="selectedClubName"></h4>
             </div>
 
         </div>
@@ -170,15 +181,32 @@
             </div>
         </div>
 
-        <div class="chat-footer d-flex align-items-center">
+        <div class="d-none" id="clubChatSection">
+            <div class="chat-content">
+                <div class="chat-message-wrapper" id="clubChatMessages">
+                    <p class="text-muted">Bir kulüp seçin...</p>
+                </div>
+            </div>
+
+            <div class="chat-footer d-flex align-items-center" id="clubChatFooter">
+                <div class="flex-grow-1 pe-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="clubMessageInput" placeholder="Mesajınızı yazın...">
+                    </div>
+                </div>
+                <div class="chat-footer-menu">
+                    <a href="javascript:;" id="clubSendButton"><i class='bx bx-send'></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-footer d-flex align-items-center" id="privateChatFooter">
             <div class="flex-grow-1 pe-2">
                 <div class="input-group">
                     <input type="text" class="form-control" id="messageInput" placeholder="Type a message">
                 </div>
             </div>
             <div class="chat-footer-menu">
-
-
                 <a href="javascript:;" id="sendButton"><i class='bx bx-send'></i></a>
             </div>
         </div>
@@ -360,14 +388,25 @@
 
 
     function selectUser(userID, fullName) {
+        // Kullanıcı bilgilerini ayarla
         document.getElementById('selectedUserID').value = userID;
         document.getElementById('selectedUserName').innerText = fullName;
+
+        // UI geçişleri
+        document.getElementById('selectedClubName').classList.add('d-none');
+        document.getElementById('selectedUserName').classList.remove('d-none');
+
+        document.getElementById('clubChatSection').classList.add('d-none');
+        document.getElementById('chatMessages').parentElement.classList.remove('d-none');
+
+        document.getElementById('clubChatFooter').classList.add('d-none');
+        document.getElementById('privateChatFooter').classList.remove('d-none');
 
         // Eski mesajları temizle
         const chatBox = document.getElementById('chatMessages');
         chatBox.innerHTML = '<p class="text-muted">Loading...</p>';
 
-        // Fetch mesajlar
+        // Mesajları çek
         fetch(`{{ route('chat.messages') }}?receiverID=${userID}`)
             .then(response => response.text())
             .then(html => {
@@ -375,6 +414,7 @@
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
     }
+
 
 
 
@@ -387,6 +427,86 @@
             });
     }
 
+    document.addEventListener("DOMContentLoaded", function() {
+        const clubChatSection = document.getElementById('clubChatSection');
+        const clubChatMessages = document.getElementById('clubChatMessages');
+        const clubMessageInput = document.getElementById('clubMessageInput');
+        const clubSendButton = document.getElementById('clubSendButton');
+
+        let currentClubID = null;
+
+        document.querySelectorAll('.club-item').forEach(item => {
+            item.addEventListener('click', function() {
+                currentClubID = this.dataset.clubId;
+                const clubName = this.dataset.clubName;
+
+                // Bireysel mesaj panelini gizle
+                document.getElementById('chatMessages').parentElement.classList.add('d-none');
+                document.getElementById('privateChatFooter').classList.add('d-none');
+
+                // Kulüp mesaj panelini göster
+                clubChatSection.classList.remove('d-none');
+                document.getElementById('clubChatFooter').classList.remove('d-none');
+
+                // Başlık değişimi
+                document.getElementById('selectedUserName').classList.add('d-none');
+                const clubNameEl = document.getElementById('selectedClubName');
+                clubNameEl.classList.remove('d-none');
+                clubNameEl.innerText = clubName;
+
+                // Mesajları yükle
+                clubChatMessages.innerHTML = '<p class="text-muted">Yükleniyor...</p>';
+                fetch(`/chat/club/${currentClubID}`)
+                    .then(res => res.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newMessages = doc.querySelector('#chatMessages');
+                        if (newMessages) {
+                            clubChatMessages.innerHTML = newMessages.innerHTML;
+                            clubChatMessages.scrollTop = clubChatMessages.scrollHeight;
+                        } else {
+                            clubChatMessages.innerHTML = '<p class="text-danger">Mesajlar yüklenemedi.</p>';
+                        }
+
+                    });
+            });
+        });
+
+        clubSendButton.addEventListener('click', function() {
+            const message = clubMessageInput.value.trim();
+            if (!message || !currentClubID) return;
+
+            // Optimistik gösterim
+            const tempHTML = `
+            <div class="chat-content-rightside">
+                <div class="d-flex ms-auto">
+                    <div class="flex-grow-1 me-2">
+                        <p class="mb-0 chat-time text-end">you, şimdi</p>
+                        <p class="chat-right-msg">${message}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+            clubChatMessages.insertAdjacentHTML('beforeend', tempHTML);
+            clubMessageInput.value = "";
+            clubMessageInput.focus();
+
+            fetch(`/chat/club/${currentClubID}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    message: message
+                })
+            }).then(() => {
+                clubChatMessages.scrollTop = clubChatMessages.scrollHeight;
+            });
+        });
+    });
+
 
 
 
@@ -396,6 +516,3 @@
 </script>
 
 @endpush
-
-
-
