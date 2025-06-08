@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Forum;
 use App\Models\Club;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Attachment;
 
 class StudentForumController extends Controller
 {
@@ -68,7 +69,7 @@ class StudentForumController extends Controller
 
         $this->ensureApprovedMemberOfClub($validated['clubID']);
 
-        Forum::create([
+        $forum = Forum::create([
             'clubID' => $validated['clubID'],
             'userID' => Auth::id(),
             'title' => $validated['title'],
@@ -76,6 +77,19 @@ class StudentForumController extends Controller
             'status' => 'pending',
             'created_at' => now(),
         ]);
+
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $filePath = $file->store('public/forum_attachments');
+                Attachment::create([
+                    'forumID' => $forum->forumID,
+                    'userID' => Auth::id(),
+                    'file_path' => $filePath,
+                    'file_type' => $file->getClientMimeType(),
+                    'uploaded_at' => now(),
+                ]);
+            }
+        }
 
         return redirect()->route('students.forums.index')->with('success', 'Forum created successfully.');
     }
@@ -89,7 +103,12 @@ class StudentForumController extends Controller
             'club',
             'attachments',
             'comments' => function ($q) {
-                $q->where('status', 'approved')->with('user', 'replies');
+                $q->where('status', 'approved')->with([
+                    'user',
+                    'attachments',
+                    'replies.user',
+                    'replies.attachments'
+                ]);
             }
         ]);
         return view('students.forums.show', compact('forum'));
@@ -104,7 +123,9 @@ class StudentForumController extends Controller
             'parentID' => 'nullable|exists:forum_comments,commentID',
         ]);
 
-        $forum->comments()->create([
+
+
+        $comment = $forum->comments()->create([
             'userID' => Auth::id(),
             'message' => $validated['message'],
             'created_at' => now(),
@@ -112,6 +133,20 @@ class StudentForumController extends Controller
             'status' => 'pending',
         ]);
 
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $filePath = $file->store('public/comment_attachments');
+                Attachment::create([
+                    'commentID' => $comment->commentID,
+                    'userID' => Auth::id(),
+                    'file_path' => $filePath,
+                    'file_type' => $file->getClientMimeType(),
+                    'uploaded_at' => now(),
+                ]);
+            }
+            \Log::info('Dosya geldi', ['adet' => count($request->file('attachments'))]);
+        }
+        \Log::info('Comment gönderiliyor', ['user' => Auth::id()]);
         return redirect()->route('students.forums.show', $forum->forumID)->with('success', 'Comment posted!');
     }
 }

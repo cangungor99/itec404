@@ -40,4 +40,9 @@ class ForumComment extends Model
             ->where('status', 'approved')
             ->with('user');
     }
+
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class, 'commentID');
+    }
 }

@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Forum;
 use App\Models\ForumComment;
+use App\Models\Attachment;
 use App\Models\Club;
 use Illuminate\Http\RedirectResponse;
 
 class LeaderForumController extends Controller
 {
-
     protected function authorizeClubAccess($club): void
     {
         $userID = auth()->user()->userID;
@@ -26,28 +26,28 @@ class LeaderForumController extends Controller
     {
         $userID = auth()->user()->userID;
 
-        $club = \App\Models\Club::where(function ($q) use ($userID) {
+        $club = Club::where(function ($q) use ($userID) {
             $q->where('leaderID', $userID)
                 ->orWhere('managerID', $userID);
         })->firstOrFail();
 
         $this->authorizeClubAccess($club);
 
-        $pendingForums = Forum::with('user', 'club')
+        $pendingForums = Forum::with(['user', 'club', 'attachments'])
             ->where('clubID', $club->clubID)
             ->where('status', 'pending')
             ->latest()
             ->get();
 
-        $approvedForums = Forum::with('user', 'club')
+        $approvedForums = Forum::with(['user', 'club', 'attachments'])
             ->where('clubID', $club->clubID)
             ->where('status', 'approved')
             ->latest()
             ->get();
 
-        $pendingComments = ForumComment::where('status', 'pending')
+        $pendingComments = ForumComment::with(['user', 'forum.club', 'attachments'])
+            ->where('status', 'pending')
             ->whereHas('forum.club', fn($q) => $q->where('clubID', $club->clubID))
-            ->with('user', 'forum.club')
             ->latest()
             ->get();
 
@@ -63,7 +63,12 @@ class LeaderForumController extends Controller
             'club',
             'attachments',
             'comments' => function ($query) {
-                $query->where('status', 'approved')->with('user', 'replies');
+                $query->where('status', 'approved')->with([
+                    'user',
+                    'attachments',
+                    'replies.user',
+                    'replies.attachments',
+                ]);
             }
         ]);
 
@@ -99,8 +104,43 @@ class LeaderForumController extends Controller
     public function rejectComment(ForumComment $comment)
     {
         $this->authorizeClubAccess($comment->forum->club);
+        $comment->attachments()->delete();
         $comment->delete();
 
         return back()->with('success', 'Comment rejected and deleted.');
+    }
+
+    public function comment(Request $request, Forum $forum)
+    {
+        $this->authorizeClubAccess($forum->club);
+        $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+        $validated = $request->validate([
+            'message' => 'required|string|max:1000',
+            'parentID' => 'nullable|exists:forum_comments,commentID',
+        ]);
+
+        $comment = $forum->comments()->create([
+            'userID' => auth()->id(),
+            'message' => $validated['message'],
+            'created_at' => now(),
+            'parentID' => $validated['parentID'] ?? null,
+            'status' => 'approved',
+        ]);
+
+        // Dosya varsa ekle
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $filePath = $file->store('public/comment_attachments');
+                \App\Models\Attachment::create([
+                    'commentID' => $comment->commentID,
+                    'userID' => auth()->id(),
+                    'file_path' => $filePath,
+                    'file_type' => $file->getClientMimeType(),
+                    'uploaded_at' => now(),
+                ]);
+            }
+        }
+
+        return redirect()->route($prefix . '.forums.show', $forum->forumID)->with('success', 'Comment posted!');
     }
 }
