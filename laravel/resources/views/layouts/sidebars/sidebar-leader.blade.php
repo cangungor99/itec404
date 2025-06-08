@@ -67,42 +67,54 @@
             <div class="menu-title">Manage Forums & Comments</div>
         </a>
     </li>
+    <li>
+        <a href="{{ route('chat.index') }}">
+            <div class="parent-icon"><i class="bi bi-chat-square-fill"></i></div>
+            <div class="menu-title">Chat</div>
+        </a>
+    </li>
 
     {{-- ÖĞRENCİ ALANI --}}
     <li class="menu-label">Student Area</li>
 
     <li>
         <a href="{{ route('students.dashboard') }}">
-            <div class="parent-icon"><i class="bi bi-house-door"></i></div>
-            <div class="menu-title">Student Dashboard</div>
+            <div class="parent-icon"><i class="bi bi-person-fill"></i></div>
+            <div class="menu-title">Dashboard</div>
         </a>
     </li>
 
     <li>
         <a href="{{ route('students.clubs.index') }}">
-            <div class="parent-icon"><i class="bi bi-people"></i></div>
-            <div class="menu-title">Clubs</div>
+            <div class="parent-icon"><i class="bi bi-people-fill"></i></div>
+            <div class="menu-title">Club List</div>
         </a>
     </li>
 
     <li>
         <a href="{{ route('students.events.index') }}">
-            <div class="parent-icon"><i class="bi bi-calendar"></i></div>
-            <div class="menu-title">My Events</div>
+            <div class="parent-icon"><i class="bi bi-calendar-event"></i></div>
+            <div class="menu-title">Club Events</div>
         </a>
     </li>
 
     <li>
         <a href="{{ route('students.votes.index') }}">
-            <div class="parent-icon"><i class="bi bi-bar-chart"></i></div>
+            <div class="parent-icon"><i class="bi bi-bar-chart-line-fill"></i></div>
             <div class="menu-title">Voting</div>
         </a>
     </li>
 
     <li>
         <a href="{{ route('students.forums.index') }}">
-            <div class="parent-icon"><i class="bi bi-chat"></i></div>
+            <div class="parent-icon"><i class="bi bi-chat-text-fill"></i></div>
             <div class="menu-title">Forums</div>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('students.resources.index') }}">
+            <div class="parent-icon"><i class="bi bi-folder2-open"></i></div>
+            <div class="menu-title">View Resources</div>
         </a>
     </li>
 </ul>
