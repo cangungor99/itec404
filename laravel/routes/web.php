@@ -284,9 +284,9 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/user_list/update/{id}', [UserController::class, 'update'])->name('users.update');
 
         //view report
-        Route::get('/admin/view-report', function () {
-            return view('admin.view_report');
-        })->name('admin.view_report')->middleware(['auth', 'role:admin']);
+        Route::get('/view_report', [App\Http\Controllers\Admin\ViewReportController::class, 'index'])->name('view_report');
+        Route::get('/graphical_report', [App\Http\Controllers\Admin\GraphicalReportController::class, 'index'])->name('graphical_report');
+        Route::get('/general_report', [App\Http\Controllers\Admin\GeneralReportController::class, 'index'])->name('general_report');
 
         Route::get('/manage_votes', [App\Http\Controllers\Admin\VoteController::class, 'index'])->name('manage_votes');
 

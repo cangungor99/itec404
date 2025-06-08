@@ -60,14 +60,14 @@ class StudentForumController extends Controller
     }
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'clubID' => 'required|exists:clubs,clubID',
-        'title' => 'required|string|max:255',
-        'description' => 'nullable|string',
-    ]);
+    {
+        $validated = $request->validate([
+            'clubID' => 'required|exists:clubs,clubID',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-    $this->ensureApprovedMemberOfClub($validated['clubID']);
+        $this->ensureApprovedMemberOfClub($validated['clubID']);
 
         $forum = Forum::create([
             'clubID' => $validated['clubID'],
@@ -91,24 +91,24 @@ class StudentForumController extends Controller
             }
         }
 
-    // 🟡 Yeni Eklenen Bildirim Kısmı
-    $club = Club::find($validated['clubID']);
-    $sender = auth()->user();
+        // 🟡 Yeni Eklenen Bildirim Kısmı
+        $club = Club::find($validated['clubID']);
+        $sender = auth()->user();
 
-    $notification = \App\Models\Notification::create([
-        'clubID'    => $club->clubID,
-        'creatorID' => $sender->userID,
-        'title'     => 'New Forum Request',
-        'content'   => "{$sender->name} created a new forum : '{$forum->title}'. Please accept.",
-    ]);
+        $notification = \App\Models\Notification::create([
+            'clubID'    => $club->clubID,
+            'creatorID' => $sender->userID,
+            'title'     => 'New Forum Request',
+            'content'   => "{$sender->name} created a new forum : '{$forum->title}'. Please accept.",
+        ]);
 
-    $targetUserIDs = collect([$club->leaderID, $club->managerID])->filter()->unique();
+        $targetUserIDs = collect([$club->leaderID, $club->managerID])->filter()->unique();
 
-    $notification->readers()->syncWithPivotValues($targetUserIDs->toArray(), ['is_read' => false]);
+        $notification->readers()->syncWithPivotValues($targetUserIDs->toArray(), ['is_read' => false]);
 
-    return redirect()->route('students.forums.index')
-        ->with('success', 'Forum created successfully.');
-}
+        return redirect()->route('students.forums.index')
+            ->with('success', 'Forum created successfully.');
+    }
 
 
     public function show(Forum $forum)
@@ -161,9 +161,7 @@ class StudentForumController extends Controller
                     'uploaded_at' => now(),
                 ]);
             }
-            \Log::info('Dosya geldi', ['adet' => count($request->file('attachments'))]);
         }
-        \Log::info('Comment gönderiliyor', ['user' => Auth::id()]);
         return redirect()->route('students.forums.show', $forum->forumID)->with('success', 'Comment posted!');
     }
 }
