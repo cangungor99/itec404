@@ -25,7 +25,7 @@ class ViewReportController extends Controller
         // 4. Son etkinlikler (en yeni 5 tanesi)
         $recentEvents = ClubEvent::with('club')->orderByDesc('start_time')->take(5)->get();
 
-        return view('admin.view_reports', compact(
+        return view('Admin.reports.view_reports', compact(
             'totalClubs',
             'totalMembers',
             'budgetUsed',
