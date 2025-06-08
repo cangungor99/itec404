@@ -28,9 +28,6 @@ use App\Http\Controllers\ChatController2;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Leader\LeaderDashboardController;
-use App\Http\Controllers\Admin\ViewReportController;
-use App\Http\Controllers\Admin\GraphicalReportController;
-use App\Http\Controllers\manager\ManagerDashboardController;
 
 
 
@@ -81,9 +78,8 @@ Route::middleware(['auth', 'role:student,leader'])
         Route::get('/club/{club}', [StudentClubController::class, 'show'])->name('clubs.show');
         Route::post('/club/{club}/apply', [StudentClubController::class, 'apply'])->name('clubs.apply');
         Route::post('/club/{club}/leave', [StudentClubController::class, 'leave'])->name('clubs.leave');
-        Route::get('/clubs/{club}/resources', [StudentClubResourceController::class, 'index'])->name('clubs.resources');
-        Route::post('/clubs/{club}/resources', [StudentClubResourceController::class, 'store'])->name('clubs.resources.store');
-        Route::delete('/clubs/{club}/resources/{resource}', [StudentClubResourceController::class, 'destroy'])->name('clubs.resources.destroy');
+        Route::get('/resources', [StudentClubResourceController::class, 'index'])->name('resources.index');
+        Route::get('/resources/search', [StudentClubResourceController::class, 'search'])->name('resources.search');
         Route::get('/votes', [StudentVoteController::class, 'index'])->name('votes.index');
         Route::get('/votes/{voting}', [StudentVoteController::class, 'show'])->name('votes.show');
         Route::post('/votes/{voting}', [StudentVoteController::class, 'vote'])->name('votes.vote');

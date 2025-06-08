@@ -9,10 +9,18 @@
 </div>
 
 <ul class="metismenu" id="menu">
+
     <li>
         <a href="{{ route('students.dashboard') }}">
             <div class="parent-icon"><i class="bi bi-person-fill"></i></div>
             <div class="menu-title">Dashboard</div>
+        </a>
+    </li>
+
+    <li>
+        <a href="{{ route('chat.index') }}">
+            <div class="parent-icon"><i class="bi bi-chat-square-fill"></i></div>
+            <div class="menu-title">Chat</div>
         </a>
     </li>
 
@@ -43,7 +51,13 @@
             <div class="menu-title">Forums</div>
         </a>
     </li>
+    <li>
+        <a href="{{ route('students.resources.index') }}">
+            <div class="parent-icon"><i class="bi bi-folder2-open"></i></div>
+            <div class="menu-title">View Resources</div>
+        </a>
+    </li>
+
 
 
 </ul>
-

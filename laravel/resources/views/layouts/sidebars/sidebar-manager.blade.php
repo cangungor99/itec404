@@ -77,5 +77,14 @@
             <div class="menu-title">Forum Management</div>
         </a>
     </li>
+
+
     @endif
+
+    <li>
+        <a href="{{ route('chat.index') }}">
+            <div class="parent-icon"><i class="bi bi-chat-square-fill"></i></div>
+            <div class="menu-title">Chat</div>
+        </a>
+    </li>
 </ul>

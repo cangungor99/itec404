@@ -124,13 +124,6 @@
                     <button type="submit" class="btn btn-primary">Join Club</button>
                 </form>
                 @endif
-                @if($isMember && $membership?->status === 'approved')
-                <div class="mb-3">
-                    <a href="{{ route('students.clubs.resources', $club->clubID) }}" class="btn btn-outline-primary">
-                        <i class="bi bi-folder-fill me-1"></i> View Club Resources
-                    </a>
-                </div>
-                @endif
 
             </div>
         </div>
