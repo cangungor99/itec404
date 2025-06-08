@@ -30,6 +30,7 @@ use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Leader\LeaderDashboardController;
 use App\Http\Controllers\Admin\ViewReportController;
 use App\Http\Controllers\Admin\GraphicalReportController;
+use App\Http\Controllers\manager\ManagerDashboardController;
 
 
 
@@ -230,6 +231,7 @@ Route::middleware(['auth', 'role:manager'])
         Route::get('/forums/{forum}', [LeaderForumController::class, 'show'])->name('forums.show');
         Route::delete('/forums/{forum}', [LeaderForumController::class, 'destroy'])->name('forums.destroy');
         Route::post('/forums/{forum}/comment', [LeaderForumController::class, 'comment'])->name('forums.comment');
+        Route::get('/dashboard', [ManagerDashboardController::class, 'index'])->name('dashboard');
 
     });
 
@@ -240,6 +242,7 @@ Route::middleware(['auth', 'role:leader,manager'])
     ->group(function () {
         Route::get('/create', [LeaderNotificationController::class, 'create'])->name('create');
         Route::post('/store', [LeaderNotificationController::class, 'store'])->name('store');
+
     });
 
 
