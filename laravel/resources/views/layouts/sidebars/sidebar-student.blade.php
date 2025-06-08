@@ -43,7 +43,12 @@
             <div class="menu-title">Forums</div>
         </a>
     </li>
+    <li>
+        <a href="{{ route('students.resources.index') }}">
+            <div class="parent-icon"><i class="bi bi-folder2-open"></i></div>
+            <div class="menu-title">View Resources</div>
+        </a>
+    </li>
 
 
 </ul>
-
