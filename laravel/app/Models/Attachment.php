@@ -16,6 +16,7 @@ class Attachment extends Model
     protected $fillable = [
         'resourceID',
         'forumID',
+        'commentID',
         'userID',
         'file_path',
         'file_type',
@@ -28,5 +29,9 @@ class Attachment extends Model
     public function forum(): BelongsTo
     {
         return $this->belongsTo(Forum::class, 'forumID');
+    }
+    public function comment(): BelongsTo
+    {
+        return $this->belongsTo(ForumComment::class, 'commentID');
     }
 }

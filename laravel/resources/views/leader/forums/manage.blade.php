@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Manage Forums & Comments')
 @php
-    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+$prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @endphp
 @section('content')
 <main class="page-content">
@@ -38,6 +38,7 @@
                             <th>Created By</th>
                             <th>Club</th>
                             <th>Created At</th>
+                            <th>Attachments</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -48,6 +49,19 @@
                             <td>{{ $forum->user->name }} {{ $forum->user->surname }}</td>
                             <td>{{ $forum->club->name }}</td>
                             <td>{{ $forum->created_at->format('Y-m-d H:i') }}</td>
+                            <td>
+                                @if($forum->attachments->isNotEmpty())
+                                <ul class="mb-0">
+                                    @foreach($forum->attachments as $file)
+                                    <li><a href="{{ Storage::url($file->file_path) }}" target="_blank">
+                                            {{ basename($file->file_path) }}
+                                        </a></li>
+                                    @endforeach
+                                </ul>
+                                @else
+                                <span class="text-muted small">No file</span>
+                                @endif
+                            </td>
                             <td>
                                 <form method="POST" action="{{ route($prefix.'.forums.approve', $forum->forumID) }}" class="d-inline">
                                     @csrf
@@ -87,6 +101,7 @@
                             <th>Club</th>
                             <th>User</th>
                             <th>Date</th>
+                            <th>Attachments</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -98,6 +113,19 @@
                             <td>{{ $comment->forum->club->name }}</td>
                             <td>{{ $comment->user->name }} {{ $comment->user->surname }}</td>
                             <td>{{ \Carbon\Carbon::parse($comment->created_at)->format('Y-m-d H:i') }}</td>
+                            <td>
+                                @if($comment->attachments->isNotEmpty())
+                                <ul class="mb-0">
+                                    @foreach($comment->attachments as $file)
+                                    <li><a href="{{ Storage::url($file->file_path) }}" target="_blank">
+                                            {{ basename($file->file_path) }}
+                                        </a></li>
+                                    @endforeach
+                                </ul>
+                                @else
+                                <span class="text-muted small">No file</span>
+                                @endif
+                            </td>
                             <td>
                                 <form method="POST" action="{{ route($prefix.'.comments.approve', $comment->commentID) }}" class="d-inline">
                                     @csrf
@@ -143,7 +171,7 @@
                             <td>{{ $forum->club->name }}</td>
                             <td>{{ $forum->created_at->format('Y-m-d') }}</td>
                             <td>
-                                <a href="{{ route('students.forums.show', $forum->forumID) }}" class="btn btn-outline-primary btn-sm">
+                                <a href="{{ route($prefix.'.forums.show', $forum->forumID) }}" class="btn btn-outline-primary btn-sm">
                                     <i class="bi bi-eye"></i>
                                 </a>
                                 <form method="POST" action="{{ route($prefix.'.forums.destroy', $forum->forumID) }}" class="d-inline"

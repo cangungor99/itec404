@@ -159,6 +159,8 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('/forums/approved', [LeaderForumController::class, 'published'])->name('forums.approved');
         Route::get('/forums/{forum}', [LeaderForumController::class, 'show'])->name('forums.show');
         Route::delete('/forums/{forum}', [LeaderForumController::class, 'destroy'])->name('forums.destroy');
+        Route::post('/forums/{forum}/comment', [LeaderForumController::class, 'comment'])->name('forums.comment');
+
 
         Route::get('{club}/events', [LeaderEventController::class, 'index'])->name('events.index');
         Route::get('{club}/events/create', [LeaderEventController::class, 'create'])->name('events.create');
@@ -235,6 +237,8 @@ Route::middleware(['auth', 'role:manager'])
         Route::get('/forums/approved', [LeaderForumController::class, 'published'])->name('forums.approved');
         Route::get('/forums/{forum}', [LeaderForumController::class, 'show'])->name('forums.show');
         Route::delete('/forums/{forum}', [LeaderForumController::class, 'destroy'])->name('forums.destroy');
+        Route::post('/forums/{forum}/comment', [LeaderForumController::class, 'comment'])->name('forums.comment');
+
     });
 
 

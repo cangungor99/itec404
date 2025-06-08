@@ -1,91 +1,159 @@
 @extends('layouts.app')
 @section('title', 'Forum Detail')
 @php
-    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+$prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @endphp
 @section('content')
 
 <main class="page-content">
     <!-- Breadcrumb -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Leader</div>
+        <div class="breadcrumb-title pe-3">Forum</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.forums.pending') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.dashboard') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><a href="{{ route($prefix.'.forums.manage') }}">Manage Forums</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Forum Detail</li>
                 </ol>
             </nav>
         </div>
     </div>
 
-    <!-- Forum Title -->
+    <!-- Forum Başlığı -->
     <div class="card shadow-sm mb-4 fade-in">
         <div class="card-body">
             <h3 class="fw-bold">
                 <i class="bi bi-chat-dots text-primary me-2"></i> {{ $forum->title }}
             </h3>
-            <p class="text-muted mb-2">{{ $forum->description }}</p>
-            <p class="mb-0"><strong>Created by:</strong> {{ $forum->user->name }} {{ $forum->user->surname }}</p>
+            <p class="text-muted mb-0">{{ $forum->description }}</p>
+        </div>
+    </div>
 
-            <!-- Onay / Red Butonları -->
-            @if($forum->status === 'pending')
-                <div class="mt-3">
-                    <form action="{{ route($prefix.'.forums.approve', $forum->forumID) }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i> Approve</button>
-                    </form>
-                    <form action="{{ route($prefix.'.forums.reject', $forum->forumID) }}" method="POST" class="d-inline">
-                        @csrf
-                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i> Reject</button>
-                    </form>
-                </div>
+    <!-- Ana Mesaj -->
+    <div class="card mb-3 shadow-sm fade-in">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <h6 class="fw-bold mb-1"><i class="bi bi-person-circle me-1"></i>{{ $forum->user->name }} {{ $forum->user->surname }}</h6>
+                <small class="text-muted">
+                    <i class="bi bi-clock"></i> {{ $forum->created_at->format('F d, Y - H:i') }}
+                </small>
+            </div>
+            <p class="mt-2 mb-1">{{ $forum->description }}</p>
+            @if($forum->attachments->isNotEmpty())
+            <div class="mt-3">
+                <h6><i class="bi bi-paperclip me-1"></i>Attachments:</h6>
+                <ul>
+                    @foreach($forum->attachments as $attachment)
+                    <li>
+                        <a href="{{ Storage::url($attachment->file_path) }}" target="_blank">
+                            {{ basename($attachment->file_path) }}
+                        </a>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
         </div>
     </div>
 
-    <!-- Yorumlar -->
-    @foreach($forum->comments->where('parentID', null) as $comment)
+    @foreach($forum->comments->where('status', 'approved')->where('parentID', null) as $comment)
+    <!-- Ana Yorum -->
+    <div class="card mb-3 shadow-sm fade-in">
+        <div class="card-body py-2">
+            <div class="d-flex justify-content-between">
+                <h6 class="fw-bold mb-1">
+                    <i class="bi bi-person-circle me-1"></i>
+                    {{ $comment->user->name }} {{ $comment->user->surname }}
+                </h6>
+                <small class="text-muted">
+                    <i class="bi bi-clock"></i>
+                    {{ \Carbon\Carbon::parse($comment->created_at)->format('F d, Y - H:i') }}
+                </small>
+            </div>
+            <p class="mt-2 mb-1">{{ $comment->message }}</p>
+
+            @if($comment->attachments->isNotEmpty())
+            <div class="mt-2">
+                <small><strong>Attachments:</strong></small>
+                <ul class="mb-0">
+                    @foreach($comment->attachments as $file)
+                    <li>
+                        <a href="{{ Storage::url($file->file_path) }}" target="_blank">
+                            {{ basename($file->file_path) }}
+                        </a>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            <!-- Cevap Formu -->
+            <form method="POST" action="{{ route($prefix.'.forums.comment', $forum->forumID) }}" class="mt-2" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="parentID" value="{{ $comment->commentID }}">
+                <textarea name="message" class="form-control form-control-sm mb-2" rows="2" placeholder="Write a reply..." required></textarea>
+                <input type="file" name="attachments[]" multiple class="form-control form-control-sm mb-2">
+                <button type="submit" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-send"></i> Reply
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Alt Yorumlar -->
+    @foreach($comment->replies as $reply)
+    <div class="ms-4 border-start ps-3">
         <div class="card mb-3 shadow-sm fade-in">
             <div class="card-body py-2">
                 <div class="d-flex justify-content-between">
                     <h6 class="fw-bold mb-1">
                         <i class="bi bi-person-circle me-1"></i>
-                        {{ $comment->user->name }} {{ $comment->user->surname }}
+                        {{ $reply->user->name }} {{ $reply->user->surname }}
                     </h6>
                     <small class="text-muted">
                         <i class="bi bi-clock"></i>
-                        {{ \Carbon\Carbon::parse($comment->created_at)->format('F d, Y - H:i') }}
+                        {{ \Carbon\Carbon::parse($reply->created_at)->format('F d, Y - H:i') }}
                     </small>
                 </div>
-                <p class="mt-2 mb-1">{{ $comment->message }}</p>
+                <p class="mt-2 mb-1">{{ $reply->message }}</p>
+                @if($reply->attachments->isNotEmpty())
+                <div class="mt-2">
+                    <small><strong>Attachments:</strong></small>
+                    <ul class="mb-0">
+                        @foreach($reply->attachments as $file)
+                        <li>
+                            <a href="{{ Storage::url($file->file_path) }}" target="_blank">
+                                {{ basename($file->file_path) }}
+                            </a>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
             </div>
         </div>
-
-        <!-- Cevaplar -->
-        @foreach($comment->replies as $reply)
-            <div class="ms-4 border-start ps-3">
-                <div class="card mb-2 shadow-sm">
-                    <div class="card-body py-2">
-                        <small class="fw-bold"><i class="bi bi-person-circle me-1"></i>{{ $reply->user->name }}</small>
-                        <p class="mb-0">{{ $reply->message }}</p>
-                    </div>
-                </div>
-            </div>
-        @endforeach
+    </div>
+    @endforeach
     @endforeach
 
-    <!-- Lider Yorum Formu -->
+    <!-- Yeni Yorum -->
     <div class="card shadow-sm mt-4 fade-in">
         <div class="card-body">
-            <h5 class="fw-bold"><i class="bi bi-pencil-square me-2"></i>Leave a Comment</h5>
-            <form method="POST" action="{{ route('students.forums.comment', $forum->forumID) }}">
+            <h5 class="fw-bold"><i class="bi bi-pencil-square me-2"></i>Add a Comment</h5>
+            <form method="POST" action="{{ route($prefix.'.forums.comment', $forum->forumID) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
-                    <textarea name="message" class="form-control" rows="4" placeholder="Write your comment..." required></textarea>
+                    <textarea name="message" class="form-control" rows="4" placeholder="Write your message..." required></textarea>
+                    <input type="file" name="attachments[]" multiple class="form-control form-control-sm mt-2">
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="bi bi-send me-1"></i> Post</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-send me-1"></i> Post
+                </button>
             </form>
+
         </div>
     </div>
 

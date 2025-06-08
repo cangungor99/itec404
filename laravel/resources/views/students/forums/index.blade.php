@@ -30,24 +30,24 @@
 
         <div class="row">
             @forelse($forums as $forum)
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm border-start border-4 border-primary">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <i class="bi bi-chat-left-dots text-primary me-2"></i> {{ $forum->title }}
-                            </h5>
-                            <p class="card-text text-muted">{{ Str::limit($forum->description, 100) }}</p>
-                            <div class="d-flex justify-content-between mt-3">
-                                <small class="text-secondary">
-                                    <i class="bi bi-calendar-event"></i> {{ \Carbon\Carbon::parse($forum->created_at)->format('M d, Y') }}
-                                </small>
-                                <a href="{{ route('students.forums.show', $forum->forumID) }}" class="btn btn-sm btn-outline-primary">View</a>
-                            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm border-start border-4 border-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="bi bi-chat-left-dots text-primary me-2"></i> {{ $forum->title }}
+                        </h5>
+                        <p class="card-text text-muted">{{ Str::limit($forum->description, 100) }}</p>
+                        <div class="d-flex justify-content-between mt-3">
+                            <small class="text-secondary">
+                                <i class="bi bi-calendar-event"></i> {{ \Carbon\Carbon::parse($forum->created_at)->format('M d, Y') }}
+                            </small>
+                            <a href="{{ route('students.forums.show', $forum->forumID) }}" class="btn btn-sm btn-outline-primary">View</a>
                         </div>
                     </div>
                 </div>
+            </div>
             @empty
-                <p class="text-muted">No forums found.</p>
+            <p class="text-muted">No forums found.</p>
             @endforelse
         </div>
     </div>
@@ -55,7 +55,8 @@
     <!-- Create New Forum Modal -->
     <div class="modal fade" id="createForumModal" tabindex="-1" aria-labelledby="createForumModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{ route('students.forums.store') }}" method="POST" class="modal-content">
+            <form action="{{ route('students.forums.store') }}" method="POST" class="modal-content" enctype="multipart/form-data">
+
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="createForumModalLabel">
@@ -77,9 +78,13 @@
                         <select class="form-select" id="clubID" name="clubID" required>
                             <option selected disabled value="">Choose a club</option>
                             @foreach($clubs as $clubID => $club)
-                                <option value="{{ $clubID }}">{{ $club->name }}</option>
+                            <option value="{{ $clubID }}">{{ $club->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="attachments" class="form-label">Attachments</label>
+                        <input type="file" class="form-control" id="attachments" name="attachments[]" multiple>
                     </div>
                 </div>
                 <div class="modal-footer">
