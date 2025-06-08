@@ -28,6 +28,8 @@ use App\Http\Controllers\ChatController2;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Leader\LeaderDashboardController;
+use App\Http\Controllers\Admin\ViewReportController;
+use App\Http\Controllers\Admin\GraphicalReportController;
 
 
 
@@ -39,17 +41,7 @@ Route::get('/test', function () {
     return view('test');
 });
 
-Route::get('/general_report', function () {
-    return view('admin.reports.general_report');
-})->name('general_report');
 
-Route::get('/view_report', function () {
-    return view('admin.reports.view_reports');
-})->name('view_report');
-
-Route::get('/graphical_report', function () {
-    return view('admin.reports.graphical_report');
-})->name('graphical_report');
 
 
 Route::middleware('auth')->group(function () {
@@ -284,9 +276,14 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/user_list/update/{id}', [UserController::class, 'update'])->name('users.update');
 
         //view report
-        Route::get('/admin/view-report', function () {
-            return view('admin.view_report');
-        })->name('admin.view_report')->middleware(['auth', 'role:admin']);
+        Route::get('/view_report', [ViewReportController::class, 'index'])->name('view_report');
+        //Route::get('/graphical_report', [App\Http\Controllers\Admin\GraphicalReportController::class, 'index'])->name('graphical_report');
+        Route::get('/reports/graphical', [GraphicalReportController::class, 'index'])->name('admin.reports.graphical');
+
+        
+        //Route::get('/general_report', [App\Http\Controllers\Admin\GeneralReportController::class, 'index'])->name('general_report');
+        Route::get('/reports/general', [App\Http\Controllers\Admin\GeneralReportController::class, 'index'])
+    ->name('admin.reports.general');
 
         Route::get('/manage_votes', [App\Http\Controllers\Admin\VoteController::class, 'index'])->name('manage_votes');
 

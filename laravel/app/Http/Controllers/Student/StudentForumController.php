@@ -59,15 +59,16 @@ class StudentForumController extends Controller
     }
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'clubID' => 'required|exists:clubs,clubID',
-        'title' => 'required|string|max:255',
-        'description' => 'nullable|string',
-    ]);
+    {
+        $validated = $request->validate([
+            'clubID' => 'required|exists:clubs,clubID',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-    $this->ensureApprovedMemberOfClub($validated['clubID']);
+        $this->ensureApprovedMemberOfClub($validated['clubID']);
 
+<<<<<<< HEAD
     $forum = Forum::create([
         'clubID' => $validated['clubID'],
         'userID' => Auth::id(),
@@ -96,6 +97,49 @@ class StudentForumController extends Controller
         ->with('success', 'Forum created successfully.');
 }
 
+=======
+        $forum = Forum::create([
+            'clubID' => $validated['clubID'],
+            'userID' => Auth::id(),
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'status' => 'pending',
+            'created_at' => now(),
+        ]);
+
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $filePath = $file->store('public/forum_attachments');
+                Attachment::create([
+                    'forumID' => $forum->forumID,
+                    'userID' => Auth::id(),
+                    'file_path' => $filePath,
+                    'file_type' => $file->getClientMimeType(),
+                    'uploaded_at' => now(),
+                ]);
+            }
+        }
+
+        // 🟡 Yeni Eklenen Bildirim Kısmı
+        $club = Club::find($validated['clubID']);
+        $sender = auth()->user();
+
+        $notification = \App\Models\Notification::create([
+            'clubID'    => $club->clubID,
+            'creatorID' => $sender->userID,
+            'title'     => 'New Forum Request',
+            'content'   => "{$sender->name} created a new forum : '{$forum->title}'. Please accept.",
+        ]);
+
+        $targetUserIDs = collect([$club->leaderID, $club->managerID])->filter()->unique();
+
+        $notification->readers()->syncWithPivotValues($targetUserIDs->toArray(), ['is_read' => false]);
+
+        return redirect()->route('students.forums.index')
+            ->with('success', 'Forum created successfully.');
+    }
+
+>>>>>>> f44c913fe44bceb472df797c8da7588c61a90c8a
 
     public function show(Forum $forum)
     {
@@ -129,6 +173,21 @@ class StudentForumController extends Controller
             'status' => 'pending',
         ]);
 
+<<<<<<< HEAD
+=======
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+                $filePath = $file->store('public/comment_attachments');
+                Attachment::create([
+                    'commentID' => $comment->commentID,
+                    'userID' => Auth::id(),
+                    'file_path' => $filePath,
+                    'file_type' => $file->getClientMimeType(),
+                    'uploaded_at' => now(),
+                ]);
+            }
+        }
+>>>>>>> f44c913fe44bceb472df797c8da7588c61a90c8a
         return redirect()->route('students.forums.show', $forum->forumID)->with('success', 'Comment posted!');
     }
 }

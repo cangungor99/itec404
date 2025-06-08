@@ -3,32 +3,8 @@
 @section('content')
 <!--start content-->
 <main class="page-content">
-    <!--breadcrumb-->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Pages</div>
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">General Report</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="ms-auto">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary">Settings</button>
-                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item" href="javascript:;">Action</a>
-                    <a class="dropdown-item" href="javascript:;">Another action</a>
-                    <a class="dropdown-item" href="javascript:;">Something else here</a>
-                    <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--end breadcrumb-->
+
+
 
     <div class="card shadow-sm border-0 radius-10 mb-4">
         <div class="card-body d-flex justify-content-between align-items-center">
@@ -41,37 +17,47 @@
 
     <div class="card shadow-sm border-0 radius-10" id="reportContent">
         <div class="card-body">
-            <h5>Institution: Student Clubs Coordination Office</h5>
-            <p>Generated On: June 7, 2025</p>
+            <h5>General Report: EMU Digital Club Report</h5>
+            <p>Generated On: {{ \Carbon\Carbon::now()->format('F j, Y - H:i') }}</p>
+
 
             <hr>
 
             <h6>1. Budget Summary</h6>
             <ul>
-                <li>Total Annual Budget: <strong>$50,000</strong></li>
-                <li>Used Budget (YTD): <strong>$32,740</strong></li>
-                <li>Remaining Budget: <strong>$17,260</strong></li>
+                <li>Total Annual Budget: <strong>${{ number_format($totalBudget) }}</strong></li>
+                <li>Used Budget (YTD): <strong>${{ number_format($usedBudget) }}</strong></li>
+                <li>Remaining Budget: <strong>${{ number_format($remainingBudget) }}</strong></li>
             </ul>
 
             <h6 class="mt-4">2. Members Overview</h6>
             <ul>
-                <li>Total Registered Students: <strong>562</strong></li>
-                <li>Average Members per Club: <strong>~23</strong></li>
-                <li>Top Club by Membership: <strong>Tech Club (120 Members)</strong></li>
+                <li>Total Registered Students: <strong>{{ $totalMembers }}</strong></li>
+                <li>Average Members per Club: <strong>~{{ $avgMembers }}</strong></li>
+                <li>Top Club by Membership:
+                    <strong>{{ $topClub->name }} ({{ $topClub->memberships_count }} Members)</strong>
+                </li>
             </ul>
 
             <h6 class="mt-4">3. Events Summary</h6>
             <ul>
-                <li>Total Events This Year: <strong>47</strong></li>
-                <li>Most Active Club: <strong>Music Club (12 Events)</strong></li>
-                <li>Upcoming Events (Next Month): <strong>5</strong></li>
+                <li>Total Events This Year: <strong>{{ $totalEvents }}</strong></li>
+                <li>Most Active Club:
+                    <strong>{{ $topEventClub->name }} ({{ $topEventClub->events_count }} Events)</strong>
+                </li>
+                <li>Upcoming Events (Next Month): <strong>{{ $upcomingEvents }}</strong></li>
             </ul>
 
             <h6 class="mt-4">4. Voting Activities</h6>
             <ul>
-                <li>Total Votes Conducted: <strong>9</strong></li>
-                <li>Average Voter Participation: <strong>68%</strong></li>
-                <li>Most Recent Vote: <strong>Club Budget Allocation (May 2025)</strong></li>
+                <li>Total Votes Conducted: <strong>{{ $totalVotes }}</strong></li>
+                <li>Average Voter Participation: <strong>{{ $averageParticipation }}%</strong></li>
+                <li>Most Recent Vote:
+                    <strong>
+                        {{ $lastVote && $lastVote->voting ? $lastVote->voting->title : 'N/A' }}
+                        ({{ $lastVote ? \Carbon\Carbon::parse($lastVote->timestamp)->format('F Y') : '' }})
+                    </strong>
+                </li>
             </ul>
         </div>
     </div>
