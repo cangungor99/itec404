@@ -39,6 +39,18 @@ Route::get('/test', function () {
     return view('test');
 });
 
+Route::get('/general_report', function () {
+    return view('admin.reports.general_report');
+})->name('general_report');
+
+Route::get('/view_report', function () {
+    return view('admin.reports.view_reports');
+})->name('view_report');
+
+Route::get('/graphical_report', function () {
+    return view('admin.reports.graphical_report');
+})->name('graphical_report');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -55,7 +67,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat/club/{club}', [ChatController::class, 'indexClub'])->name('chat.club');
     Route::post('/chat/club/{club}', [ChatController::class, 'storeClub'])->name('chat.club.send');
 });
-
 
 
 
