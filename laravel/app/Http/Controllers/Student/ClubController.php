@@ -34,25 +34,45 @@ class ClubController extends Controller
     }
 
     public function apply(Club $club): RedirectResponse
-    {
-        $user = auth()->user();
-        $exists = Membership::where('userID', $user->userID)
-            ->where('clubID', $club->clubID)
-            ->exists();
+{
+    $user = auth()->user();
 
-        if (!$exists) {
-            Membership::create([
-                'userID' => $user->userID,
-                'clubID' => $club->clubID,
-                'role' => 'member',
-                'status' => 'pending',
-                'joined_at' => now(),
-            ]);
-        }
+    $exists = Membership::where('userID', $user->userID)
+        ->where('clubID', $club->clubID)
+        ->exists();
 
-        return redirect()->route('students.clubs.show', $club->clubID)
-            ->with('success', 'Your application has been sent and is pending approval.');
+    if (!$exists) {
+        // 1. Kulüp üyeliğini oluştur
+        Membership::create([
+            'userID' => $user->userID,
+            'clubID' => $club->clubID,
+            'role' => 'member',
+            'status' => 'pending',
+            'joined_at' => now(),
+        ]);
+
+        // 2. Bildirimi oluştur
+        $notification = \App\Models\Notification::create([
+            'clubID'    => $club->clubID,
+            'creatorID' => $user->userID,
+            'title'     => 'New Club Approvment Request',
+            'content'   => "{$user->name}, {$club->name} want to join the club.",
+        ]);
+
+        // 3. Kulüp yetkililerini bul (lider veya admin)
+        $leaderIDs = $club->memberships()
+            ->whereIn('role', ['leader', 'admin'])
+            ->pluck('userID')
+            ->toArray();
+
+        // 4. Bildirimi yetkililere ata
+        $notification->readers()->attach($leaderIDs, ['is_read' => false]);
     }
+
+    return redirect()->route('students.clubs.show', $club->clubID)
+        ->with('success', 'Your application has been sent and is pending approval.');
+}
+
 
     public function leave(Club $club): RedirectResponse
     {
