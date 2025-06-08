@@ -3,31 +3,7 @@
 @section('content')
 <!--start content-->
 <main class="page-content">
-    <!--breadcrumb-->
-    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Pages</div>
-        <div class="ps-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Blank Page</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="ms-auto">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary">Settings</button>
-                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item" href="javascript:;">Action</a>
-                    <a class="dropdown-item" href="javascript:;">Another action</a>
-                    <a class="dropdown-item" href="javascript:;">Something else here</a>
-                    <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!--end breadcrumb-->
 
     <div class="row">
@@ -37,7 +13,8 @@
                 <div class="card-body text-center">
                     <i class="bi bi-building fs-2 text-primary"></i>
                     <h5 class="mt-2">Total Clubs</h5>
-                    <h3>24</h3>
+                    <h3>{{ $totalClubs }}</h3>
+
                 </div>
             </div>
         </div>
@@ -48,7 +25,8 @@
                 <div class="card-body text-center">
                     <i class="bi bi-people fs-2 text-success"></i>
                     <h5 class="mt-2">Total Members</h5>
-                    <h3>562</h3>
+                    <h3>{{ $totalMembers }}</h3>
+
                 </div>
             </div>
         </div>
@@ -59,7 +37,8 @@
                 <div class="card-body text-center">
                     <i class="bi bi-cash-stack fs-2 text-warning"></i>
                     <h5 class="mt-2">Monthly Budget Used</h5>
-                    <h3>$12,340</h3>
+                    <h3>${{ number_format($budgetUsed, 2) }}</h3>
+
                 </div>
             </div>
         </div>
@@ -80,25 +59,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Tech Club</td>
-                            <td>Hackathon 2025</td>
-                            <td>2025-06-01</td>
-                            <td><span class="badge bg-success">Completed</span></td>
-                        </tr>
-                        <tr>
-                            <td>Art Club</td>
-                            <td>Art Exhibition</td>
-                            <td>2025-05-28</td>
-                            <td><span class="badge bg-primary">Scheduled</span></td>
-                        </tr>
-                        <tr>
-                            <td>Music Club</td>
-                            <td>Spring Concert</td>
-                            <td>2025-05-21</td>
-                            <td><span class="badge bg-danger">Cancelled</span></td>
-                        </tr>
-                    </tbody>
+    @foreach($recentEvents as $event)
+        <tr>
+            <td>{{ $event->club->name }}</td>
+            <td>{{ $event->title }}</td>
+            <td>{{ \Carbon\Carbon::parse($event->start_time)->format('Y-m-d') }}</td>
+            <td>
+                @php
+                    $now = \Carbon\Carbon::now();
+                    $status = $event->start_time > $now ? 'Scheduled' :
+                              ($event->end_time < $now ? 'Completed' : 'Ongoing');
+                @endphp
+                <span class="badge 
+                    {{ $status === 'Scheduled' ? 'bg-primary' : 
+                       ($status === 'Completed' ? 'bg-success' : 'bg-warning') }}">
+                    {{ $status }}
+                </span>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
+
                 </table>
             </div>
         </div>

@@ -327,5 +327,7 @@ Route::middleware(['auth'])
     ->name('notifications.index');
 Route::middleware(['auth'])->post('/notifications/read/{id}', [NotificiationViewController::class, 'markAsRead'])->name('notifications.markAsRead');
 
+Route::middleware(['auth'])->post('/notifications/navbar/read/{notificationID}', [NotificationController::class, 'markAsReadFromNavbar'])->name('notifications.markAsReadFromNavbar');
+
 
 require __DIR__ . '/auth.php';

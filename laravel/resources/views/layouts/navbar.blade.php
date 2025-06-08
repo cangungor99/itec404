@@ -104,7 +104,11 @@
                         @php
                         $isUnread = in_array($notification->notificationID, $unreadNotificationIDs ?? []);
                         @endphp
-                        <a class="dropdown-item {{ $isUnread ? 'bg-light' : '' }}" href="{{ route('notifications.index') }}">
+                        <a
+                            class="dropdown-item {{ $isUnread ? 'bg-light' : '' }}"
+                            href="{{ route('notifications.index') }}"
+                            data-id="{{ $notification->notificationID }}"
+                            onclick="markNotificationAsRead(event, this)">
                             <div class="d-flex align-items-center">
                                 <div class="notification-box {{ $isUnread ? 'bg-warning text-dark' : 'bg-light-primary text-primary' }}">
                                     <i class="bi bi-bell-fill"></i>
@@ -122,6 +126,7 @@
                                 </div>
                             </div>
                         </a>
+
                         @empty
                         <p class="text-center text-secondary">No notifications</p>
                         @endforelse
@@ -182,3 +187,49 @@
         </ul>
     </div>
 </nav>
+@push('scripts')
+<script>
+    function markNotificationAsRead(event, el) {
+        event.preventDefault(); // linke gitmeyi engelle
+
+        const notifID = el.getAttribute('data-id');
+
+        fetch(`/notifications/navbar/read/${notifID}`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => res.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    // CSS güncellemesi
+                    el.classList.remove('bg-light');
+                    const box = el.querySelector('.notification-box');
+                    if (box) {
+                        box.classList.remove('bg-warning', 'text-dark');
+                        box.classList.add('bg-light-primary', 'text-primary');
+                    }
+
+                    const title = el.querySelector('.dropdown-msg-user');
+                    if (title) {
+                        title.classList.remove('fw-bold');
+                    }
+
+                    // Sayıyı azalt
+                    const badge = document.querySelector('.notifications .notify-badge');
+                    if (badge) {
+                        let current = parseInt(badge.textContent.trim());
+                        if (!isNaN(current) && current > 0) {
+                            badge.textContent = current - 1;
+                        }
+                    }
+
+                    // Sayfaya yönlendir
+                    window.location.href = el.getAttribute('href');
+                }
+            });
+    }
+</script>
+@endpush
