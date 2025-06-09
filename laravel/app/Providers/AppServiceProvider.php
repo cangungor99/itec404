@@ -57,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
                     ->toArray();
             }
 
-            // MESAJLAR
+            // 1. Tüm mesajları çek
             $allMessages = Chat::with(['sender', 'club.memberships'])
                 ->where(function ($q) use ($user, $approvedClubIDs) {
                     $q->where(function ($q1) use ($user) {
@@ -71,6 +71,20 @@ class AppServiceProvider extends ServiceProvider
                 ->latest('created_at')
                 ->get();
 
+            // 2. unread mesajları filtrele
+            $unreadMessagesCount = $allMessages->filter(function ($msg) use ($user) {
+                if ($msg->clubID && $msg->receiverID === null && $msg->senderID !== $user->userID) {
+                    return !$msg->isRead;
+                }
+
+                if ($msg->receiverID === $user->userID) {
+                    return !$msg->isRead;
+                }
+
+                return false;
+            })->count();
+
+            // 3. recent mesajları üret
             $messagesMap = [];
             foreach ($allMessages as $msg) {
                 if ($msg->clubID && !in_array($msg->clubID, $approvedClubIDs)) {
@@ -85,12 +99,14 @@ class AppServiceProvider extends ServiceProvider
                     $messagesMap[$key] = $msg;
                 }
             }
-
             $recentMessages = collect(array_values($messagesMap))->take(5);
 
+
+
+            $view->with('recentMessages', $recentMessages);
+            $view->with('unreadMessageCount', $unreadMessagesCount);
             $view->with('notifications', $notifications);
             $view->with('unreadNotificationIDs', $unreadIDs);
-            $view->with('recentMessages', $recentMessages);
         });
     }
 }

@@ -10,12 +10,12 @@ class ClubEventSeeder extends Seeder
 {
     public function run(): void
     {
-        $clubs = Club::all();
+        // $clubs = Club::all();
 
-        foreach ($clubs as $club) {
-            ClubEvent::factory(rand(1, 2))->create([
-                'clubID' => $club->clubID,
-            ]);
-        }
+        // foreach ($clubs as $club) {
+        //     ClubEvent::factory(rand(1, 2))->create([
+        //         'clubID' => $club->clubID,
+        //     ]);
+        // }
     }
 }

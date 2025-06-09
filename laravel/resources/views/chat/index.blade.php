@@ -413,6 +413,14 @@
                 chatBox.innerHTML = html;
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
+
+        fetch(`/chat/mark-as-read/${userID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        });
     }
 
 
@@ -504,6 +512,16 @@
             }).then(() => {
                 clubChatMessages.scrollTop = clubChatMessages.scrollHeight;
             });
+
+
+            fetch(`/chat/club/mark-as-read/${currentClubID}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                }
+            });
+
         });
     });
 

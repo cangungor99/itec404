@@ -20,16 +20,16 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             RoleSeeder::class,
-            ClubSeeder::class,
-            MembershipSeeder::class,
-            ForumSeeder::class,
-            NotificationSeeder::class,
-            ChatSeeder::class,
-            VotingSeeder::class,
-            ResourceSeeder::class,
-            AttachmentSeeder::class,
-            ClubEventSeeder::class,
-            EventParticipantSeeder::class,
+            // ClubSeeder::class,
+            // MembershipSeeder::class,
+            // ForumSeeder::class,
+            // NotificationSeeder::class,
+            // ChatSeeder::class,
+            // VotingSeeder::class,
+            // ResourceSeeder::class,
+            // AttachmentSeeder::class,
+            // ClubEventSeeder::class,
+            // EventParticipantSeeder::class,
         ]);
     }
 }

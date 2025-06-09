@@ -36,7 +36,7 @@
 
     @if($club)
     <li>
-        <a href="{{ route('manager.resources.index', $club->clubID) }}">
+        <a href="{{ route('manager.resources.index', ['club' => $club->clubID]) }}">
             <div class="parent-icon"><i class="bi bi-folder"></i></div>
             <div class="menu-title">Resources</div>
         </a>
@@ -87,4 +87,20 @@
             <div class="menu-title">Chat</div>
         </a>
     </li>
+
+    <li class="menu-label">Reports</li>
+
+    <li>
+        <a href="{{ route('manager.reports.general') }}">
+            <div class="parent-icon"><i class="bi bi-bar-chart"></i></div>
+            <div class="menu-title">General Report</div>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('manager.reports.graphical') }}">
+            <div class="parent-icon"><i class="bi bi-pie-chart-fill"></i></div>
+            <div class="menu-title">Graphical Report</div>
+        </a>
+    </li>
+
 </ul>
