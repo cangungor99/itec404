@@ -17,7 +17,11 @@ class LeaderVoteController extends Controller
     {
         $userID = auth()->id();
 
-        if ($club->leaderID !== $userID && $club->managerID !== $userID) {
+        if ($club->leaderID === null || $club->managerID === null) {
+            $club = Club::select('clubID', 'leaderID', 'managerID')->find($club->clubID);
+        }
+
+        if ($club->leaderID != $userID && $club->managerID != $userID) {
             abort(403, 'You are not authorized to access this club.');
         }
     }
@@ -37,61 +41,63 @@ class LeaderVoteController extends Controller
     }
 
     public function store(Request $request, Club $club): RedirectResponse
-{
-    $this->authorizeClubAccess($club);
+    {
+        $this->authorizeClubAccess($club);
 
-    $validated = $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'start_date' => 'required|date',
-        'end_date' => 'required|date',
-        'options' => 'required|array|min:2',
-        'options.*' => 'required|string|max:255',
-    ]);
-
-    $start = \Carbon\Carbon::parse($validated['start_date']);
-    $end = \Carbon\Carbon::parse($validated['end_date']);
-
-    if ($end->lte($start)) {
-        return back()->withErrors(['end_date' => 'End date must be after the start date and time.'])->withInput();
-    }
-
-    $voting = Voting::create([
-        'clubID' => $club->clubID,
-        'title' => $validated['title'],
-        'description' => $validated['description'],
-        'start_date' => $start,
-        'end_date' => $end,
-        'created_at' => now(),
-    ]);
-
-    foreach ($validated['options'] as $option) {
-        VotingOption::create([
-            'votingID' => $voting->votingID,
-            'option_text' => $option,
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'options' => 'required|array|min:2',
+            'options.*' => 'required|string|max:255',
         ]);
+
+        $start = \Carbon\Carbon::parse($validated['start_date']);
+        $end = \Carbon\Carbon::parse($validated['end_date']);
+
+        if ($end->lte($start)) {
+            return back()->withErrors(['end_date' => 'End date must be after the start date and time.'])->withInput();
+        }
+
+        $voting = Voting::create([
+            'clubID' => $club->clubID,
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'start_date' => $start,
+            'end_date' => $end,
+            'created_at' => now(),
+        ]);
+
+        foreach ($validated['options'] as $option) {
+            VotingOption::create([
+                'votingID' => $voting->votingID,
+                'option_text' => $option,
+            ]);
+        }
+
+        // 🟡 Yeni Eklenen Bildirim Kısmı
+        $user = auth()->user();
+
+        $notification = \App\Models\Notification::create([
+            'clubID'    => $club->clubID,
+            'creatorID' => $user->userID,
+            'title'     => 'New Voting Session: ' . $validated['title'],
+            'content'   => 'A new voting has been started. Visit to voting page.',
+        ]);
+
+        $memberIDs = \App\Models\Membership::where('clubID', $club->clubID)
+            ->where('status', 'approved')
+            ->pluck('userID');
+
+        $notification->readers()->syncWithPivotValues($memberIDs->toArray(), ['is_read' => false]);
+
+
+        $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+        return redirect()
+            ->route($prefix . '.votes.index', $club->clubID)
+            ->with('success', 'Voting created and members have been notified.');
     }
-
-    // 🟡 Yeni Eklenen Bildirim Kısmı
-    $user = auth()->user();
-
-    $notification = \App\Models\Notification::create([
-        'clubID'    => $club->clubID,
-        'creatorID' => $user->userID,
-        'title'     => 'New Voting Session: ' . $validated['title'],
-        'content'   => 'A new voting has been started. Visit to voting page.',
-    ]);
-
-    $memberIDs = \App\Models\Membership::where('clubID', $club->clubID)
-        ->where('status', 'approved')
-        ->pluck('userID');
-
-    $notification->readers()->syncWithPivotValues($memberIDs->toArray(), ['is_read' => false]);
-
-    return redirect()
-        ->route('leader.votes.index', $club->clubID)
-        ->with('success', 'Voting created and members have been notified.');
-}
 
 
 
@@ -164,7 +170,10 @@ class LeaderVoteController extends Controller
             }
         }
 
-        return redirect()->route('leader.votes.index', $club->clubID)->with('success', 'Voting updated.');
+        $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+
+        return redirect()->route($prefix . '.votes.index', $club->clubID)
+            ->with('success', 'Voting updated.');
     }
 
 

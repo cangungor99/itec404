@@ -19,6 +19,7 @@ use App\Http\Controllers\Leader\LeaderNotificationController;
 use App\Http\Controllers\Manager\ManagerClubController;
 use App\Http\Controllers\Manager\BudgetController;
 use App\Http\Controllers\Manager\ManagerReportController;
+use App\Http\Controllers\Manager\ManagerDashboardController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\ClubController;
 use App\Http\Controllers\Admin\UserController;
@@ -188,9 +189,7 @@ Route::middleware(['auth', 'role:manager'])
     ->prefix('manager')
     ->name('manager.')
     ->group(function () {
-        Route::get('/dashboard', function () {
-            return view('manager.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [ManagerDashboardController::class, 'index'])->name('dashboard');
 
 
 

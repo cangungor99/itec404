@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Forum;
 use App\Models\Club;
+use App\Models\Attachment;
+use App\Models\ForumComment;
 use Illuminate\Support\Facades\Auth;
 
 class StudentForumController extends Controller
@@ -134,7 +136,7 @@ class StudentForumController extends Controller
             'parentID' => 'nullable|exists:forum_comments,commentID',
         ]);
 
-        $forum->comments()->create([
+        $comment = $forum->comments()->create([
             'userID' => Auth::id(),
             'message' => $validated['message'],
             'created_at' => now(),

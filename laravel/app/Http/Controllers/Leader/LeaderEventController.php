@@ -61,7 +61,9 @@ class LeaderEventController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('leader.events.index', ['club' => $club->clubID])
+        $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+
+        return redirect()->route($prefix . '.events.index', ['club' => $club->clubID])
             ->with('success', 'Event created successfully.');
     }
 

@@ -42,7 +42,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Current Logo</label><br>
-                                <img src="{{ asset($club->photo) }}" alt="Club Logo" class="club-image-preview">
+                                <img src="{{ asset('storage/' . $club->photo) }}" alt="Club Logo" class="club-image-preview">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Update Logo (Optional)</label>

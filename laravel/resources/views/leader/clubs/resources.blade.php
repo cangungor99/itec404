@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'EMU Digital Club | Leader Resource Management')
 @php
-    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+$prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @endphp
 @section('content')
 <!--start content-->
@@ -121,13 +121,14 @@
                                 <a href="{{ asset('storage/' . $resource->file_path) }}" class="btn btn-sm btn-outline-primary" target="_blank">
                                     View
                                 </a>
-                                <form action="{{ route($prefix.'.resources.destroy', [$club->clubID, $resource->resourceID]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this file?');">
+                                <form action="{{ route($prefix.'.resources.destroy', [$club->clubID, $resource->resourceID]) }}" method="POST" class="delete-resource-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
+
                             </div>
                         </div>
                         @endforeach
@@ -153,3 +154,32 @@
 
 <!--end page main-->
 @endsection
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const forms = document.querySelectorAll('.delete-resource-form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Bu dosya silinecek ve geri alınamaz!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'İptal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
+@endpush

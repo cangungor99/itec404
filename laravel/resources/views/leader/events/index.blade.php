@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Club Events')
 @php
-    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+$prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @endphp
 @section('content')
 <main class="page-content">
@@ -71,10 +71,10 @@
                         <p><i class="bi bi-geo-alt me-1"></i>{{ $event->location }}</p>
                         <div class="mt-2">
                             <a href="{{ route($prefix.'.events.edit', [$club->clubID, $event->eventID]) }}" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="{{ route($prefix.'.events.destroy', [$club->clubID, $event->eventID]) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this event?')">
+                            <form class="delete-event-form d-inline" data-title="{{ $event->title }}" action="{{ route($prefix.'.events.destroy', [$club->clubID, $event->eventID]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-sm btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                             </form>
                         </div>
                     </div>
@@ -87,3 +87,30 @@
     </div>
 </main>
 @endsection
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelectorAll('.delete-event-form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const title = form.getAttribute('data-title') || 'this event';
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `You are about to delete "${title}". This action cannot be undone.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+@endpush

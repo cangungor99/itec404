@@ -67,7 +67,7 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
                                     @csrf
                                     <button class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i></button>
                                 </form>
-                                <form method="POST" action="{{ route($prefix.'.forums.reject', $forum->forumID) }}" class="d-inline">
+                                <form method="POST" action="{{ route($prefix.'.forums.reject', $forum->forumID) }}" class="reject-form d-inline">
                                     @csrf
                                     <button class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></button>
                                 </form>
@@ -131,7 +131,7 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
                                     @csrf
                                     <button class="btn btn-success btn-sm"><i class="bi bi-check-circle"></i></button>
                                 </form>
-                                <form method="POST" action="{{ route($prefix.'.comments.reject', $comment->commentID) }}" class="d-inline">
+                                <form method="POST" action="{{ route($prefix.'.comments.reject', $comment->commentID) }}" class="reject-form d-inline">
                                     @csrf
                                     <button class="btn btn-danger btn-sm"><i class="bi bi-x-circle"></i></button>
                                 </form>
@@ -174,8 +174,7 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
                                 <a href="{{ route($prefix.'.forums.show', $forum->forumID) }}" class="btn btn-outline-primary btn-sm">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <form method="POST" action="{{ route($prefix.'.forums.destroy', $forum->forumID) }}" class="d-inline"
-                                    onsubmit="return confirm('Delete this forum and all related content?')">
+                                <form method="POST" action="{{ route($prefix.'.forums.destroy', $forum->forumID) }}" class="delete-forum-form d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
@@ -192,3 +191,47 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 
 </main>
 @endsection
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // Forum veya yorum reddetme
+    document.querySelectorAll('.reject-form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This will reject the content and it will no longer be visible.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, reject it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+
+    // Forum silme
+    document.querySelectorAll('.delete-forum-form').forEach(form => {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Delete this forum?',
+                text: "All related comments and attachments will be lost.",
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+@endpush

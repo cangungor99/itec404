@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Manage Votes')
 @php
-    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+$prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @endphp
 @section('content')
 
@@ -55,37 +55,38 @@
                     </thead>
                     <tbody>
                         @forelse($votings as $index => $voting)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>{{ $voting->title }}</td>
-                                <td>{{ $voting->start_date }}</td>
-                                <td>{{ $voting->end_date }}</td>
-                                <td>
-                                    @if(now()->between($voting->start_date, $voting->end_date))
-                                        <span class="badge bg-success">Active</span>
-                                    @elseif(now()->lt($voting->start_date))
-                                        <span class="badge bg-warning text-dark">Upcoming</span>
-                                    @else
-                                        <span class="badge bg-secondary">Ended</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        {{-- Edit opsiyonu opsiyonel: gerekirse eklenir --}}
-                                        <a href="{{ route($prefix.'.votes.edit', [$club->clubID, $voting->votingID]) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="{{ route($prefix.'.votes.results', [$club->clubID, $voting->votingID]) }}" class="btn btn-outline-info btn-sm"><i class="bi bi-bar-chart-line"></i></a>
-                                        <form action="{{ route($prefix.'.votes.destroy', [$club->clubID, $voting->votingID]) }}" method="POST" onsubmit="return confirm('Are you sure?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $voting->title }}</td>
+                            <td>{{ $voting->start_date }}</td>
+                            <td>{{ $voting->end_date }}</td>
+                            <td>
+                                @if(now()->between($voting->start_date, $voting->end_date))
+                                <span class="badge bg-success">Active</span>
+                                @elseif(now()->lt($voting->start_date))
+                                <span class="badge bg-warning text-dark">Upcoming</span>
+                                @else
+                                <span class="badge bg-secondary">Ended</span>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    {{-- Edit opsiyonu opsiyonel: gerekirse eklenir --}}
+                                    <a href="{{ route($prefix.'.votes.edit', [$club->clubID, $voting->votingID]) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                                    <a href="{{ route($prefix.'.votes.results', [$club->clubID, $voting->votingID]) }}" class="btn btn-outline-info btn-sm"><i class="bi bi-bar-chart-line"></i></a>
+                                    <form action="{{ route($prefix.'.votes.destroy', [$club->clubID, $voting->votingID]) }}" method="POST" class="delete-vote-form d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
                         @empty
-                            <tr>
-                                <td colspan="6" class="text-center">No votings found.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="6" class="text-center">No votings found.</td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -102,3 +103,27 @@
 </main>
 <!--end page main-->
 @endsection
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelectorAll('.delete-vote-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Formu hemen gönderme
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+@endpush

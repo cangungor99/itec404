@@ -76,10 +76,11 @@
             <div class="chat-sidebar-header">
                 <div class="d-flex align-items-center">
                     <div class="chat-user-online">
-                        <img src="../assets/images/avatars/avatar-1.png" width="45" height="45" class="rounded-circle" alt="" />
+                        <img src="{{ asset('storage/profile_photos/' . (auth()->user()->profile_photo ?? 'default.png')) }}" width="45" height="45" class="rounded-circle" alt="" />
                     </div>
                     <div class="flex-grow-1 ms-2">
-                        <p class="mb-0">Mustafa Bostan</p>
+                        <p class="user-name mb-0">{{ auth()->user()->name }} {{ auth()->user()->surname }}</p>
+
                     </div>
 
                 </div>

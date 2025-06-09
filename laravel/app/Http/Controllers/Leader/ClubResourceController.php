@@ -91,7 +91,9 @@ class ClubResourceController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('leader.resources', $club->clubID)
+        $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+
+        return redirect()->route($prefix . '.resources.index', $club->clubID)
             ->with('success', 'Resource uploaded successfully.');
     }
 
