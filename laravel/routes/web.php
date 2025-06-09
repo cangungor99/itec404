@@ -245,6 +245,7 @@ Route::middleware(['auth', 'role:leader,manager'])
     ->group(function () {
         Route::get('/create', [LeaderNotificationController::class, 'create'])->name('create');
         Route::post('/store', [LeaderNotificationController::class, 'store'])->name('store');
+
     });
 
 
@@ -266,7 +267,10 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/clubs/update/{id}', [ClubController::class, 'update'])->name('clubs.update');
         Route::delete('/clubs/delete/{id}', [ClubController::class, 'destroy'])->name('clubs.destroy');
 
-
+        Route::get('/resources/manage', function () {
+            return view('admin.manage_resources');
+        })->name('resources.manage');
+        
         // Notifications
         Route::get('/notification_list', [NotificationController::class, 'index'])->name('notification_list');
         Route::get('/create_notification', [NotificationController::class, 'create'])->name('create_notification');

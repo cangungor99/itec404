@@ -117,4 +117,16 @@ class VoteController extends Controller
             'results' => $data,
         ]);
     }
+
+    public function destroy($id)
+    {
+        // 1. İlgili oylamayı sil
+        DB::table('votings')->where('votingID', $id)->delete();
+
+        // 2. (Opsiyonel) İlgili voting_option kayıtlarını da silmek istiyorsan:
+        DB::table('voting_options')->where('votingID', $id)->delete();
+
+        // 3. Başarıyla silindi mesajı ver
+        return redirect()->route('admin.manage_votes')->with('success', 'Voting session deleted successfully.');
+    }
 }

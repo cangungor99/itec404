@@ -211,8 +211,8 @@
 
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
     function removeSeconds(datetimeStr) {
         const [datePart, timePart] = datetimeStr.split(' ');
         const [hours, minutes] = timePart.split(':');
@@ -284,28 +284,6 @@
             });
         });
 
-    });
-
-
-    document.querySelectorAll('.delete-vote-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'This voting session will be permanently deleted.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
     });
 </script>
 
