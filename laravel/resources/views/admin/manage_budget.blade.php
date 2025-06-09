@@ -55,7 +55,7 @@
         <div class="col-md-4 col-sm-6 mb-4">
             <div class="club-card shadow-sm p-4 rounded-4 animate__animated animate__fadeInUp">
                 <div class="d-flex align-items-center mb-3">
-                    <img src="{{ asset('assets/images/clubs/club1.png') }}" alt="Club Logo" class="me-3 rounded-circle border border-2" width="60" height="60">
+                    <img src="{{ asset('storage/' . $club->photo) }}" alt="Club Logo" class="me-3 rounded-circle border border-2" width="60" height="60">
                     <div>
                         <h5 class="mb-0">
                             <i class="bi bi-people-fill me-1 text-primary"></i> {{ $club->name }}

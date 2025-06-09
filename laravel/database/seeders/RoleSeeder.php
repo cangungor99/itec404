@@ -10,49 +10,19 @@ class RoleSeeder extends Seeder
 {
     public function run(): void
     {
+        // Rolleri oluştur
         $roles = ['admin', 'leader', 'manager', 'student'];
+
         foreach ($roles as $name) {
             Role::firstOrCreate(['name' => $name]);
         }
 
-        $map = [
-            'admin@local'   => 'admin',
-            'leader@local'  => 'leader',
-            'manager@local' => 'manager',
-            'student@local' => 'student',
-        ];
+        // Admin rolünü admin@local e-posta adresine ata
+        $admin = User::where('email', 'admin@local')->first();
+        $adminRoleID = Role::where('name', 'admin')->value('roleID');
 
-        foreach ($map as $email => $roleName) {
-            $user = User::where('email', $email)->first();
-            $roleID = Role::where('name', $roleName)->value('roleID');
-
-            if ($user && $roleID) {
-                $user->roles()->syncWithoutDetaching([$roleID]);
-            }
+        if ($admin && $adminRoleID) {
+            $admin->roles()->syncWithoutDetaching([$adminRoleID]);
         }
-
-        $excludedEmails = array_keys($map);
-        $studentRoleID = Role::where('name', 'student')->value('roleID');
-
-        User::whereNotIn('email', $excludedEmails)->each(function ($user) use ($studentRoleID) {
-            $user->roles()->syncWithoutDetaching([$studentRoleID]);
-        });
-
-        $leaderRoleID = Role::where('name', 'leader')->value('roleID');
-        $managerRoleID = Role::where('name', 'manager')->value('roleID');
-
-        User::whereNotIn('email', $excludedEmails)
-            ->inRandomOrder()
-            ->limit(3)
-            ->each(function ($user) use ($leaderRoleID) {
-                $user->roles()->syncWithoutDetaching([$leaderRoleID]);
-            });
-
-        User::whereNotIn('email', $excludedEmails)
-            ->inRandomOrder()
-            ->limit(3)
-            ->each(function ($user) use ($managerRoleID) {
-                $user->roles()->syncWithoutDetaching([$managerRoleID]);
-            });
     }
 }

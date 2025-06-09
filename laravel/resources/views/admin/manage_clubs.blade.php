@@ -106,20 +106,23 @@
             </nav>
         </div>
         <div class="ms-auto d-flex align-items-center gap-2">
-            <a href="create_new_club.php" class="btn btn-success">
+            <a href="{{ route('admin.create_club') }}" class="btn btn-success">
                 <i class="bi bi-plus-circle-fill me-1"></i> Create New Club
             </a>
 
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary">Filter</button>
-                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">
-                    <span class="visually-hidden">Toggle Dropdown</span>
+            @php
+            $currentStatus = request()->query('status',null);
+            @endphp
+
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="clubStatusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ $currentStatus === '1' ? 'Active Clubs' : ($currentStatus === '0' ? 'Inactive Clubs' : 'All Clubs') }}
                 </button>
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                    <a class="dropdown-item" href="javascript:;">All Clubs</a>
-                    <a class="dropdown-item" href="javascript:;">Active</a>
-                    <a class="dropdown-item" href="javascript:;">Inactive</a>
-                </div>
+                <ul class="dropdown-menu" aria-labelledby="clubStatusDropdown">
+                    <li><a class="dropdown-item {{ is_null($currentStatus) ? 'active' : '' }}" href="{{ route('admin.manage_clubs') }}">All Clubs</a></li>
+                    <li><a class="dropdown-item {{ $currentStatus === '1' ? 'active' : '' }}" href="{{ route('admin.manage_clubs', ['status' => 1]) }}">Active Clubs</a></li>
+                    <li><a class="dropdown-item {{ $currentStatus === '0' ? 'active' : '' }}" href="{{ route('admin.manage_clubs', ['status' => 0]) }}">Inactive Clubs</a></li>
+                </ul>
             </div>
         </div>
 
@@ -147,13 +150,13 @@
                         <tr>
                             <td>{{ $club->clubID }}</td>
                             <td>
-                                <img src="{{ $club->photo }}" alt="{{ $club->name }}" class="rounded" width="40">
+                                <img src="{{ asset('storage/' . $club->photo) }}" alt="{{ $club->name }}" class="rounded" width="40">
                             </td>
                             <td>{{ $club->name }}</td>
                             <td>{{ $club->description }}</td>
                             <td>
-                                <span class="badge {{ $club->status ? 'bg-success' : 'bg-secondary' }}">
-                                    {{ $club->status ? 'Active' : 'Inactive' }}
+                                <span class="badge {{ (int) $club->status === 1 ? 'bg-success' : 'bg-secondary' }}">
+                                    {{ (int) $club->status === 1 ? 'Active' : 'Inactive' }}
                                 </span>
                             </td>
                             <td>{{ $club->created_at }}</td>
@@ -204,7 +207,7 @@
             </div>
 
             <!-- ✅ FORM BAŞLANGICI -->
-            <form id="editClubForm" method="POST" action="">
+            <form id="editClubForm" method="POST" action="" enctype="multipart/form-data">
 
                 @csrf
                 @method('PUT')
@@ -235,7 +238,7 @@
                     <!-- Club Photo -->
                     <div class="mb-3">
                         <label for="clubPhoto" class="form-label">Club Photo (URL)</label>
-                        <input type="text" class="form-control" id="clubPhoto" name="clubPhoto" required>
+                        <input type="file" class="form-control" id="clubPhoto" name="clubPhoto">
                     </div>
                 </div>
 
@@ -280,8 +283,7 @@
                 document.getElementById('editClubID').value = clubID;
                 document.getElementById('clubName').value = name;
                 document.getElementById('clubDescription').value = description;
-                document.getElementById('clubStatus').value = status;
-                document.getElementById('clubPhoto').value = photo;
+                document.getElementById('clubStatus').value = parseInt(status);
 
                 // Modal zaten Bootstrap tarafından tetikleniyor (data-bs-target ile)
             });

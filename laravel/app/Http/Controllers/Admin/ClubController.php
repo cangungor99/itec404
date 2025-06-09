@@ -35,22 +35,34 @@ class ClubController extends Controller
         return redirect()->back()->with('success', 'Club created successfully!');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $clubs = DB::table('clubs')->orderBy('created_at', 'desc')->get();
+        $status = $request->query('status'); // 'all', '1', '0' olabilir
+
+        $clubsQuery = DB::table('clubs')->orderBy('created_at', 'desc');
+
+        if ($status === '1' || $status === '0') {
+            $clubsQuery->where('status', (int)$status);
+        }
+
+        $clubs = $clubsQuery->get();
+
         return view('admin.manage_clubs', compact('clubs'));
     }
 
 
     public function edit($id)
     {
-        $club = DB::table('clubs')->where('clubID', $id)->first();
+        $club = DB::table('clubs')
+            ->select('clubID', 'name', 'description', 'status', 'photo')
+            ->where('clubID', $id)
+            ->first();
 
         if (!$club) {
-            return redirect()->route('admin.manage_clubs')->with('error', 'Club not found.');
+            return response()->json(['error' => 'Club not found.'], 404);
         }
 
-        return response()->json($club); // Modal'da kullanmak için JSON döndür
+        return response()->json($club);
     }
 
     public function update(Request $request, $id)
@@ -64,19 +76,17 @@ class ClubController extends Controller
 
         $club = DB::table('clubs')->where('clubID', $id)->first();
 
-        if ($request->hasFile('clubPhoto')) {
-            $photo = $request->file('clubPhoto')->store('club-logos', 'public');
-        } else {
-            $photo = 'club-logos/default.jpg'; // burada düzeltme
-        }
-
-
-        DB::table('clubs')->where('clubID', $id)->update([
+        $updateData = [
             'name' => $request->clubName,
             'description' => $request->clubDescription,
             'status' => $request->clubStatus,
-            'photo' => $photo,
-        ]);
+        ];
+
+        if ($request->hasFile('clubPhoto')) {
+            $updateData['photo'] = $request->file('clubPhoto')->store('club-logos', 'public');
+        }
+
+        DB::table('clubs')->where('clubID', $id)->update($updateData);
 
         return redirect()->route('admin.manage_clubs')->with('success', 'Club updated successfully!');
     }

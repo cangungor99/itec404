@@ -11,8 +11,8 @@ class AttachmentSeeder extends Seeder
 {
     public function run(): void
     {
-        if (Forum::count() > 0 || Resource::count() > 0) {
-            Attachment::factory(30)->create();
-        }
+        // if (Forum::count() > 0 || Resource::count() > 0) {
+        //     Attachment::factory(30)->create();
+        // }
     }
 }
