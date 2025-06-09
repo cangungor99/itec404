@@ -8,8 +8,8 @@
         <a href="javascript:;" class="list-group-item"
            onclick="selectUser({{ $otherUser->userID }}, '{{ $otherUser->name }} {{ $otherUser->surname }}')">
             <div class="d-flex">
-                <div class="chat-user-online">
-                    <img src="{{ asset('assets/images/avatars/avatar-2.png') }}" width="42" height="42" class="rounded-circle" alt="" />
+                <div class="chat-user">
+                    <img src="{{ asset('storage/profile_photos/' . ($chat->receiver->profile_photo ?? 'default.png')) }}" width="42" height="42" class="rounded-circle" alt="" />
                 </div>
                 <div class="flex-grow-1 ms-2">
                     <h6 class="mb-0 chat-title">{{ $otherUser->name }} {{ $otherUser->surname }}</h6>

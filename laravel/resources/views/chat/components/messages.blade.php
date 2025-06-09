@@ -11,7 +11,7 @@
     @else
         <div class="chat-content-leftside">
             <div class="d-flex">
-                <img src="{{ asset('assets/images/avatars/avatar-3.png') }}" width="48" height="48" class="rounded-circle" alt="" />
+                <img src="{{ asset('storage/profile_photos/' . ($msg->sender->profile_photo ?? 'default.png')) }}" width="48" height="48" class="rounded-circle" alt="" />
                 <div class="flex-grow-1 ms-2">
                     <p class="mb-0 chat-time">{{ $msg->sender->name ?? 'Kullanıcı' }}, {{ $msg->created_at->format('H:i') }}</p>
                     <p class="chat-left-msg">{{ $msg->message }}</p>

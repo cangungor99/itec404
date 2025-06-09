@@ -146,7 +146,7 @@ class ChatController extends Controller
         $user = Auth::user();
 
         if (!$user || !$club->memberships()->where('userID', $user->userID)->where('status', 'approved')->exists()) {
-            abort(403, 'Bu kulübün sohbetine erişim yetkiniz yok.');
+            abort(403, 'You do not have permission to access this club chat.');
         }
     }
 

@@ -154,7 +154,6 @@
                     alt="{{ auth()->user()->name }}">
                 <div class="d-none d-sm-block">
                     <p class="user-name mb-0">{{ auth()->user()->name }}</p>
-                    {{-- İstersen kullanıcı tipine göre unvan da getirebilirsin --}}
                     <small class="mb-0 dropdown-user-designation">
                         {{ ucfirst(auth()->user()->roles->pluck('name')->first() ?? 'guest') }}
                     </small>

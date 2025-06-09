@@ -46,6 +46,8 @@
         max-height: 500px;
         /* İstersen dinamik hale getirebilirsin */
         padding: 1rem;
+        padding-top: 55px;
+
         scroll-behavior: smooth;
     }
 
@@ -75,7 +77,7 @@
         <div class="chat-sidebar">
             <div class="chat-sidebar-header">
                 <div class="d-flex align-items-center">
-                    <div class="chat-user-online">
+                    <div class="chat-user">
                         <img src="{{ asset('storage/profile_photos/' . (auth()->user()->profile_photo ?? 'default.png')) }}" width="45" height="45" class="rounded-circle" alt="" />
                     </div>
                     <div class="flex-grow-1 ms-2">
