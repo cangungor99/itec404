@@ -150,20 +150,33 @@
 
                     </div>
                     <div class="tab-pane fade" id="pills-ClubChat" role="tabpanel" aria-labelledby="pills-club-tab">
-                        <div class="p-3">
-                            <h6 class="text-muted mb-2">Katıldığın Kulüpler</h6>
-                            <ul class="list-group">
-                                @foreach(Auth::user()->memberships()->where('status', 'approved')->with('club')->get() as $membership)
-                                @if($membership->club)
-                                <li class="list-group-item d-flex justify-content-between align-items-center club-item" data-club-id="{{ $membership->club->clubID }}" data-club-name="{{ $membership->club->name }}">
-                                    {{ $membership->club->name }}
-                                    <i class="bx bx-right-arrow-alt"></i>
-                                </li>
-                                @endif
-                                @endforeach
-                            </ul>
+    <div class="p-3">
+        <h6 class="text-muted mb-2">Joined Clubs</h6>
+        <div class="list-group list-group-flush">
+            @foreach(Auth::user()->memberships()->where('status', 'approved')->with('club')->get() as $membership)
+                @if($membership->club)
+                    <a href="javascript:;" class="list-group-item club-item"
+                       data-club-id="{{ $membership->club->clubID }}"
+                       data-club-name="{{ $membership->club->name }}">
+                        <div class="d-flex align-items-center">
+                            <div class="chat-user">
+                                <img src="{{ asset('storage/club_logos/' . ($membership->club->photo ?? 'default_club.png')) }}"
+     width="42" height="42" class="rounded-circle" alt="Club Logo" />
+
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                                <h6 class="mb-0 chat-title">{{ $membership->club->name }}</h6>
+                                <p class="mb-0 chat-msg text-muted">Click to open group chat</p>
+                            </div>
+                            <div class="chat-time"><i class="bx bx-right-arrow-alt"></i></div>
                         </div>
-                    </div>
+                    </a>
+                @endif
+            @endforeach
+        </div>
+    </div>
+</div>
+
 
                 </div>
             </div>
@@ -187,7 +200,7 @@
         <div class="d-none" id="clubChatSection">
             <div class="chat-content">
                 <div class="chat-message-wrapper" id="clubChatMessages">
-                    <p class="text-muted">Bir kulüp seçin...</p>
+                    <p class="text-muted">Select an club...</p>
                 </div>
             </div>
 
@@ -301,7 +314,7 @@
             <div class="chat-content-rightside">
                 <div class="d-flex ms-auto">
                     <div class="flex-grow-1 me-2">
-                        <p class="mb-0 chat-time text-end">you, şimdi</p>
+                        <p class="mb-0 chat-time text-end">you, now</p>
                         <p class="chat-right-msg">${message}</p>
                     </div>
                 </div>
@@ -493,7 +506,7 @@
             <div class="chat-content-rightside">
                 <div class="d-flex ms-auto">
                     <div class="flex-grow-1 me-2">
-                        <p class="mb-0 chat-time text-end">you, şimdi</p>
+                        <p class="mb-0 chat-time text-end">you, now</p>
                         <p class="chat-right-msg">${message}</p>
                     </div>
                 </div>
