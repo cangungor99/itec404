@@ -68,36 +68,6 @@ class StudentForumController extends Controller
 
         $this->ensureApprovedMemberOfClub($validated['clubID']);
 
-<<<<<<< HEAD
-    $forum = Forum::create([
-        'clubID' => $validated['clubID'],
-        'userID' => Auth::id(),
-        'title' => $validated['title'],
-        'description' => $validated['description'],
-        'status' => 'pending',
-        'created_at' => now(),
-    ]);
-
-    // 🟡 Yeni Eklenen Bildirim Kısmı
-    $club = Club::find($validated['clubID']);
-    $sender = auth()->user();
-
-    $notification = \App\Models\Notification::create([
-        'clubID'    => $club->clubID,
-        'creatorID' => $sender->userID,
-        'title'     => 'New Forum Request',
-        'content'   => "{$sender->name} created a new forum : '{$forum->title}'. Please accept.",
-    ]);
-
-    $targetUserIDs = collect([$club->leaderID, $club->managerID])->filter()->unique();
-
-    $notification->readers()->syncWithPivotValues($targetUserIDs->toArray(), ['is_read' => false]);
-
-    return redirect()->route('students.forums.index')
-        ->with('success', 'Forum created successfully.');
-}
-
-=======
         $forum = Forum::create([
             'clubID' => $validated['clubID'],
             'userID' => Auth::id(),
@@ -139,7 +109,6 @@ class StudentForumController extends Controller
             ->with('success', 'Forum created successfully.');
     }
 
->>>>>>> f44c913fe44bceb472df797c8da7588c61a90c8a
 
     public function show(Forum $forum)
     {
@@ -173,8 +142,6 @@ class StudentForumController extends Controller
             'status' => 'pending',
         ]);
 
-<<<<<<< HEAD
-=======
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
                 $filePath = $file->store('public/comment_attachments');
@@ -187,7 +154,6 @@ class StudentForumController extends Controller
                 ]);
             }
         }
->>>>>>> f44c913fe44bceb472df797c8da7588c61a90c8a
         return redirect()->route('students.forums.show', $forum->forumID)->with('success', 'Comment posted!');
     }
 }
