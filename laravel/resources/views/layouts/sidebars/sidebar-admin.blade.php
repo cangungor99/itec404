@@ -56,15 +56,15 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('admin.resources') }}">
-            <div class="parent-icon"><i class="bi bi-folder-fill"></i></div>
-            <div class="menu-title">Resources</div>
-        </a>
-    </li>
-    <li>
         <a href="{{ route('admin.budgets.index') }}">
             <div class="parent-icon"><i class="bi bi-cash-coin"></i></div>
             <div class="menu-title">Manage Budget</div>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('admin.resources.index') }}">
+            <div class="parent-icon"><i class="bi bi-folder2-open"></i></div>
+            <div class="menu-title">Manage Resources</div>
         </a>
     </li>
     <li>

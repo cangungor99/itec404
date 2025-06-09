@@ -23,12 +23,12 @@ class ChatController extends Controller
 
         $users = User::where(function ($q) use ($query) {
             $q->where('name', 'like', "%{$query}%")
-              ->orWhere('surname', 'like', "%{$query}%")
-              ->orWhereRaw("CONCAT(name, ' ', surname) LIKE ?", ["%{$query}%"]);
+                ->orWhere('surname', 'like', "%{$query}%")
+                ->orWhereRaw("CONCAT(name, ' ', surname) LIKE ?", ["%{$query}%"]);
         })
-        ->where('userID', '!=', auth()->id())
-        ->limit(10)
-        ->get(['userID', 'name', 'surname', 'email']);
+            ->where('userID', '!=', auth()->id())
+            ->limit(10)
+            ->get(['userID', 'name', 'surname', 'email']);
 
         return response()->json($users);
     }
@@ -87,7 +87,7 @@ class ChatController extends Controller
         $chats = Chat::with(['sender', 'receiver'])
             ->where(function ($q) use ($authID) {
                 $q->where('senderID', $authID)
-                  ->orWhere('receiverID', $authID);
+                    ->orWhere('receiverID', $authID);
             })
             ->orderBy('created_at', 'desc')
             ->get();
@@ -148,5 +148,27 @@ class ChatController extends Controller
         if (!$user || !$club->memberships()->where('userID', $user->userID)->where('status', 'approved')->exists()) {
             abort(403, 'Bu kulübün sohbetine erişim yetkiniz yok.');
         }
+    }
+
+
+    public function markPrivateAsRead($userID)
+    {
+        Chat::where('senderID', $userID)
+            ->where('receiverID', auth()->id())
+            ->where('isRead', false)
+            ->update(['isRead' => true]);
+
+        return response()->json(['status' => 'ok']);
+    }
+
+    public function markClubAsRead($clubID)
+    {
+        Chat::where('clubID', $clubID)
+            ->whereNull('receiverID')
+            ->where('senderID', '!=', auth()->id())
+            ->where('isRead', false)
+            ->update(['isRead' => true]);
+
+        return response()->json(['status' => 'ok']);
     }
 }

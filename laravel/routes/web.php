@@ -29,6 +29,7 @@ use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Leader\LeaderDashboardController;
 use App\Http\Controllers\Admin\ViewReportController;
 use App\Http\Controllers\Admin\GraphicalReportController;
+use App\Http\Controllers\Admin\ResourceController;
 
 
 
@@ -51,6 +52,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/chat/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
     Route::post('/chat/send', [ChatController::class, 'storePrivateMessage'])->name('chat.send');
+    Route::post('/chat/mark-as-read/{userID}', [ChatController::class, 'markPrivateAsRead']);
+    Route::post('/chat/club/mark-as-read/{clubID}', [ChatController::class, 'markClubAsRead']);
 
     Route::get('/chat/user-search', [ChatController::class, 'searchUser'])->name('chat.userSearch');
     Route::get('/chat/recent-chats', [ChatController::class, 'recentMessages'])->name('chat.recent');
@@ -233,8 +236,6 @@ Route::middleware(['auth', 'role:manager'])
         Route::post('/forums/{forum}/comment', [LeaderForumController::class, 'comment'])->name('forums.comment');
         Route::get('/reports/general', [ManagerReportController::class, 'general'])->name('reports.general');
         Route::get('/reports/graphical', [ManagerReportController::class, 'graphical'])->name('reports.graphical');
-
-
     });
 
 
@@ -308,13 +309,8 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/budgets', [ClubBudgetController::class, 'index'])->name('budgets.index');
         Route::put('/budgets/{club}', [ClubBudgetController::class, 'update'])->name('budgets.update');
 
-        Route::get('/resources', function () {
-            return view('admin.resources');
-        })->name('resources');
-
-        Route::get('/manage_budget', function () {
-            return view('admin.manage_budget');
-        })->name('manage_budget');
+        Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
+        Route::delete('/resources/{id}', [ResourceController::class, 'destroy'])->name('resources.destroy');
     });
 
 

@@ -26,7 +26,7 @@
             <li class="nav-item dropdown dropdown-large">
                 <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                     <div class="messages">
-                        <span class="notify-badge">{{ $recentMessages->count() }}</span>
+                        <span class="notify-badge">{{ $unreadMessageCount }}</span>
                         <i class="bi bi-chat-left-text-fill"></i>
                     </div>
                 </a>
@@ -91,7 +91,7 @@
             <li class="nav-item dropdown dropdown-large">
                 <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                     <div class="notifications">
-                        <span class="notify-badge">{{ $notifications->count() }}</span>
+                        <span class="notify-badge">{{ count($unreadNotificationIDs ?? []) }}</span>
                         <i class="bi bi-bell-fill"></i>
                     </div>
                 </a>
