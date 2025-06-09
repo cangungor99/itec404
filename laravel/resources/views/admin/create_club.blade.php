@@ -109,3 +109,30 @@
 
 <!--end page main-->
 @endsection
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if ($errors->any())
+            Swal.fire({
+                title: 'Error',
+                html: `{!! implode('<br>', $errors->all()) !!}`,
+                icon: 'error',
+                confirmButtonColor: '#d33'
+            });
+        @endif
+
+        @if (session('success'))
+            Swal.fire({
+                title: 'Success',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonColor: '#28a745',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        @endif
+    });
+</script>
+@endpush

@@ -12,37 +12,55 @@ use Illuminate\Http\RedirectResponse;
 
 class ClubMemberController extends Controller
 {
-
-    protected function authorizeClubAccess(Club $club): void
+    protected function isManager(Club $club): bool
     {
-        $userID = Auth::id();
-
-        if ($club->leaderID !== $userID && $club->managerID !== $userID) {
-            abort(403, 'You are not authorized to access this club.');
-        }
+        return Auth::id() === $club->managerID;
     }
 
+    protected function isLeader(Club $club): bool
+    {
+        return Auth::id() === $club->leaderID;
+    }
+
+    protected function canAccess(Club $club): bool
+    {
+        return $this->isLeader($club) || $this->isManager($club);
+    }
 
     public function index(Club $club): View
     {
-        $this->authorizeClubAccess($club);
+        if (!$this->canAccess($club)) {
+            abort(403);
+        }
 
         $memberships = Membership::where('clubID', $club->clubID)
             ->where('status', 'approved')
             ->with('user')
-            ->get();
+            ->get()
+            ->sortBy(function ($m) {
+                // Rol önceliği: manager > leader > student
+                return match ($m->role) {
+                    'manager' => 1,
+                    'leader'  => 2,
+                    'student' => 3,
+                    default   => 4,
+                };
+            })
+            ->unique('userID') // Aynı user sadece bir kez
+            ->values();
 
-        $canManageRoles = $club->managerID === Auth::id();
+        $canManageRoles = $this->isManager($club);
 
         return view('leader.clubs.members.index', compact('club', 'memberships', 'canManageRoles'));
     }
 
-
     public function setLeader(Club $club, $userID): RedirectResponse
     {
-        if (Auth::id() !== $club->managerID) {
+        if (!$this->isManager($club)) {
             abort(403, 'Only manager can assign leader.');
         }
+
+        $user = \App\Models\User::findOrFail($userID);
 
         $isMember = $club->memberships()
             ->where('userID', $userID)
@@ -53,20 +71,39 @@ class ClubMemberController extends Controller
             return back()->withErrors('Selected user is not an approved club member.');
         }
 
+        // 1. Club tablosunda lideri ata
         $club->leaderID = $userID;
         $club->save();
+
+        // 2. Membership tablosuna leader rolü ekle (varsa güncelle)
+        Membership::updateOrCreate(
+            ['userID' => $userID, 'clubID' => $club->clubID, 'role' => 'leader'],
+            ['status' => 'approved', 'joined_at' => now()]
+        );
+
+        // 3. role_user tablosuna 'leader' rolünü ekle (eğer yoksa)
+        $leaderRoleID = \App\Models\Role::where('name', 'leader')->value('roleID');
+        if ($leaderRoleID && !$user->roles->contains('roleID', $leaderRoleID)) {
+            $user->roles()->attach($leaderRoleID);
+        }
 
         return back()->with('success', 'New leader assigned successfully.');
     }
 
 
-
     public function destroy(Club $club, Membership $membership): RedirectResponse
     {
-        $this->authorizeClubAccess($club);
+        if (!$this->isManager($club)) {
+            abort(403, 'Only manager can remove members.');
+        }
 
         if ($membership->clubID !== $club->clubID) {
             abort(403, 'This membership does not belong to your club.');
+        }
+
+        if ($club->leaderID === $membership->userID) {
+            $club->leaderID = null;
+            $club->save();
         }
 
         $membership->delete();

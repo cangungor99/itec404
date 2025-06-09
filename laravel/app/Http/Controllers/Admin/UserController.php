@@ -46,12 +46,12 @@ class UserController extends Controller
             'surname' => 'required|string',
             'email'   => 'required|email',
             'roles'   => 'array',
-            'clubID'  => 'nullable|integer|exists:clubs,clubID'
+            'clubID'  => 'nullable|integer|exists:clubs,clubID',
         ]);
 
         $user = User::findOrFail($id);
 
-        // Temel bilgileri güncelle
+        // 1. Temel bilgileri güncelle
         $user->update([
             'std_no'  => $validated['std_no'],
             'name'    => $validated['name'],
@@ -59,51 +59,68 @@ class UserController extends Controller
             'email'   => $validated['email'],
         ]);
 
-        // Rolleri senkronize et
-        $user->roles()->sync($validated['roles'] ?? []);
+        // 2. Seçilen rolleri al
+        $selectedRoleIDs = $validated['roles'] ?? [];
+        $selectedRoleNames = Role::whereIn('roleID', $selectedRoleIDs)->pluck('name')->map(fn($r) => strtolower($r))->toArray();
 
-        // Seçilen rollerin isimlerini al (lowercase)
-        $selectedRoleNames = Role::whereIn('roleID', $validated['roles'] ?? [])
-            ->pluck('name')
-            ->map(fn($name) => strtolower($name))
-            ->toArray();
+        // 3. Her zaman student rolü eklenmeli
+        $studentRole = Role::where('name', 'student')->first();
+        if ($studentRole && !in_array('student', $selectedRoleNames)) {
+            $selectedRoleIDs[] = $studentRole->roleID;
+        }
 
-        // Eğer clubID gönderilmişse işle
+        // 4. Rolleri eşitle
+        $user->roles()->sync($selectedRoleIDs);
+
+        // 5. Club ilişkileri varsa işlem yap
         if ($request->filled('clubID')) {
             $clubID = $validated['clubID'];
+            $club = Club::find($clubID);
 
-            // Mevcut membership varsa getir, yoksa oluştur
-            $membership = $user->memberships()->firstOrNew([
-                'clubID' => $clubID,
-            ]);
-
-            // Rol ataması
-            if (in_array('leader', $selectedRoleNames)) {
-                $membership->role = 'leader';
-
-                // === Club tablosundaki leaderID güncelle
-                $club = \App\Models\Club::find($clubID);
-                if ($club && $club->leaderID !== $user->userID) {
-                    $club->leaderID = $user->userID;
-                    $club->save();
-                }
-            } elseif (in_array('manager', $selectedRoleNames)) {
-                $membership->role = 'manager';
-
-                // === Club tablosundaki managerID güncelle
-                $club = \App\Models\Club::find($clubID);
+            // === 5a. Manager rolü varsa
+            if (in_array('manager', $selectedRoleNames)) {
                 if ($club && $club->managerID !== $user->userID) {
                     $club->managerID = $user->userID;
                     $club->save();
                 }
+
+                // Membership kayıt et (manager olarak)
+                $user->memberships()->updateOrCreate([
+                    'clubID' => $clubID,
+                    'role' => 'manager',
+                ], [
+                    'status' => 'active',
+                    'joined_at' => now(),
+                ]);
             }
 
-            $membership->status = 'active';
-            $membership->joined_at = now();
-            $membership->save();
+            // === 5b. Leader rolü varsa
+            if (in_array('leader', $selectedRoleNames)) {
+                if ($club && $club->leaderID !== $user->userID) {
+                    $club->leaderID = $user->userID;
+                    $club->save();
+                }
+
+                // Membership kayıt et (leader olarak)
+                $user->memberships()->updateOrCreate([
+                    'clubID' => $clubID,
+                    'role' => 'leader',
+                ], [
+                    'status' => 'active',
+                    'joined_at' => now(),
+                ]);
+            }
+
+            // === 5c. Student olarak da ayrıca kayıt et
+            $user->memberships()->updateOrCreate([
+                'clubID' => $clubID,
+                'role' => 'student',
+            ], [
+                'status' => 'active',
+                'joined_at' => now(),
+            ]);
         }
 
-        return redirect()->route('admin.user_list')
-            ->with('success', 'User updated successfully!');
+        return redirect()->route('admin.user_list')->with('success', 'User updated successfully!');
     }
 }

@@ -15,18 +15,7 @@
                 </ol>
             </nav>
         </div>
-        <div class="ms-auto">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary">Settings</button>
-                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item" href="javascript:;">Action</a>
-                    <a class="dropdown-item" href="javascript:;">Another action</a>
-                    <a class="dropdown-item" href="javascript:;">Something else here</a>
-                    <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-                </div>
-            </div>
-        </div>
+
     </div>
     <!--end breadcrumb-->
 
@@ -103,7 +92,9 @@
 
 
                                     <!-- Delete -->
-                                    <form action="{{ route('admin.votings.destroy', $vote->votingID) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this voting session?');">
+                                    <form action="{{ route('admin.votings.destroy', $vote->votingID) }}"
+                                        method="POST"
+                                        class="d-inline delete-vote-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete">
@@ -126,7 +117,7 @@
             </div>
 
             <div class="text-end mt-4">
-                <a href="create_vote.php" class="btn btn-primary">
+                <a href="{{ route('admin.create_vote') }}" class="btn btn-primary">
                     <i class="bi bi-plus-circle me-1"></i> New Voting
                 </a>
             </div>
@@ -220,6 +211,7 @@
 
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function removeSeconds(datetimeStr) {
         const [datePart, timePart] = datetimeStr.split(' ');
@@ -292,6 +284,28 @@
             });
         });
 
+    });
+
+
+    document.querySelectorAll('.delete-vote-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This voting session will be permanently deleted.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        });
     });
 </script>
 

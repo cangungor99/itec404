@@ -70,7 +70,7 @@ class VoteController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.create_vote')->with('success', 'Voting created successfully!');
+        return redirect()->route('admin.manage_votes')->with('success', 'Voting created successfully!');
     }
 
 

@@ -1,6 +1,9 @@
 @extends('layouts.app')
 @section('title', 'Club Members')
 @push('styles')
+@php
+    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+@endphp
 <style>
     .table td,
     .table th {
@@ -54,7 +57,7 @@
                             <td>{{ $membership->user->email }}</td>
                             <td>{{ $membership->joined_at }}</td>
                             <td>
-                                <form method="POST" action="{{ route('leader.members.destroy', [$club->clubID, $membership->membershipID]) }}" class="d-inline delete-form">
+                                <form method="POST" action="{{ route($prefix . '.members.destroy', [$club->clubID, $membership->membershipID]) }}" class="d-inline delete-form">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger">

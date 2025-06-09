@@ -32,7 +32,8 @@ class ClubController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->back()->with('success', 'Club created successfully!');
+        return redirect()->route('admin.manage_clubs')->with('success', 'Club created successfully!');
+
     }
 
     public function index(Request $request)

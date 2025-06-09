@@ -14,7 +14,6 @@ class ClubController extends Controller
 {
     public function index(): View
     {
-        // $clubs = Club::where('status', 'active')->get();
         $clubs = Club::where('status', 1)->get();
         return view('students.clubs.index', compact('clubs'));
     }
@@ -34,44 +33,50 @@ class ClubController extends Controller
     }
 
     public function apply(Club $club): RedirectResponse
-{
-    $user = auth()->user();
+    {
+        $user = auth()->user();
 
-    $exists = Membership::where('userID', $user->userID)
-        ->where('clubID', $club->clubID)
-        ->exists();
+        $membership = Membership::where('userID', $user->userID)
+            ->where('clubID', $club->clubID)
+            ->first();
 
-    if (!$exists) {
-        // 1. Kulüp üyeliğini oluştur
-        Membership::create([
-            'userID' => $user->userID,
-            'clubID' => $club->clubID,
-            'role' => 'member',
-            'status' => 'pending',
-            'joined_at' => now(),
-        ]);
+        if (!$membership || $membership->status === 'rejected') {
+            // Membership kaydı oluştur veya güncelle
+            Membership::updateOrCreate(
+                ['userID' => $user->userID, 'clubID' => $club->clubID],
+                [
+                    'role' => 'student',
+                    'status' => 'pending',
+                    'joined_at' => now(),
+                ]
+            );
 
-        // 2. Bildirimi oluştur
-        $notification = \App\Models\Notification::create([
-            'clubID'    => $club->clubID,
-            'creatorID' => $user->userID,
-            'title'     => 'New Club Approvment Request',
-            'content'   => "{$user->name}, {$club->name} want to join the club.",
-        ]);
+            // Bildirimi oluştur
+            $notification = \App\Models\Notification::create([
+                'clubID'    => $club->clubID,
+                'creatorID' => $user->userID,
+                'title'     => 'New Club Membership Request',
+                'content'   => "{$user->name} wants to join the club: {$club->name}",
+            ]);
 
-        // 3. Kulüp yetkililerini bul (lider veya admin)
-        $leaderIDs = $club->memberships()
-            ->whereIn('role', ['leader', 'admin'])
-            ->pluck('userID')
-            ->toArray();
+            // Bildirimi yetkililere gönder: leader + admin
+            $leaderIDs = $club->memberships()
+                ->where('role', 'leader')
+                ->pluck('userID')
+                ->toArray();
 
-        // 4. Bildirimi yetkililere ata
-        $notification->readers()->attach($leaderIDs, ['is_read' => false]);
+            $adminIDs = \App\Models\User::whereHas('roles', fn($q) => $q->where('name', 'admin'))
+                ->pluck('userID')
+                ->toArray();
+
+            $notifiableIDs = array_unique(array_merge($leaderIDs, $adminIDs));
+            $notification->readers()->attach($notifiableIDs, ['is_read' => false]);
+        }
+
+        return redirect()->route('students.clubs.show', $club->clubID)
+            ->with('success', 'Your application has been sent and is pending approval.');
     }
 
-    return redirect()->route('students.clubs.show', $club->clubID)
-        ->with('success', 'Your application has been sent and is pending approval.');
-}
 
 
     public function leave(Club $club): RedirectResponse

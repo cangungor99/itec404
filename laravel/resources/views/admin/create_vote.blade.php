@@ -91,8 +91,10 @@
 @endsection
 
 @push('scripts')
-<!-- Option JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
+    // Voting option ekleme-silme işlemleri
     document.querySelector('.add-option').addEventListener('click', function() {
         const container = document.getElementById('options-container');
         const optionIndex = container.querySelectorAll('.input-group').length + 1;
@@ -100,9 +102,9 @@
         const inputGroup = document.createElement('div');
         inputGroup.className = 'input-group mb-2';
         inputGroup.innerHTML = `
-                    <input type="text" class="form-control" name="options[]" placeholder="Option ${optionIndex}" required>
-                    <button class="btn btn-outline-secondary remove-option" type="button"><i class="bi bi-trash"></i></button>
-                    `;
+            <input type="text" class="form-control" name="options[]" placeholder="Option ${optionIndex}" required>
+            <button class="btn btn-outline-secondary remove-option" type="button"><i class="bi bi-trash"></i></button>
+        `;
 
         container.appendChild(inputGroup);
     });
@@ -112,5 +114,27 @@
             e.target.closest('.input-group').remove();
         }
     });
+
+    // SweetAlert mesajları
+    @if($errors->any())
+    Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        html: `{!! implode('<br>', $errors->all()) !!}`,
+    });
+    @endif
+
+    @if(session('success'))
+    Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: '{{ session('
+        success ') }}',
+        timer: 2000,
+        showConfirmButton: false
+    }).then(() => {
+        window.location.href = "{{ route('admin.manage_votes') }}";
+    });
+    @endif
 </script>
 @endpush
