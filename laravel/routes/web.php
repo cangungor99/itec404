@@ -29,7 +29,7 @@ use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Leader\LeaderDashboardController;
 use App\Http\Controllers\Admin\ViewReportController;
 use App\Http\Controllers\Admin\GraphicalReportController;
-use App\Http\Controllers\Admin\ResourceController;
+use App\Http\Controllers\Admin\ClubResourceController as AdminClubResourceController;
 
 
 
@@ -267,10 +267,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/clubs/update/{id}', [ClubController::class, 'update'])->name('clubs.update');
         Route::delete('/clubs/delete/{id}', [ClubController::class, 'destroy'])->name('clubs.destroy');
 
-        Route::get('/resources/manage', function () {
-            return view('admin.manage_resources');
-        })->name('resources.manage');
-        
+
         // Notifications
         Route::get('/notification_list', [NotificationController::class, 'index'])->name('notification_list');
         Route::get('/create_notification', [NotificationController::class, 'create'])->name('create_notification');
@@ -289,7 +286,6 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/reports/graphical', [GraphicalReportController::class, 'index'])->name('reports.graphical');
         Route::get('/reports/general', [App\Http\Controllers\Admin\GeneralReportController::class, 'index'])->name('reports.general');
 
-
         Route::get('/manage_votes', [App\Http\Controllers\Admin\VoteController::class, 'index'])->name('manage_votes');
 
 
@@ -303,9 +299,6 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/votings/{id}/results', [App\Http\Controllers\Admin\VoteController::class, 'results'])->name('votings.results');
 
 
-
-
-
         Route::get('/manage_forums', [ForumController::class, 'index'])->name('manage_forums');
         Route::post('/forums/approve/{id}', [ForumController::class, 'approve'])->name('forums.approve');
         Route::post('/forums/reject/{id}', [ForumController::class, 'reject'])->name('forums.reject');
@@ -313,8 +306,10 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/budgets', [ClubBudgetController::class, 'index'])->name('budgets.index');
         Route::put('/budgets/{club}', [ClubBudgetController::class, 'update'])->name('budgets.update');
 
-        Route::get('/resources', [ResourceController::class, 'index'])->name('resources.index');
-        Route::delete('/resources/{id}', [ResourceController::class, 'destroy'])->name('resources.destroy');
+        Route::get('/admin/resources', [AdminClubResourceController::class, 'index'])->name('resources.index');
+        Route::post('/admin/resources', [AdminClubResourceController::class, 'store'])->name('resources.store');
+        Route::delete('/admin/resources/{resource}', [AdminClubResourceController::class, 'destroy'])->name('resources.destroy');
+
     });
 
 
