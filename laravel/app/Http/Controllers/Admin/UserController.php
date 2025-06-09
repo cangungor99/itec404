@@ -89,7 +89,7 @@ class UserController extends Controller
                     'clubID' => $clubID,
                     'role' => 'manager',
                 ], [
-                    'status' => 'active',
+                    'status' => 'approved',
                     'joined_at' => now(),
                 ]);
             }
@@ -106,7 +106,7 @@ class UserController extends Controller
                     'clubID' => $clubID,
                     'role' => 'leader',
                 ], [
-                    'status' => 'active',
+                    'status' => 'approved',
                     'joined_at' => now(),
                 ]);
             }
@@ -116,7 +116,7 @@ class UserController extends Controller
                 'clubID' => $clubID,
                 'role' => 'student',
             ], [
-                'status' => 'active',
+                'status' => 'approved',
                 'joined_at' => now(),
             ]);
         }
