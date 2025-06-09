@@ -27,12 +27,9 @@ use App\Http\Controllers\Admin\ClubBudgetController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Student\StudentDashboardController;
 use App\Http\Controllers\Leader\LeaderDashboardController;
-<<<<<<< HEAD
-=======
 use App\Http\Controllers\Admin\ViewReportController;
 use App\Http\Controllers\Admin\GraphicalReportController;
 use App\Http\Controllers\Admin\ResourceController;
->>>>>>> 53f58d0ac9da7d09641aa96ef2be03a56f23ebb5
 
 
 
@@ -237,13 +234,8 @@ Route::middleware(['auth', 'role:manager'])
         Route::get('/forums/{forum}', [LeaderForumController::class, 'show'])->name('forums.show');
         Route::delete('/forums/{forum}', [LeaderForumController::class, 'destroy'])->name('forums.destroy');
         Route::post('/forums/{forum}/comment', [LeaderForumController::class, 'comment'])->name('forums.comment');
-<<<<<<< HEAD
-        Route::get('/dashboard', [ManagerDashboardController::class, 'index'])->name('dashboard');
-
-=======
         Route::get('/reports/general', [ManagerReportController::class, 'general'])->name('reports.general');
         Route::get('/reports/graphical', [ManagerReportController::class, 'graphical'])->name('reports.graphical');
->>>>>>> 53f58d0ac9da7d09641aa96ef2be03a56f23ebb5
     });
 
 
@@ -275,7 +267,10 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/clubs/update/{id}', [ClubController::class, 'update'])->name('clubs.update');
         Route::delete('/clubs/delete/{id}', [ClubController::class, 'destroy'])->name('clubs.destroy');
 
-
+        Route::get('/resources/manage', function () {
+            return view('admin.manage_resources');
+        })->name('resources.manage');
+        
         // Notifications
         Route::get('/notification_list', [NotificationController::class, 'index'])->name('notification_list');
         Route::get('/create_notification', [NotificationController::class, 'create'])->name('create_notification');
