@@ -33,7 +33,7 @@
 
                 <div class="dropdown-menu dropdown-menu-end p-0">
                     <div class="p-2 border-bottom m-2">
-                        <h5 class="h5 mb-0">Gelen Mesajlar</h5>
+                        <h5 class="h5 mb-0">Messages</h5>
                     </div>
 
                     <div class="header-notifications-list p-2" style="max-height: 300px; overflow-y: auto;">
@@ -71,7 +71,7 @@
                         </a>
                         @endif
                         @empty
-                        <p class="text-center text-secondary">Yeni mesaj yok</p>
+                        <p class="text-center text-secondary">No Messages</p>
                         @endforelse
 
 
@@ -80,7 +80,7 @@
                     <div class="p-2">
                         <hr class="dropdown-divider">
                         <a class="dropdown-item text-center" href="{{ route('chat.index') }}">
-                            Tüm Mesajları Gör
+                            View All Messages
                         </a>
                     </div>
                 </div>
