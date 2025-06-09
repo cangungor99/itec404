@@ -96,12 +96,13 @@
                                 <button class="btn btn-outline-secondary btn-sm">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <form method="POST" action="{{ route('admin.forums.reject', $forum->forumID) }}" class="d-inline">
+                                <form method="POST" action="{{ route('admin.forums.reject', $forum->forumID) }}" class="d-inline delete-form">
                                     @csrf
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <button type="button" class="btn btn-outline-danger btn-sm delete-button">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
+
                             </td>
                         </tr>
                         @endforeach
@@ -117,3 +118,33 @@
 </main>
 <!--end page main-->
 @endsection
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const deleteButtons = document.querySelectorAll('.delete-button');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const form = this.closest('form');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "This forum will be permanently deleted!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+@endpush

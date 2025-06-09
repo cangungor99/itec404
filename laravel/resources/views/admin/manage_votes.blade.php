@@ -103,13 +103,18 @@
 
 
                                     <!-- Delete -->
-                                    <form action="{{ route('admin.votings.destroy', $vote->votingID) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this voting session?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
+                                    <form class="delete-vote-form d-inline"
+      action="{{ route('admin.votings.destroy', $vote->votingID) }}"
+      method="POST"
+      data-id="{{ $vote->votingID }}">
+    @csrf
+    @method('DELETE')
+    <button type="button" class="btn btn-outline-danger btn-sm btn-delete-vote" title="Delete">
+        <i class="bi bi-trash"></i>
+    </button>
+</form>
+
+
                                 </div>
                             </td>
                         </tr>
@@ -220,7 +225,11 @@
 
 
 @push('scripts')
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
+    
     function removeSeconds(datetimeStr) {
         const [datePart, timePart] = datetimeStr.split(' ');
         const [hours, minutes] = timePart.split(':');
@@ -292,6 +301,28 @@
             });
         });
 
+    });
+
+    document.querySelectorAll('.btn-delete-vote').forEach(button => {
+        button.addEventListener('click', function() {
+            const form = this.closest('form');
+            const voteID = form.dataset.id;
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This voting session will be permanently deleted.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, delete it!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Formu gönder
+                }
+            });
+        });
     });
 </script>
 

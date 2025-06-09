@@ -30,7 +30,7 @@ class LeaderNotificationController extends Controller
         $authorizedClubIDs = $user->leadClubs->merge($user->manageClubs)->pluck('clubID');
 
         if (! $authorizedClubIDs->contains($request->clubID)) {
-            abort(403, 'Bu kulübe bildirim gönderme yetkiniz yok.');
+            abort(403, 'You do not have permission to send notifications to this club..');
         }
 
         $notification = Notification::create([
@@ -47,6 +47,6 @@ class LeaderNotificationController extends Controller
         $notification->readers()->syncWithPivotValues($userIDs->toArray(), ['is_read' => false]);
 
 
-        return redirect()->back()->with('success', 'Bildirim başarıyla oluşturuldu.');
+        return redirect()->back()->with('success', 'The notification was sent successfully.');
     }
 }
