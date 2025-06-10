@@ -40,7 +40,7 @@
     </li>
 
     <li>
-        <a href="{{ route('leader.resources.my') }}">
+        <a href="{{ route('leader.resources.index', optional(\App\Models\Club::where('leaderID', auth()->id())->first())->clubID) }}">
             <div class="parent-icon"><i class="bi bi-folder-fill"></i></div>
             <div class="menu-title">Manage Resources</div>
         </a>

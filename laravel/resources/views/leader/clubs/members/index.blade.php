@@ -2,7 +2,7 @@
 @section('title', 'Club Members')
 @push('styles')
 @php
-    $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
+$prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @endphp
 <style>
     .table td,
@@ -57,6 +57,9 @@
                             <td>{{ $membership->user->email }}</td>
                             <td>{{ $membership->joined_at }}</td>
                             <td>
+
+
+                                @if($canManageRoles && $membership->user->userID !== $club->leaderID)
                                 <form method="POST" action="{{ route($prefix . '.members.destroy', [$club->clubID, $membership->membershipID]) }}" class="d-inline delete-form">
                                     @csrf
                                     @method('DELETE')
@@ -64,8 +67,6 @@
                                         <i class="bi bi-person-dash-fill"></i> Remove
                                     </button>
                                 </form>
-
-                                @if($canManageRoles && $membership->user->userID !== $club->leaderID)
                                 <form method="POST" action="{{ route('manager.club.set_leader', ['club' => $club->clubID, 'userID' => $membership->user->userID]) }}" class="d-inline ms-2">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-primary">

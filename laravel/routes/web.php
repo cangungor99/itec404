@@ -132,6 +132,7 @@ Route::middleware(['auth', 'role:leader'])
             dd($club);
         });
 
+
         Route::get('/memberships', [MembershipController::class, 'index'])->name('memberships.index');
         Route::post('/memberships/{id}/approve', [MembershipController::class, 'approve'])->name('memberships.approve');
         Route::post('/memberships/{id}/reject', [MembershipController::class, 'reject'])->name('memberships.reject');
