@@ -13,16 +13,9 @@ class ViewReportController extends Controller
 {
     public function index()
     {
-        // 1. Toplam kulüp sayısı
         $totalClubs = Club::count();
-
-        // 2. Toplam üye sayısı
         $totalMembers = Membership::count();
-
-        // 3. Aylık kullanılan bütçe (toplam - kalan)
         $budgetUsed = ClubBudget::sum('total_budget') - ClubBudget::sum('budget_left');
-
-        // 4. Son etkinlikler (en yeni 5 tanesi)
         $recentEvents = ClubEvent::with('club')->orderByDesc('start_time')->take(5)->get();
 
         return view('Admin.reports.view_reports', compact(

@@ -9,6 +9,7 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Club;
 use App\Models\Membership;
+use App\Models\Notification;
 
 class ClubController extends Controller
 {
@@ -41,7 +42,6 @@ class ClubController extends Controller
             ->first();
 
         if (!$membership || $membership->status === 'rejected') {
-            // Membership kaydı oluştur veya güncelle
             Membership::updateOrCreate(
                 ['userID' => $user->userID, 'clubID' => $club->clubID],
                 [
@@ -51,15 +51,13 @@ class ClubController extends Controller
                 ]
             );
 
-            // Bildirimi oluştur
-            $notification = \App\Models\Notification::create([
+            $notification = Notification::create([
                 'clubID'    => $club->clubID,
                 'creatorID' => $user->userID,
                 'title'     => 'New Club Membership Request',
                 'content'   => "{$user->name} wants to join the club: {$club->name}",
             ]);
 
-            // Bildirimi yetkililere gönder: leader + admin
             $leaderIDs = $club->memberships()
                 ->where('role', 'leader')
                 ->pluck('userID')

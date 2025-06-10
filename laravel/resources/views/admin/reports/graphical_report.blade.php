@@ -1,10 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Graphical Report')
 @section('content')
-<!--start content-->
 <main class="page-content">
 
-    <!--end breadcrumb-->
     <div class="d-flex justify-content-end mb-3">
     <button class="btn btn-sm btn-outline-success" onclick="exportChartsAsPDF()">Export All Charts as PDF</button>
 </div>
@@ -41,7 +39,6 @@
 
 
 </main>
-<!--end page main-->
 @endsection
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -50,12 +47,10 @@
 
 
 <script>
-    // Controller'dan gelen veriler
     const membersPerClub = @json($membersPerClub);
     const budgetUsage = @json($budgetUsage);
     const monthlyEvents = @json($monthlyEvents);
 
-    // === 1. Bar Chart: Üyeler / Kulüp ===
     new Chart(document.getElementById('barChart'), {
         type: 'bar',
         data: {
@@ -69,7 +64,6 @@
         }
     });
 
-    // === 2. Doughnut Chart: Bütçe Kullanımı ===
     new Chart(document.getElementById('doughnutChart'), {
         type: 'doughnut',
         data: {
@@ -88,7 +82,6 @@
         }
     });
 
-    // === 3. Line Chart: Aylık Etkinlik Sayısı ===
     new Chart(document.getElementById('lineChart'), {
         type: 'line',
         data: {

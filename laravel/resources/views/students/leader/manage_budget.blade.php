@@ -1,10 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Manage Budget')
 @section('content')
-<!--start content-->
 <main class="page-content">
 
-    <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Club</div>
         <div class="ps-3">
@@ -20,7 +18,6 @@
             <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#manageItemsModal"><i class="bi bi-pencil-square"></i> Manage Items</button>
         </div>
     </div>
-    <!--end breadcrumb-->
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
         <div class="col">
@@ -83,7 +80,7 @@
                 </div>
             </div>
         </div>
-    </div><!--end row-->
+    </div>
 
     <!-- Charts -->
     <div class="row mt-4">
@@ -169,7 +166,6 @@
                                 <td>$1,200</td>
                                 <td>Flyers and ads</td>
                             </tr>
-                            <!-- More items dynamically here -->
                         </tbody>
                     </table>
                 </div>
@@ -178,7 +174,6 @@
     </div>
 
 </main>
-<!--end content-->
 @endsection
 @push('scripts')
 <script>

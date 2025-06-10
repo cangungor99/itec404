@@ -14,9 +14,8 @@ class RoleMiddleware
             return $next($request);
         }
 
-        // $roles artık ['student','leader'] veya ['admin']
         if (! $user->hasAnyRole($roles)) {
-            abort(403, 'Yetkiniz yok.');
+            abort(403, 'Unauthorized access');
         }
 
         return $next($request);

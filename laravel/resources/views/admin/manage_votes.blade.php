@@ -82,7 +82,6 @@
                                     </button>
 
                                     <!-- Results -->
-                                    <!-- Results (şimdilik yönlendirme yok, modal kullanılacak) -->
                                     <button
                                         class="btn btn-outline-info btn-sm btn-show-results"
                                         data-id="{{ $vote->votingID }}"
@@ -225,7 +224,6 @@
         const modalElement = document.getElementById('editVoteModal');
         const modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
 
-        // Modal açıkken tekrar tıklama yapılırsa sorun çıkmasın
         document.querySelectorAll('.btn-edit-vote').forEach(button => {
             button.addEventListener('click', function() {
                 const vote = JSON.parse(this.dataset.vote);

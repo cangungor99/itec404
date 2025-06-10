@@ -1,4 +1,3 @@
-{{-- resources/views/profile/edit.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'EMU Digital Club | Profile')
@@ -6,7 +5,6 @@
 @section('content')
 <main class="page-content">
 
-    <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center">
         <div class="breadcrumb-title pe-3 text-white">Pages</div>
         <div class="ps-3">
@@ -20,7 +18,6 @@
             </nav>
         </div>
     </div>
-    <!--end breadcrumb-->
 
     <div class="profile-cover bg-dark"></div>
 
@@ -113,17 +110,7 @@
                         </div>
                     </div>
 
-                    {{-- Eğer iletişim formuna ihtiyacın yoksa bu bloğu kaldırabilirsin --}}
-                    {{--
-                    <div class="card shadow-none border mt-4">
-                        <div class="card-header">
-                            <h6 class="mb-0">CONTACT INFORMATION</h6>
-                        </div>
-                        <div class="card-body">
-                            <!-- Buraya ihtiyacın olan ek alanları ekleyebilirsin -->
-                        </div>
-                    </div>
-                    --}}
+                    
                 </div>
             </div>
         </div>
@@ -147,7 +134,7 @@
                 </div>
             </div>
         </div>
-    </div><!--end row-->
+    </div>
 
 </main>
 @endsection

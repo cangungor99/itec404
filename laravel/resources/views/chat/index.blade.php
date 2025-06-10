@@ -44,7 +44,6 @@
         flex-grow: 1;
         overflow-y: auto;
         max-height: 500px;
-        /* İstersen dinamik hale getirebilirsin */
         padding: 1rem;
         padding-top: 55px;
 
@@ -225,9 +224,7 @@
                 <a href="javascript:;" id="sendButton"><i class='bx bx-send'></i></a>
             </div>
         </div>
-        <!--start chat overlay-->
         <div class="overlay chat-toggle-btn-mobile"></div>
-        <!--end chat overlay-->
     </div>
 </main>
 <!--end page main-->
@@ -291,7 +288,6 @@
                 });
         }
 
-        // Her 5 saniyede bir mesajları yenile
         setInterval(fetchMessages, 5000);
     });
 </script>
@@ -308,7 +304,6 @@
 
             if (!message || !receiverID) return;
 
-            // --- Mesajı hemen göster (Optimistik UI)
             const tempHTML = `
             <div class="chat-content-rightside">
                 <div class="d-flex ms-auto">
@@ -321,16 +316,13 @@
         `;
             chatBox.insertAdjacentHTML('beforeend', tempHTML);
 
-            // Mesaj kutusunu temizle
             input.value = "";
             input.focus();
 
-            // Scroll en aşağı
             setTimeout(() => {
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 10);
 
-            // Sunucuya gerçek mesajı gönder
             fetch("{{ route('chat.send') }}", {
                     method: "POST",
                     headers: {
@@ -344,8 +336,7 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                    // Gerekirse, optimistik mesajı silip sunucudan geleni tekrar ekleyebilirsin.
-                    // Ama hızlı görünmesi için yukarıdaki sistem yeterlidir.
+                    
                 });
         }
 
@@ -417,11 +408,9 @@
         document.getElementById('clubChatFooter').classList.add('d-none');
         document.getElementById('privateChatFooter').classList.remove('d-none');
 
-        // Eski mesajları temizle
         const chatBox = document.getElementById('chatMessages');
         chatBox.innerHTML = '<p class="text-muted">Loading...</p>';
 
-        // Mesajları çek
         fetch(`{{ route('chat.messages') }}?receiverID=${userID}`)
             .then(response => response.text())
             .then(html => {
@@ -463,21 +452,17 @@
                 currentClubID = this.dataset.clubId;
                 const clubName = this.dataset.clubName;
 
-                // Bireysel mesaj panelini gizle
                 document.getElementById('chatMessages').parentElement.classList.add('d-none');
                 document.getElementById('privateChatFooter').classList.add('d-none');
 
-                // Kulüp mesaj panelini göster
                 clubChatSection.classList.remove('d-none');
                 document.getElementById('clubChatFooter').classList.remove('d-none');
 
-                // Başlık değişimi
                 document.getElementById('selectedUserName').classList.add('d-none');
                 const clubNameEl = document.getElementById('selectedClubName');
                 clubNameEl.classList.remove('d-none');
                 clubNameEl.innerText = clubName;
 
-                // Mesajları yükle
                 clubChatMessages.innerHTML = '<p class="text-muted">Yükleniyor...</p>';
                 fetch(`/chat/club/${currentClubID}`)
                     .then(res => res.text())
@@ -500,7 +485,6 @@
             const message = clubMessageInput.value.trim();
             if (!message || !currentClubID) return;
 
-            // Optimistik gösterim
             const tempHTML = `
             <div class="chat-content-rightside">
                 <div class="d-flex ms-auto">
@@ -541,9 +525,6 @@
     });
 
 
-
-
-    // İlk sayfa yüklenince ve her 10 saniyede bir güncelle
     loadRecentChats();
     setInterval(loadRecentChats, 10000);
 </script>

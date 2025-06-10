@@ -6,7 +6,6 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @section('content')
 <main class="page-content">
 
-    <!-- Breadcrumb -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Forums</div>
         <div class="ps-3">
@@ -23,7 +22,6 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
     <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    {{-- Pending Forums --}}
     <div class="card shadow-sm radius-10 border-0 mb-4">
         <div class="card-body">
             <h5 class="card-title mb-3"><i class="bi bi-hourglass-split text-warning me-2"></i>Pending Forum Requests</h5>
@@ -194,9 +192,8 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Forum veya yorum reddetme
     document.querySelectorAll('.reject-form').forEach(form => {
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',
@@ -214,9 +211,8 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
         });
     });
 
-    // Forum silme
     document.querySelectorAll('.delete-forum-form').forEach(form => {
-        form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
             Swal.fire({
                 title: 'Delete this forum?',

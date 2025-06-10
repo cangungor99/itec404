@@ -4,10 +4,8 @@
 $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @endphp
 @section('content')
-<!--start content-->
 <main class="page-content">
 
-    <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Club</div>
         <div class="ps-3">
@@ -19,10 +17,8 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
             </nav>
         </div>
     </div>
-    <!--end breadcrumb-->
 
     <div class="row">
-        <!-- Sidebar -->
         <div class="col-12 col-xl-3">
             <div class="card">
 
@@ -64,7 +60,6 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
                     </div>
                 </div>
             </div>
-            <!-- İsteğe bağlı sağ panel metrikleri burada bırakıldı -->
         </div>
 
         <!-- Main Content -->
@@ -152,7 +147,6 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 
 
 
-<!--end page main-->
 @endsection
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -165,14 +159,14 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
                 e.preventDefault();
 
                 Swal.fire({
-                    title: 'Emin misiniz?',
-                    text: "Bu dosya silinecek ve geri alınamaz!",
+                    title: 'Are you sure?',
+                    text: "This file will be deleted and cannot be recovered!",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Evet, sil!',
-                    cancelButtonText: 'İptal'
+                    confirmButtonText: 'Yes, Delete!',
+                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();

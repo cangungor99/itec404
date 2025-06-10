@@ -1,0 +1,124 @@
+634298e - mustafabostan, 2025-06-10 : Bug fix
+75d3ac2 - mustafabostan, 2025-06-10 : Report sayfalari acilmama sorunu cozuldu
+b534b08 - mustafabostan, 2025-06-10 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+831280b - can, 2025-06-10 : chat kısmında club tasarım duzenlemelerı yapıldı
+2450316 - mustafabostan, 2025-06-10 : son hal
+7e1ed2a - mustafabostan, 2025-06-10 : Chat kismindaki tasarim duzeltildi
+5e4197b - mustafabostan, 2025-06-10 : Manager icin buglar fixlendi
+c7a6364 - mustafabostan, 2025-06-10 : Admin resource duzenlendi
+1e5a760 - mustafabostan, 2025-06-10 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+a627b3c - mustafabostan, 2025-06-10 : Rol tutarsizligi cozuldu rol sistemi duzgun calisiyor
+c1ff356 - can, 2025-06-09 : navbar mesajlar kısmı duzenlendi
+0f9196d - can, 2025-06-09 : admin tarafı resource sayfası tasarım düzenlendi
+b8a0418 - can, 2025-06-09 : merge işlemi
+19dcf30 - can, 2025-06-09 : Merge conflict resolved: web.php
+53f58d0 - mustafabostan, 2025-06-09 : Seederlar duzenlendi mysql testi yapildi admindeki manage clubs buglari ve duzenlemeleri yapildi
+83977d7 - mustafabostan, 2025-06-09 : Navbar okundu okunmadi dinamiklesmesi calisiyor
+0dd41a4 - mustafabostan, 2025-06-09 : Reports sayfalari navbardan erisilebilir hale geldi manager icin reports controller eklendi + bug fix
+bdea603 - can, 2025-06-09 : çakışma duzeltıldı
+f105d1e - can, 2025-06-09 : Benim web.php değişikliklerim
+4a7f89a - mustafabostan, 2025-06-09 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+acbc9d2 - mustafabostan, 2025-06-09 : Chat yonlendirmesi tum roller icin sidebardanda yapiliyor artik
+3a1c306 - mustafabostan, 2025-06-09 : Resources sayfasi Student tarafi guncellendi
+5f04847 - can, 2025-06-09 : admin tarafı raporlama dinamikleştirmesi ve export kısımları yapıldı
+f44c913 - mustafabostan, 2025-06-09 : Report routelari guncellendi
+29cb51c - mustafabostan, 2025-06-09 : Report routelari baglandi
+f2ed6b8 - can, 2025-06-09 : Force-merged StudentForumController.php using ours version
+d5f81af - mustafabostan, 2025-06-09 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+5e56a4e - can, 2025-06-09 : sistem otomatik bildirim gönderme yapısı kuruldu.
+ab8704a - mustafabostan, 2025-06-09 : Forum Yonetimi Student Lider ve Manager kisimlari tamamlandi
+f55afa6 - mustafabostan, 2025-06-08 : report sayfalari viewlari aktarildi
+44add0e - mustafabostan, 2025-06-08 : Chat kismi duzenlemesi tamamlandi chats ve club chats seklinde ikiye ayrildi
+1d225c6 - mustafabostan, 2025-06-07 : chat sistemi duzenlendi private chat tamamlandi
+dc82ba0 - mustafabostan, 2025-06-07 : Votes tum roller icin tamamlandi login register yonlendirmeleri yapildi forum bug duzletildi notification tum roller icin tamamlandi
+d3360f5 - mustafabostan, 2025-06-07 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+2a38ca2 - can, 2025-06-07 : admin sayfası için raporlama sayfalarının tasarımları yapıldı.
+a7fa8f3 - mustafabostan, 2025-06-06 : manager kismi back-end tamamlandi
+eadc02d - can, 2025-06-06 : Merge branch 'mustafa' of https://github.com/cangungor99/itec404 into can
+7078e29 - mustafabostan, 2025-06-06 : Manager islemleri devam ediyor
+17017c8 - mustafabostan, 2025-06-06 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+6730c9b - mustafabostan, 2025-06-06 : Student club status kontrolu eklendi
+d5bd460 - can, 2025-06-06 : Merge branch 'mustafa' of https://github.com/cangungor99/itec404 into can
+f84075c - can, 2025-06-06 : chat kısmı calısır hale getirildi tasarım iyileştirlmeleri yapılacak.
+da3e158 - mustafabostan, 2025-06-06 : Merge branches 'mustafa' and 'can' of https://github.com/cangungor99/itec404 into mustafa
+802d3f3 - mustafabostan, 2025-06-06 : son hal
+6aba295 - can, 2025-06-06 : leader dashboard, admin dashboard, student dashboard dinamik hale getirildi.
+5b13217 - mustafabostan, 2025-06-05 : check
+7ae8071 - mustafabostan, 2025-06-05 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+80c1ddb - mustafabostan, 2025-06-05 : Local degisiklikler
+1f2babd - can, 2025-06-05 : tasarım düzenlemeleri ve giriş yapma kısmı düzenlendi
+0b0d184 - can, 2025-06-04 : Merge branch 'mustafa' of https://github.com/cangungor99/itec404 into can
+21533ba - mustafabostan, 2025-06-04 : Leader forum management ve Club Members management ozellikleri yapildi
+6c1f83e - can, 2025-06-01 : Merge branch 'mustafa' of https://github.com/cangungor99/itec404 into can
+a3968bd - mustafabostan, 2025-05-31 : seeder sorunlari duzeltildi, student club events sayfasi tasarimi duzeltildi filtre eklendi
+6d6d3db - can, 2025-05-31 : manage forum sayfaları düzenlemeleri ve backend yapıldı
+ab3fe98 - mustafabostan, 2025-05-31 : Seeder ve factoryler guncellendi
+21f46ab - mustafabostan, 2025-05-31 : Profil fotografi ozelligi eklendi
+fd55f9f - mustafabostan, 2025-05-30 : admin tarafindaki backend sikintilarinin bir kismi duzenlendi
+c557209 - can, 2025-05-30 : Merge branch 'mustafa' of https://github.com/cangungor99/itec404 into can
+b54695f - mustafabostan, 2025-05-30 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+6a7add6 - can, 2025-05-30 : Admin tarafı alert fonk eklendi ui hakine getirildi.
+d6746e6 - mustafabostan, 2025-05-29 : ChatBox backend kismi duzenlendi
+fa2ba22 - mustafabostan, 2025-05-29 : Chat sistemi back-end kismi aktif front-end bozukluklarinin duzenlenmesi gerekiyor
+44fd66c - mustafabostan, 2025-05-29 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+53d3b52 - can, 2025-05-27 : admin side ClubBudget management OK
+b29195d - can, 2025-05-27 : Merge remote-tracking branch 'origin/mustafa' into can
+37fc58b - mustafabostan, 2025-05-26 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+286df53 - mustafabostan, 2025-05-26 : ClubEvent Sistemi Eklendi Student ve Leader icin sidebarlar ve route duzenlemeleri yapildi
+746d097 - can, 2025-05-26 : Merge branch 'mustafa' of https://github.com/cangungor99/itec404 into can
+cb40937 - can, 2025-05-26 : git senkronizasyonu
+94ed8e5 - mustafabostan, 2025-05-23 : Leader ve Student icin Forum backend islemleri tamamlandi
+5a05f60 - mustafabostan, 2025-05-22 : Vote islemleri hem leader hem student icin tamamlandi
+6df0c64 - mustafabostan, 2025-05-22 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+ff1f3a4 - mustafabostan, 2025-05-22 : web php duzenlemesi
+47308c0 - can, 2025-05-22 : Merge branch 'mustafa' of https://github.com/cangungor99/itec404 into can
+fab5f8f - can, 2025-05-22 : admin tarafı club olusturma duzenleme silme, bildirim olusturma kısımlarının backend işlemi
+7121343 - mustafabostan, 2025-05-22 : routes cakismasi duzletildi
+1ba168b - mustafabostan, 2025-05-22 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+d9e3684 - mustafabostan, 2025-05-22 : Club listeleme, basvuru ve lider onayi, student ve leader icin resources sayfalari tamamlandi
+a5858e8 - can, 2025-05-22 : admin sayfaları yapıldı : bildirim düzenleme olusutrma,club duzenleme olusturma sayfası yapıldı
+b8fbaca - can, 2025-05-21 : son hal
+171f8b0 - mustafabostan, 2025-05-21 : profile sayfasi tamamlandi
+1b6ccc2 - mustafabostan, 2025-05-21 : navbar dinamiklestirildi
+6e4bf74 - mustafabostan, 2025-05-21 : Roller icin model eklendi, rollere gore sayfa yonlendirmeleri tamamlandi, rollere gore sidebarlar ayarlandi.
+de8b97f - mustafabostan, 2025-05-21 : model yapisi testleri ve authentication islemleri tamamlandi
+16a0603 - can, 2025-05-21 : forgot password ve reset password yapıldı.
+37e560f - mustafabostan, 2025-05-14 : model yapilari test edilip duzenlendi factory ve seederlar hazir
+543536e - mustafabostan, 2025-05-14 : model yapisi tamam test edilecek
+15c1eae - can, 2025-05-14 : admin sayfa güncellemesi ve sidebar
+7bbb275 - mustafabostan, 2025-05-13 : model oncesi yedek
+1fb2304 - mustafabostan, 2025-05-13 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+2c49f06 - can, 2025-05-13 : son işlem güncellemeleri
+9713ed4 - mustafabostan, 2025-05-11 : admin sayfalari aktarildi
+90a3a18 - can, 2025-05-09 : Merge remote-tracking branch 'origin/mustafa' into can
+fcfd4b8 - mustafabostan, 2025-05-09 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
+1812796 - can, 2025-05-09 : admin sayfaları yapıldı
+2ccabbc - can, 2025-05-09 : admin sayfaları yapıldı
+04cf462 - mustafabostan, 2025-05-09 : leader sayfalari aktarildi
+d40a7b0 - mustafabostan, 2025-05-09 : student sayfalari aktarildi
+a90c8ff - mustafabostan, 2025-05-09 : Merge branch 'can' into mustafa
+bb8b510 - can, 2025-05-09 : student ve leader kismi tamamlanmasi ve dosya duzenlenmesi
+5fe6a19 - can, 2025-05-09 : student kismi duzenlemesi--student bitti
+a0c9770 - can, 2025-05-09 : yeni eklenen student sayfaları
+f65d6c1 - can, 2025-05-09 : Merge remote-tracking branch 'origin/mustafa' into can
+59ef7db - can, 2025-05-09 : Yerel değişiklikler
+df6d00c - mustafabostan, 2025-05-09 : Merge remote-tracking branch 'origin/can' into mustafa
+67686da - can, 2025-05-09 : yeni eklenen sayfalar
+0b757f1 - mustafabostan, 2025-05-09 : sidebar laravele gecirilip sayfalar duzenlendi vote sayfasi laravele gecirildi
+adbec75 - mustafabostan, 2025-05-09 : Merge remote-tracking branch 'origin/can' into mustafa
+4390cb4 - can, 2025-05-09 : yeni eklenen sayfalar
+6eb88a3 - mustafabostan, 2025-05-09 : chat sayfasi ve resources sayfasi laravele gecirildi
+dfaed47 - mustafabostan, 2025-05-09 : Merge remote-tracking branch 'origin/can' into mustafa
+f4b2d11 - mustafabostan, 2025-05-09 : profile sayfasi laravele gecirildi
+2034a7a - can, 2025-05-09 : yeni eklenen sayfalar
+87eed74 - mustafabostan, 2025-05-09 : Merge remote-tracking branch 'origin/can' into mustafa
+a9b578c - mustafabostan, 2025-05-09 : club_list ve club_details laravele aktarildi
+d8686c9 - can, 2025-05-09 : yeni eklenen sayfalar
+a315631 - mustafabostan, 2025-05-09 : Merge remote-tracking branch 'origin/can' into mustafa
+43233b8 - can, 2025-05-09 : yeni eklenen sayfalar
+9e2f512 - mustafabostan, 2025-05-09 : layout olusturuldu staticler baglandi navbar signin ve std signup aktarildi
+ef66169 - can, 2025-05-09 : Son işlem
+fc65c35 - mustafabostan, 2025-05-08 : Merge remote-tracking branch 'origin/template_duzenleme' into testing
+08db28a - can, 2025-05-08 : login signup sayfalari yapildi,active clubs listeme
+5117b39 - mustafabostan, 2025-05-08 : assetler aktarildi laravel projesi calistirilip test edildi
+d7a7067 - can, 2025-05-08 : İlk Laravel kurulumu

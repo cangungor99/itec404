@@ -4,7 +4,6 @@
 
 
 @section('content')
-<!--start content-->
 
 <main class="page-content">
 
@@ -61,7 +60,7 @@
                 </div>
             </div>
         </div>
-    </div><!--end row-->
+    </div>
 
     <div class="row">
         <div class="col-12 col-lg-6 d-flex">
@@ -126,7 +125,6 @@
                             <div>
                                 <h6 class="mb-0">{{ $role['club']->name }}</h6>
                                 <small class="text-muted">
-                                    {{-- Eğer category varsa göster, yoksa General yaz --}}
                                     {{ $role['club']->category->name ?? 'General' }}
                                 </small>
                             </div>
@@ -147,8 +145,7 @@
         </div>
 
 
-    </div><!--end row-->
+    </div>
 
 </main>
-<!--end page main-->
 @endsection

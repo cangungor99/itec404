@@ -10,13 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    // Genel chat sayfası (modern UI)
     public function index()
     {
         return view('chat.index');
     }
 
-    // ✅ Kullanıcı arama (yeni kişiyle mesaj başlatmak için)
     public function searchUser(Request $request)
     {
         $query = $request->input('q');
@@ -33,7 +31,6 @@ class ChatController extends Controller
         return response()->json($users);
     }
 
-    // ✅ Özel mesaj gönderme (AJAX)
     public function storePrivateMessage(Request $request)
     {
         $request->validate([
@@ -56,7 +53,6 @@ class ChatController extends Controller
         ]);
     }
 
-    // ✅ Belirli kullanıcıyla geçmiş mesajları getir
     public function getMessages(Request $request)
     {
         $authID = auth()->id();
@@ -79,7 +75,6 @@ class ChatController extends Controller
         return view('chat.components.messages', compact('messages'))->render();
     }
 
-    // ✅ Navbar ya da sidebar için son mesajlar
     public function recentMessages()
     {
         $authID = auth()->id();
@@ -106,7 +101,6 @@ class ChatController extends Controller
         ]);
     }
 
-    // ✅ Kulüp sohbet ekranı
     public function indexClub(Club $club)
     {
         $this->authorizeClubAccess($club);
@@ -122,7 +116,6 @@ class ChatController extends Controller
         ]);
     }
 
-    // ✅ Kulüp sohbetine mesaj gönderme
     public function storeClub(Request $request, Club $club)
     {
         $this->authorizeClubAccess($club);
@@ -140,7 +133,6 @@ class ChatController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // ❗ Kulüp yetkilendirmesi
     private function authorizeClubAccess(Club $club)
     {
         $user = Auth::user();

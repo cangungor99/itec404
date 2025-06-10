@@ -35,14 +35,8 @@ use App\Http\Controllers\Admin\ClubResourceController as AdminClubResourceContro
 
 
 Route::get('/', function () {
-    return view('index');
-})->name('home');
-
-Route::get('/test', function () {
-    return view('test');
+    return redirect()->route('login');
 });
-
-
 
 
 Route::middleware('auth')->group(function () {
@@ -65,20 +59,13 @@ Route::middleware('auth')->group(function () {
 
 
 
-
-
-
 // Student Routes
 
 Route::middleware(['auth', 'role:student,leader'])
     ->prefix('students')
     ->name('students.')
     ->group(function () {
-
-
         Route::get('/dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
-
-
         Route::get('/clubs', [StudentClubController::class, 'index'])->name('clubs.index');
         Route::get('/club/{club}', [StudentClubController::class, 'show'])->name('clubs.show');
         Route::post('/club/{club}/apply', [StudentClubController::class, 'apply'])->name('clubs.apply');
@@ -106,33 +93,26 @@ Route::middleware(['auth', 'role:leader'])
     ->name('leader.')
     ->group(function () {
         Route::get('/dashboard', [LeaderDashboardController::class, 'index'])->name('dashboard');
-
-
         Route::get('/my-resources', function () {
             $leader = auth()->user();
             $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
             return redirect()->route('leader.resources', $club->clubID);
         })->name('resources.my');
-
         Route::get('/my-votes', function () {
             $leader = auth()->user();
             $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
             return redirect()->route('leader.votes.index', $club->clubID);
         })->name('votes.my');
-
         Route::get('/my-events', function () {
             $leader = auth()->user();
             $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
             return redirect()->route('leader.events.index', $club->clubID);
         })->name('events.my');
-
         Route::get('/leader/test-event-redirect', function () {
             $leader = auth()->user();
             $club = \App\Models\Club::where('leaderID', $leader->userID)->first();
             dd($club);
         });
-
-
         Route::get('/memberships', [MembershipController::class, 'index'])->name('memberships.index');
         Route::post('/memberships/{id}/approve', [MembershipController::class, 'approve'])->name('memberships.approve');
         Route::post('/memberships/{id}/reject', [MembershipController::class, 'reject'])->name('memberships.reject');
@@ -155,8 +135,6 @@ Route::middleware(['auth', 'role:leader'])
         Route::get('/forums/{forum}', [LeaderForumController::class, 'show'])->name('forums.show');
         Route::delete('/forums/{forum}', [LeaderForumController::class, 'destroy'])->name('forums.destroy');
         Route::post('/forums/{forum}/comment', [LeaderForumController::class, 'comment'])->name('forums.comment');
-
-
         Route::get('{club}/events', [LeaderEventController::class, 'index'])->name('events.index');
         Route::get('{club}/events/create', [LeaderEventController::class, 'create'])->name('events.create');
         Route::post('{club}/events', [LeaderEventController::class, 'store'])->name('events.store');
@@ -165,19 +143,13 @@ Route::middleware(['auth', 'role:leader'])
         Route::delete('{club}/events/{event}', [LeaderEventController::class, 'destroy'])->name('events.destroy');
         Route::get('{club}/members', [ClubMemberController::class, 'index'])->name('members.index');
         Route::delete('{club}/members/{membership}', [ClubMemberController::class, 'destroy'])->name('members.destroy');
-
-
-
-
         Route::get('/resources', function () {
             $leader = auth()->user();
             $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
 
             return redirect()->route('leader.resources', $club->clubID);
         })->name('my_resources');
-
         Route::get('/clubs', [ClubController::class, 'index'])->name('clubs.index');
-
         Route::get('/votes', function () {
             $leader = auth()->user();
             $club = \App\Models\Club::where('leaderID', $leader->userID)->firstOrFail();
@@ -191,18 +163,11 @@ Route::middleware(['auth', 'role:manager'])
     ->name('manager.')
     ->group(function () {
         Route::get('/dashboard', [ManagerDashboardController::class, 'index'])->name('dashboard');
-
-
-
-
         Route::get('/club', [ManagerClubController::class, 'show'])->name('club.show');
         Route::get('/club/edit', [ManagerClubController::class, 'edit'])->name('club.edit');
         Route::post('/club/update', [ManagerClubController::class, 'update'])->name('club.update');
-
-
         Route::get('/budget', [BudgetController::class, 'index'])->name('budget.index');
         Route::post('/budget/update', [BudgetController::class, 'update'])->name('budget.update');
-
         Route::get('club/{club}/members', [ClubMemberController::class, 'index'])->name('members');
         Route::delete('club/{club}/members/{membership}', [ClubMemberController::class, 'destroy'])->name('members.destroy');
         Route::post('club/{club}/set-leader/{userID}', [ClubMemberController::class, 'setLeader'])->name('club.set_leader');
@@ -311,12 +276,6 @@ Route::middleware(['auth', 'role:admin'])
         Route::delete('/admin/resources/{resource}', [AdminClubResourceController::class, 'destroy'])->name('resources.destroy');
 
     });
-
-
-
-Route::get('/sensitive', function () {
-    return 'Sensitive Case';
-})->middleware(['auth', 'password.confirm']);
 
 Route::middleware(['auth'])
     ->get('/notifications', [NotificiationViewController::class, 'index'])

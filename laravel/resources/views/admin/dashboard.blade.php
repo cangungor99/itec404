@@ -162,7 +162,7 @@
             }
         },
         series: [{
-            data: [10, 12, 14, 16, 18, 19, 20] // kulüp sayısı trendi (dummy data)
+            data: [10, 12, 14, 16, 18, 19, 20] 
         }],
         stroke: {
             curve: 'smooth',

@@ -269,7 +269,7 @@
             radio.addEventListener('change', toggleTargetFields);
         });
 
-        toggleTargetFields(); // page load default
+        toggleTargetFields();
     });
 </script>
 @endpush

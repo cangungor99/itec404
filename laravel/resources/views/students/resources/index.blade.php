@@ -1,4 +1,3 @@
-<!-- Updated Club Resources Page -->
 @extends('layouts.app')
 @section('title', 'EMU Digital Club | Club Resources')
 @push('styles')

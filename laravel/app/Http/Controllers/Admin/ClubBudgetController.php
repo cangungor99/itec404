@@ -23,10 +23,8 @@ class ClubBudgetController extends Controller
         $budget = $club->budget;
 
         if ($budget) {
-            // Güncelle
             $budget->update($data);
         } else {
-            // Yoksa oluştur
             $club->budget()->create($data);
         }
 

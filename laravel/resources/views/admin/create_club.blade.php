@@ -45,7 +45,6 @@
 </style>
 @endpush
 @section('content')
-<!--start content-->
 <main class="page-content">
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">

@@ -37,7 +37,6 @@
 
 @section('content')
 <main class="page-content">
-    <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Pages</div>
         <div class="ps-3">
@@ -49,7 +48,6 @@
             </nav>
         </div>
     </div>
-    <!--end breadcrumb-->
 
     <div class="container">
     @forelse($notifications as $notification)
@@ -98,7 +96,6 @@
 
 </main>
 
-<!-- Notification Modal -->
 <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content shadow-lg">
@@ -128,7 +125,6 @@
         const id = el.dataset.id;
         const isRead = el.dataset.read === "1";
 
-        // Modal içeriğini doldur
         document.getElementById("modalNotifTitle").innerText = el.dataset.title;
         document.getElementById("modalNotifContent").innerText = el.dataset.content;
         document.getElementById("modalNotifCreator").innerText = el.dataset.creator;
@@ -136,11 +132,9 @@
         document.getElementById("modalNotifRole").innerText = el.dataset.role;
         document.getElementById("modalNotifDate").innerText = el.dataset.created;
 
-        // Modal aç
         const modal = new bootstrap.Modal(document.getElementById('notificationModal'));
         modal.show();
 
-        // Eğer okunmadıysa backend'e istek at ve görünümü güncelle
         if (!isRead) {
             fetch(`/notifications/read/${id}`, {
                 method: 'POST',

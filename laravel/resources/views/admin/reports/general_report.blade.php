@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title', 'General Report')
 @section('content')
-<!--start content-->
 <main class="page-content">
 
 

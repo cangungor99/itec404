@@ -9,6 +9,8 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Club;
 use App\Models\Voting;
 use App\Models\VotingOption;
+use App\Models\Membership;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 
 class LeaderVoteController extends Controller
@@ -76,17 +78,16 @@ class LeaderVoteController extends Controller
             ]);
         }
 
-        // 🟡 Yeni Eklenen Bildirim Kısmı
         $user = auth()->user();
 
-        $notification = \App\Models\Notification::create([
+        $notification = Notification::create([
             'clubID'    => $club->clubID,
             'creatorID' => $user->userID,
             'title'     => 'New Voting Session: ' . $validated['title'],
             'content'   => 'A new voting has been started. Visit to voting page.',
         ]);
 
-        $memberIDs = \App\Models\Membership::where('clubID', $club->clubID)
+        $memberIDs = Membership::where('clubID', $club->clubID)
             ->where('status', 'approved')
             ->pluck('userID');
 

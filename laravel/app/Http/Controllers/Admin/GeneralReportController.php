@@ -19,14 +19,12 @@ class GeneralReportController extends Controller
         $clubID = $request->input('club_id');
         $clubs = Club::all();
 
-        // Bütçe verileri
         $budgetQuery = ClubBudget::query();
         if ($clubID) $budgetQuery->where('clubID', $clubID);
         $totalBudget = $budgetQuery->sum('total_budget');
         $remainingBudget = $budgetQuery->sum('budget_left');
         $usedBudget = $totalBudget - $remainingBudget;
 
-        // Üyeler
         $memberQuery = Membership::query();
         if ($clubID) $memberQuery->where('clubID', $clubID);
         $totalMembers = $memberQuery->count();
@@ -34,7 +32,6 @@ class GeneralReportController extends Controller
         $avgMembers = Club::withCount('memberships')->get()->avg('memberships_count');
         $topClub = Club::withCount('memberships')->orderByDesc('memberships_count')->first();
 
-        // Etkinlikler
         $eventQuery = ClubEvent::query();
         if ($clubID) $eventQuery->where('clubID', $clubID);
         $totalEvents = $eventQuery->whereYear('start_time', Carbon::now()->year)->count();
@@ -42,11 +39,10 @@ class GeneralReportController extends Controller
 
         $topEventClub = Club::withCount('events')->orderByDesc('events_count')->first();
 
-        // Oylama
         $voteQuery = Vote::query();
         if ($clubID) $voteQuery->where('clubID', $clubID);
         $totalVotes = $voteQuery->count();
-        $averageParticipation = 68; // Sabit ya da hesaplama eklenecek
+        $averageParticipation = 68;
         $lastVote = $voteQuery->with('voting')->orderByDesc('timestamp')->first();
 
         return view('admin.reports.general_report', compact(

@@ -130,7 +130,7 @@
                                     data-surname="{{ $user->surname }}"
                                     data-email="{{ $user->email }}"
                                     data-roles="{{ implode(',', $user->roles->pluck('roleID')->toArray()) }}"
-                                    data-clubid="{{ optional($user->memberships->first())->clubID }}" {{-- Bu satırı ekledik --}}
+                                    data-clubid="{{ optional($user->memberships->first())->clubID }}"
                                     data-bs-toggle="modal" data-bs-target="#editUserModal">
                                     <i class="bi bi-pencil-fill"></i> Edit
                                 </button>
@@ -258,14 +258,12 @@
         $('#lastName').val($(this).data('surname'));
         $('#email').val($(this).data('email'));
 
-        // Roller
         const roles = $(this).data('roles').toString().split(',');
         $('#roleSelect option').prop('selected', false);
         roles.forEach(role => {
             $(`#roleSelect option[value="${role}"]`).prop('selected', true);
         });
 
-        // Club ID (varsa seç, yoksa boş bırak)
         const clubID = $(this).data('clubid');
         if (clubID) {
             $('#clubSelect').val(clubID);
@@ -275,7 +273,6 @@
             $('#clubSelectionBox').addClass('d-none');
         }
 
-        // Modalı aç
         const modal = new bootstrap.Modal(document.getElementById('editUserModal'));
         modal.show();
     });
@@ -283,11 +280,9 @@
 
 
 <script>
-    // SweetAlert ile silme onayı
     document.querySelectorAll('.delete-user-form').forEach(form => {
         form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Formun hemen gönderilmesini engelle
-
+            e.preventDefault();
             Swal.fire({
                 title: 'Are you sure you want to delete this user?',
                 text: "This action will delete the selected user!",
@@ -299,7 +294,7 @@
                 cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    form.submit(); // Onaylandıysa formu gönder
+                    form.submit();
                 }
             });
         });

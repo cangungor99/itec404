@@ -127,11 +127,10 @@ class LeaderForumController extends Controller
             'status' => 'approved',
         ]);
 
-        // Dosya varsa ekle
         if ($request->hasFile('attachments')) {
             foreach ($request->file('attachments') as $file) {
                 $filePath = $file->store('public/comment_attachments');
-                \App\Models\Attachment::create([
+                Attachment::create([
                     'commentID' => $comment->commentID,
                     'userID' => auth()->id(),
                     'file_path' => $filePath,

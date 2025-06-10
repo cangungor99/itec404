@@ -21,7 +21,6 @@ class LeaderEventController extends Controller
         }
     }
 
-
     public function index(Club $club): View
     {
         $this->authorizeClubAccess($club);

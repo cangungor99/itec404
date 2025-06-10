@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Membership;
 
 class LeaderNotificationController extends Controller
 {
@@ -40,7 +41,7 @@ class LeaderNotificationController extends Controller
             'content'   => $request->content,
         ]);
 
-        $userIDs = \App\Models\Membership::where('clubID', $request->clubID)
+        $userIDs = Membership::where('clubID', $request->clubID)
             ->where('status', 'approved')
             ->pluck('userID');
 

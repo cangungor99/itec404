@@ -1,13 +1,8 @@
 @extends('layouts.app')
 @section('title', 'View Reports')
 @section('content')
-<!--start content-->
 <main class="page-content">
-    
-    <!--end breadcrumb-->
-
     <div class="row">
-        <!-- Total Clubs -->
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm radius-10 border-0">
                 <div class="card-body text-center">
@@ -19,7 +14,6 @@
             </div>
         </div>
 
-        <!-- Total Members -->
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm radius-10 border-0">
                 <div class="card-body text-center">
@@ -31,7 +25,6 @@
             </div>
         </div>
 
-        <!-- Budget Used -->
         <div class="col-md-4 mb-3">
             <div class="card shadow-sm radius-10 border-0">
                 <div class="card-body text-center">
@@ -44,7 +37,6 @@
         </div>
     </div>
 
-    <!-- Activities Table -->
     <div class="card shadow-sm radius-10 border-0 mt-4">
         <div class="card-body">
             <h4 class="mb-3">Recent Club Activities</h4>
@@ -59,26 +51,26 @@
                         </tr>
                     </thead>
                     <tbody>
-    @foreach($recentEvents as $event)
-        <tr>
-            <td>{{ $event->club->name }}</td>
-            <td>{{ $event->title }}</td>
-            <td>{{ \Carbon\Carbon::parse($event->start_time)->format('Y-m-d') }}</td>
-            <td>
-                @php
-                    $now = \Carbon\Carbon::now();
-                    $status = $event->start_time > $now ? 'Scheduled' :
-                              ($event->end_time < $now ? 'Completed' : 'Ongoing');
-                @endphp
-                <span class="badge 
+                        @foreach($recentEvents as $event)
+                        <tr>
+                            <td>{{ $event->club->name }}</td>
+                            <td>{{ $event->title }}</td>
+                            <td>{{ \Carbon\Carbon::parse($event->start_time)->format('Y-m-d') }}</td>
+                            <td>
+                                @php
+                                $now = \Carbon\Carbon::now();
+                                $status = $event->start_time > $now ? 'Scheduled' :
+                                ($event->end_time < $now ? 'Completed' : 'Ongoing' );
+                                    @endphp
+                                    <span class="badge 
                     {{ $status === 'Scheduled' ? 'bg-primary' : 
                        ($status === 'Completed' ? 'bg-success' : 'bg-warning') }}">
-                    {{ $status }}
-                </span>
-            </td>
-        </tr>
-    @endforeach
-</tbody>
+                                    {{ $status }}
+                                    </span>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
 
                 </table>
             </div>
@@ -87,5 +79,4 @@
 
 
 </main>
-<!--end page main-->
 @endsection

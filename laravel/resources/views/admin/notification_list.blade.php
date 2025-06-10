@@ -167,22 +167,19 @@
             const id = $(this).data('id');
             const title = $(this).data('title');
             const content = $(this).data('content');
-            const club = $(this).data('club'); // kulüp adı geliyor
+            const club = $(this).data('club');
             const date = $(this).data('date');
 
-            // Modal içi form alanlarını doldur
             $('#notificationID').val(id);
             $('#notificationTitle').val(title);
             $('#notificationContent').val(content);
             $('#notificationDate').val(date);
 
-            // clubID eşleştirmesi için dropdown'da seçili yap
             const clubID = $(this).data('clubid');
             $('#notificationRecipients').val(clubID);
 
 
 
-            // Form action'ı dinamik olarak ayarlanıyor
             $('#editNotificationForm').attr('action', `/admin/notifications/update/${id}`);
             $('#editNotificationModal').modal('show');
         });

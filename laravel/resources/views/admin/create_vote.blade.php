@@ -2,9 +2,7 @@
 @section('title', 'Create Vote')
 
 @section('content')
-<!--start content-->
 <main class="page-content">
-    <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Votes</div>
         <div class="ps-3">
@@ -18,7 +16,6 @@
         </div>
 
     </div>
-    <!--end breadcrumb-->
 
     <div class="card shadow-sm radius-10 border-0 mb-3 animate__animated animate__fadeIn">
         <div class="card-body">
@@ -94,7 +91,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    // Voting option ekleme-silme işlemleri
     document.querySelector('.add-option').addEventListener('click', function() {
         const container = document.getElementById('options-container');
         const optionIndex = container.querySelectorAll('.input-group').length + 1;

@@ -92,7 +92,6 @@ class StudentForumController extends Controller
             }
         }
 
-        // 🟡 Yeni Eklenen Bildirim Kısmı
         $club = Club::find($validated['clubID']);
         $sender = auth()->user();
 

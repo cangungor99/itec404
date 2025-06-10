@@ -1,15 +1,13 @@
-{{-- resources/views/layouts/sidebars/sidebar-leader.blade.php --}}
 
 <div class="sidebar-header">
     <div><img src="{{ asset('assets/images/logo-icon.png') }}" class="logo-icon" alt="logo icon"></div>
     <div>
-        <h4 class="logo-text">Onedash (Leader)</h4>
+        <h4 class="logo-text">CMS (Leader)</h4>
     </div>
     <div class="toggle-icon ms-auto"><i class="bi bi-list"></i></div>
 </div>
 
 <ul class="metismenu" id="menu">
-    {{-- LİDER ALANI --}}
     <li class="menu-label">Leader Area</li>
 
     <li>
@@ -74,7 +72,6 @@
         </a>
     </li>
 
-    {{-- ÖĞRENCİ ALANI --}}
     <li class="menu-label">Student Area</li>
 
     <li>

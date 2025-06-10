@@ -2,7 +2,6 @@
 @section('title', 'My Club Events')
 @section('content')
 <main class="page-content">
-    <!-- breadcrumb -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Events</div>
         <div class="ps-3">
@@ -18,7 +17,6 @@
     </div>
 
     <div class="container py-2">
-        <!-- 🔽 FİLTRE DROPDOWN -->
         <div class="row mb-3 justify-content-end">
             <div class="col-md-4">
                 <form method="GET" action="{{ route('students.events.index') }}">

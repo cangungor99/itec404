@@ -6,7 +6,6 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @section('content')
 
 <main class="page-content">
-    <!-- Breadcrumb -->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Forum</div>
         <div class="ps-3">
@@ -20,7 +19,6 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
         </div>
     </div>
 
-    <!-- Forum Başlığı -->
     <div class="card shadow-sm mb-4 fade-in">
         <div class="card-body">
             <h3 class="fw-bold">

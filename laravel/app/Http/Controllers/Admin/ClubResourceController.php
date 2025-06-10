@@ -30,15 +30,15 @@ class ClubResourceController extends Controller
         $request->validate([
             'clubID' => 'required|exists:clubs,clubID',
             'title' => 'required|string|max:255',
-            'file' => 'required|file|max:10240', // max 10 MB
+            'file' => 'required|file|max:10240',
             'description' => 'nullable|string',
         ]);
 
         $path = $request->file('file')->store('resources', 'public');
 
-        \App\Models\Resource::create([
+        Resource::create([
             'clubID' => $request->clubID,
-            'userID' => auth()->id(), // Admin kim ekledi görmek için
+            'userID' => auth()->id(),
             'title' => $request->title,
             'description' => $request->description,
             'file_path' => $path,
@@ -48,7 +48,7 @@ class ClubResourceController extends Controller
     }
 
 
-    public function destroy(\App\Models\Resource $resource)
+    public function destroy(Resource $resource)
     {
         if ($resource->file_path && Storage::disk('public')->exists($resource->file_path)) {
             Storage::disk('public')->delete($resource->file_path);

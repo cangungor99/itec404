@@ -25,8 +25,6 @@ class AdminDashboardController extends Controller
             ? round((($totalClubs - $lastMonthClubCount) / $lastMonthClubCount) * 100, 1)
             : 0;
 
-
-
         $totalEvents = ClubEvent::count();
         $lastMonthEventCount = ClubEvent::whereMonth('created_at', now()->subMonth()->month)
             ->whereYear('created_at', now()->subMonth()->year)
@@ -35,9 +33,6 @@ class AdminDashboardController extends Controller
         $eventGrowth = $lastMonthEventCount > 0
             ? round((($totalEvents - $lastMonthEventCount) / $lastMonthEventCount) * 100, 1)
             : 0;
-
-
-
 
         $totalBudget = ClubBudget::sum('total_budget');
         $lastMonthBudget = ClubBudget::whereMonth('created_at', now()->subMonth()->month)
@@ -48,29 +43,24 @@ class AdminDashboardController extends Controller
             ? round((($totalBudget - $lastMonthBudget) / $lastMonthBudget) * 100, 1)
             : 0;
 
-
-
-
-
-
         $totalUsers = User::count();
         $lastMonthUserCount = User::whereMonth('created_at', now()->subMonth()->month)
             ->whereYear('created_at', now()->subMonth()->year)
             ->count();
+
         $userGrowth = $lastMonthUserCount > 0
             ? round((($totalUsers - $lastMonthUserCount) / $lastMonthUserCount) * 100, 1)
             : 0;
 
-            $budgetDistribution = Club::with('budget')
-    ->whereHas('budget')
-    ->get()
-    ->map(function ($club) {
-        return [
-            'label' => $club->name,
-            'value' => $club->budget->total_budget,
-        ];
-    });
-
+        $budgetDistribution = Club::with('budget')
+            ->whereHas('budget')
+            ->get()
+            ->map(function ($club) {
+                return [
+                    'label' => $club->name,
+                    'value' => $club->budget->total_budget,
+                ];
+            });
 
         return view('admin.dashboard', compact(
             'totalClubs',

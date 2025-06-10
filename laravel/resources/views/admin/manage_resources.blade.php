@@ -92,7 +92,6 @@
                                 @foreach ($resources as $resource)
                                 <tr>
                                     <td>
-                                        {{-- Dosya tipine göre ikon --}}
                                         @php
                                         $ext = pathinfo($resource->file_path, PATHINFO_EXTENSION);
                                         $icon = match(strtolower($ext)) {

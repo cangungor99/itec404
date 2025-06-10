@@ -30,7 +30,7 @@
     .table th,
     .table td {
         vertical-align: middle;
-        text-align: center;
+        text-align: left;
         padding: 0.75rem;
     }
 
@@ -153,7 +153,7 @@
                                 <img src="{{ asset('storage/' . $club->photo) }}" alt="{{ $club->name }}" class="rounded" width="40">
                             </td>
                             <td>{{ $club->name }}</td>
-                            <td>{{ $club->description }}</td>
+                            <td>{{ \Illuminate\Support\Str::limit($club->description, 100, '...') }}</td>
                             <td>
                                 <span class="badge {{ (int) $club->status === 1 ? 'bg-success' : 'bg-secondary' }}">
                                     {{ (int) $club->status === 1 ? 'Active' : 'Inactive' }}
@@ -206,7 +206,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <!-- ✅ FORM BAŞLANGICI -->
+            <!-- FORM BAŞLANGICI -->
             <form id="editClubForm" method="POST" action="" enctype="multipart/form-data">
 
                 @csrf
@@ -252,7 +252,6 @@
                     </button>
                 </div>
             </form>
-            <!-- ✅ FORM BİTİŞİ -->
         </div>
     </div>
 </div>
@@ -275,17 +274,14 @@
                 const status = button.dataset.status;
                 const photo = button.dataset.photo;
 
-                // Form action'ı güncelle
                 editForm.action = `/admin/clubs/update/${clubID}`;
 
 
-                // Alanlara veri yerleştir
                 document.getElementById('editClubID').value = clubID;
                 document.getElementById('clubName').value = name;
                 document.getElementById('clubDescription').value = description;
                 document.getElementById('clubStatus').value = parseInt(status);
 
-                // Modal zaten Bootstrap tarafından tetikleniyor (data-bs-target ile)
             });
         });
     });

@@ -52,7 +52,6 @@ class StudentDashboardController extends Controller
 
         $totalNotifications = $recentNotifications->count();
 
-        // Leader olduğu kulüpler
         $leaderClubs = $user->leadClubs()->get()->map(function ($club) {
             return [
                 'club' => $club,
@@ -60,7 +59,6 @@ class StudentDashboardController extends Controller
             ];
         });
 
-        // Manager olduğu kulüpler
         $managerClubs = $user->manageClubs()->get()->map(function ($club) {
             return [
                 'club' => $club,
@@ -68,7 +66,6 @@ class StudentDashboardController extends Controller
             ];
         });
 
-        // Member olduğu kulüpler
         $memberClubs = $user->memberships()
             ->where('status', 'approved')
             ->with('club')
@@ -81,7 +78,6 @@ class StudentDashboardController extends Controller
             });
 
 
-        // Tüm roller birleştiriliyor
         $myClubRoles = collect($leaderClubs)
             ->merge($managerClubs)
             ->merge($memberClubs);

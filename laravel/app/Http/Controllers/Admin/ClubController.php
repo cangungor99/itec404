@@ -23,7 +23,6 @@ class ClubController extends Controller
             $photo = 'club-logos/default.jpg';
         }
 
-
         DB::table('clubs')->insert([
             'name' => $request->clubName,
             'description' => $request->clubDescription,
@@ -33,13 +32,11 @@ class ClubController extends Controller
         ]);
 
         return redirect()->route('admin.manage_clubs')->with('success', 'Club created successfully!');
-
     }
 
     public function index(Request $request)
     {
-        $status = $request->query('status'); // 'all', '1', '0' olabilir
-
+        $status = $request->query('status');
         $clubsQuery = DB::table('clubs')->orderBy('created_at', 'desc');
 
         if ($status === '1' || $status === '0') {
@@ -50,7 +47,6 @@ class ClubController extends Controller
 
         return view('admin.manage_clubs', compact('clubs'));
     }
-
 
     public function edit($id)
     {
@@ -91,7 +87,6 @@ class ClubController extends Controller
 
         return redirect()->route('admin.manage_clubs')->with('success', 'Club updated successfully!');
     }
-
 
     public function destroy($id)
     {

@@ -1,9 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Create Notification')
 @section('content')
-<!--start content-->
 <main class="page-content">
-    <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Notification</div>
         <div class="ps-3">
@@ -17,7 +15,6 @@
         </div>
 
     </div>
-    <!--end breadcrumb-->
 
     <div class="card shadow-sm radius-10 border-0 mb-3 animate__animated animate__fadeIn">
         <div class="card-body">
@@ -46,5 +43,4 @@
 
 
 </main>
-<!--end page main-->
 @endsection

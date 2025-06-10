@@ -5,10 +5,8 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
 @endphp
 @section('content')
 
-<!--start content-->
 <main class="page-content">
 
-    <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Pages</div>
         <div class="ps-3">
@@ -35,7 +33,6 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
             </div>
         </div>
     </div>
-    <!--end breadcrumb-->
 
     <div class="card shadow-sm radius-10 border-0 mb-4 animate__animated animate__fadeIn">
         <div class="card-body">
@@ -71,7 +68,6 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
                             </td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    {{-- Edit opsiyonu opsiyonel: gerekirse eklenir --}}
                                     <a href="{{ route($prefix.'.votes.edit', [$club->clubID, $voting->votingID]) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
                                     <a href="{{ route($prefix.'.votes.results', [$club->clubID, $voting->votingID]) }}" class="btn btn-outline-info btn-sm"><i class="bi bi-bar-chart-line"></i></a>
                                     <form action="{{ route($prefix.'.votes.destroy', [$club->clubID, $voting->votingID]) }}" method="POST" class="delete-vote-form d-inline">
@@ -101,14 +97,13 @@ $prefix = auth()->user()->hasRole('manager') ? 'manager' : 'leader';
     </div>
 
 </main>
-<!--end page main-->
 @endsection
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.querySelectorAll('.delete-vote-form').forEach(form => {
         form.addEventListener('submit', function(e) {
-            e.preventDefault(); // Formu hemen gönderme
+            e.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',
                 text: "This action cannot be undone.",

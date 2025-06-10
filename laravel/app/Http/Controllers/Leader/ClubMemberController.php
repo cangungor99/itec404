@@ -38,7 +38,6 @@ class ClubMemberController extends Controller
             ->with('user')
             ->get()
             ->sortBy(function ($m) {
-                // Rol önceliği: manager > leader > student
                 return match ($m->role) {
                     'manager' => 1,
                     'leader'  => 2,
@@ -46,7 +45,7 @@ class ClubMemberController extends Controller
                     default   => 4,
                 };
             })
-            ->unique('userID') // Aynı user sadece bir kez
+            ->unique('userID')
             ->values();
 
         $canManageRoles = $this->isManager($club);
@@ -71,17 +70,14 @@ class ClubMemberController extends Controller
             return back()->withErrors('Selected user is not an approved club member.');
         }
 
-        // 1. Club tablosunda lideri ata
         $club->leaderID = $userID;
         $club->save();
 
-        // 2. Membership tablosuna leader rolü ekle (varsa güncelle)
         Membership::updateOrCreate(
             ['userID' => $userID, 'clubID' => $club->clubID, 'role' => 'leader'],
             ['status' => 'approved', 'joined_at' => now()]
         );
 
-        // 3. role_user tablosuna 'leader' rolünü ekle (eğer yoksa)
         $leaderRoleID = \App\Models\Role::where('name', 'leader')->value('roleID');
         if ($leaderRoleID && !$user->roles->contains('roleID', $leaderRoleID)) {
             $user->roles()->attach($leaderRoleID);

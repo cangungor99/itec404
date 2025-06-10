@@ -47,7 +47,7 @@ class AuthenticatedSessionController extends Controller
             default:
                 Auth::logout();
                 return redirect()->route('login')->withErrors([
-                    'email' => 'Yetkili bir rolünüz bulunmamaktadır.',
+                    'email' => 'You do not have any authorized role.',
                 ]);
         }
     }

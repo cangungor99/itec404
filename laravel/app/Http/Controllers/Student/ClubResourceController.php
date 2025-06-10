@@ -17,7 +17,6 @@ class ClubResourceController extends Controller
     {
         $user = auth()->user();
 
-        // Sadece approved üyelikleri al
         $userClubs = $user->memberships()
             ->where('status', 'approved')
             ->with('club')

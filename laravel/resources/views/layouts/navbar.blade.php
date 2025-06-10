@@ -1,4 +1,3 @@
-{{-- resources/views/layouts/navbar.blade.php --}}
 <nav class="navbar navbar-expand gap-3">
     <div class="mobile-toggle-icon fs-3 d-flex d-lg-none">
         <i class="bi bi-list"></i>
@@ -8,21 +7,14 @@
 
     <div class="top-navbar-right ms-auto">
         <ul class="navbar-nav align-items-center gap-1">
-            {{-- mobil arama butonu --}}
 
 
-
-
-            {{-- karanlık mod --}}
             <li class="nav-item dark-mode d-none d-sm-flex">
                 <a class="nav-link dark-mode-icon" href="javascript:;">
                     <i class="bi bi-moon-fill"></i>
                 </a>
             </li>
 
-
-
-            {{-- mesajlar --}}
             <li class="nav-item dropdown dropdown-large">
                 <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                     <div class="messages">
@@ -87,7 +79,6 @@
             </li>
 
 
-            {{-- Bildirim ikonu kısmı --}}
             <li class="nav-item dropdown dropdown-large">
                 <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                     <div class="notifications">
@@ -144,7 +135,6 @@
         </ul>
     </div>
 
-    {{-- Kullanıcı profili dropdown --}}
     <div class="dropdown dropdown-user-setting">
         <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
             <div class="user-setting d-flex align-items-center gap-3">
@@ -189,8 +179,7 @@
 @push('scripts')
 <script>
     function markNotificationAsRead(event, el) {
-        event.preventDefault(); // linke gitmeyi engelle
-
+        event.preventDefault(); 
         const notifID = el.getAttribute('data-id');
 
         fetch(`/notifications/navbar/read/${notifID}`, {
@@ -203,7 +192,6 @@
             }).then(res => res.json())
             .then(data => {
                 if (data.status === 'ok') {
-                    // CSS güncellemesi
                     el.classList.remove('bg-light');
                     const box = el.querySelector('.notification-box');
                     if (box) {
@@ -216,7 +204,6 @@
                         title.classList.remove('fw-bold');
                     }
 
-                    // Sayıyı azalt
                     const badge = document.querySelector('.notifications .notify-badge');
                     if (badge) {
                         let current = parseInt(badge.textContent.trim());
@@ -225,7 +212,6 @@
                         }
                     }
 
-                    // Sayfaya yönlendir
                     window.location.href = el.getAttribute('href');
                 }
             });
