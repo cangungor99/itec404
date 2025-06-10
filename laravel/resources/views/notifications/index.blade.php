@@ -42,7 +42,7 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}"><i class="bx bx-home-alt"></i></a></li>
+                    <li class="breadcrumb-item"><i class="bx bx-home-alt"></i></li>
                     <li class="breadcrumb-item active" aria-current="page">Notifications</li>
                 </ol>
             </nav>
