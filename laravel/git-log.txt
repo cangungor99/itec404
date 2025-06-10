@@ -1,3 +1,4 @@
+410d866 - can, 2025-06-10 : Kodlar incelendi ve düzenlendi
 634298e - mustafabostan, 2025-06-10 : Bug fix
 75d3ac2 - mustafabostan, 2025-06-10 : Report sayfalari acilmama sorunu cozuldu
 b534b08 - mustafabostan, 2025-06-10 : Merge branch 'can' of https://github.com/cangungor99/itec404 into mustafa
