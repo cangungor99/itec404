@@ -53,7 +53,7 @@ class LeaderDashboardController extends Controller
                 }
             }
             
-
+            $club = $clubs->first();
         return view('students.leader.dashboard', compact(
             'totalMembers',
             'pendingMembers',
@@ -63,6 +63,7 @@ class LeaderDashboardController extends Controller
             'pollLabels',
             'pollData',
             'pollTitle',
+            'club'
         ));
     }
 }

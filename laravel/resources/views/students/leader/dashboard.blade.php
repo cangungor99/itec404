@@ -92,7 +92,6 @@
                                     <th>Event Title</th>
                                     <th>Start Time</th>
                                     <th>Location</th>
-                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -101,10 +100,6 @@
                                     <td>{{ $event->title }}</td>
                                     <td>{{ \Carbon\Carbon::parse($event->start_time)->format('Y-m-d H:i') }}</td>
                                     <td>{{ $event->location }}</td>
-                                    <td>
-                                        <a href="#" class="text-warning"><i class="bi bi-pencil-square"></i></a>
-                                        <a href="#" class="text-danger ms-2"><i class="bi bi-trash"></i></a>
-                                    </td>
                                 </tr>
                                 @empty
                                 <tr>
@@ -153,42 +148,7 @@
         </div>
     </div>
 
-    <!-- Extra Widgets -->
-    <div class="row mt-4">
-        <div class="col-12 col-xl-6 d-flex">
-            <div class="card radius-10 w-100">
-                <div class="card-body">
-                    <h6 class="mb-1">Poll Participation</h6>
-
-                    @if($pollTitle)
-                    <p class="text-muted mb-3">
-                        <strong>Question:</strong> {{ $pollTitle }}
-                    </p>
-                    <canvas id="pollChart" height="180"></canvas>
-                    @else
-                    <p class="text-muted">No recent poll available.</p>
-                    @endif
-
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-12 col-xl-6">
-            <div class="card radius-10">
-                <div class="card-body">
-                    <h6 class="mb-3">Quick Actions</h6>
-                    <div class="d-grid gap-2">
-                        <a href="create_event.php" class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> New Event</a>
-                        <a href="manage_members.php" class="btn btn-outline-secondary"><i class="bi bi-person-lines-fill"></i> Manage Members</a>
-                        <a href="manage_forums.php" class="btn btn-outline-warning"><i class="bi bi-chat-left-text"></i> Manage Forums</a>
-                        <a href="export_data.php" class="btn btn-outline-success"><i class="bi bi-download"></i> Export Club Data</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
+    
 
 
 </main>
