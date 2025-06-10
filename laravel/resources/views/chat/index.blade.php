@@ -116,7 +116,6 @@
                                         <i class='bx bxs-edit me-2'></i>New Chat<i class='bx bxs-chevron-down ms-2'></i>
                                     </a>
                                     <div class="dropdown-menu p-3" style="min-width: 250px;">
-                                        <!-- Arama kutusu burada olacak -->
                                         <div class="mb-2">
                                             <input type="text" id="userSearchInput" class="form-control form-control-sm" placeholder="Search user...">
                                             <div id="searchResults" class="search-results mt-2"></div>
@@ -150,32 +149,32 @@
 
                     </div>
                     <div class="tab-pane fade" id="pills-ClubChat" role="tabpanel" aria-labelledby="pills-club-tab">
-    <div class="p-3">
-        <h6 class="text-muted mb-2">Joined Clubs</h6>
-        <div class="list-group list-group-flush">
-            @foreach(Auth::user()->memberships()->where('status', 'approved')->with('club')->get() as $membership)
-                @if($membership->club)
-                    <a href="javascript:;" class="list-group-item club-item"
-                       data-club-id="{{ $membership->club->clubID }}"
-                       data-club-name="{{ $membership->club->name }}">
-                        <div class="d-flex align-items-center">
-                            <div class="chat-user">
-                                <img src="{{ asset('storage/club_logos/' . ($membership->club->photo ?? 'default_club.png')) }}"
-     width="42" height="42" class="rounded-circle" alt="Club Logo" />
+                        <div class="p-3">
+                            <h6 class="text-muted mb-2">Joined Clubs</h6>
+                            <div class="list-group list-group-flush">
+                                @foreach(Auth::user()->memberships()->where('status', 'approved')->with('club')->get() as $membership)
+                                @if($membership->club)
+                                <a href="javascript:;" class="list-group-item club-item"
+                                    data-club-id="{{ $membership->club->clubID }}"
+                                    data-club-name="{{ $membership->club->name }}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="chat-user">
+                                            <img src="{{ asset('storage/' . ($membership->club->photo ?? 'default_club.png')) }}"
+                                                width="42" height="42" class="rounded-circle" alt="Club Logo" />
 
+                                        </div>
+                                        <div class="flex-grow-1 ms-2">
+                                            <h6 class="mb-0 chat-title">{{ $membership->club->name }}</h6>
+                                            <p class="mb-0 chat-msg text-muted">Click to open group chat</p>
+                                        </div>
+                                        <div class="chat-time"><i class="bx bx-right-arrow-alt"></i></div>
+                                    </div>
+                                </a>
+                                @endif
+                                @endforeach
                             </div>
-                            <div class="flex-grow-1 ms-2">
-                                <h6 class="mb-0 chat-title">{{ $membership->club->name }}</h6>
-                                <p class="mb-0 chat-msg text-muted">Click to open group chat</p>
-                            </div>
-                            <div class="chat-time"><i class="bx bx-right-arrow-alt"></i></div>
                         </div>
-                    </a>
-                @endif
-            @endforeach
-        </div>
-    </div>
-</div>
+                    </div>
 
 
                 </div>

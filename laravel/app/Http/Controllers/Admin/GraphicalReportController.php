@@ -28,7 +28,7 @@ class GraphicalReportController extends Controller
         });
 
         // 3. Aylık etkinlik sayıları
-        $monthlyEvents = ClubEvent::selectRaw('strftime("%Y-%m", start_time) as month, count(*) as count')
+        $monthlyEvents = ClubEvent::selectRaw('DATE_FORMAT(start_time, "%Y-%m") as month, count(*) as count')
             ->groupBy('month')
             ->orderBy('month')
             ->get();

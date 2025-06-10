@@ -59,7 +59,7 @@ class ManagerReportController extends Controller
 
         // Aylık etkinlikler
         $monthlyEvents = $club->events()
-            ->selectRaw('strftime("%Y-%m", start_time) as month, count(*) as count')
+            ->selectRaw("DATE_FORMAT(start_time, '%Y-%m') as month, count(*) as count")
             ->groupBy('month')
             ->orderBy('month')
             ->get();
