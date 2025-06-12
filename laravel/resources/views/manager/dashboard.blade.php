@@ -81,19 +81,7 @@
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="col-12 col-lg-6">
-                <div class="card radius-10 border-0 shadow-sm">
-                    <div class="card-body">
-                        <h6 class="mb-3">Quick Actions</h6>
-                        <div class="d-grid gap-2">
-                            <a href="#" class="btn btn-outline-primary">Create Event</a>
-                            <a href="#" class="btn btn-outline-warning">Send Notification</a>
-                            <a href="#" class="btn btn-outline-success">Manage Budget</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
 </main>
