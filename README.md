@@ -45,8 +45,8 @@ A Laravel-based web platform designed for university clubs to manage memberships
 ## 🚀 Installation
 
 ```bash
-git clone https://github.com/yourusername/dcms.git
-cd dcms
+git clone https://github.com/cangungor99/itec404
+cd itec404/laravel
 
 # Install dependencies
 composer install
@@ -64,3 +64,5 @@ php artisan storage:link
 
 # Start the server
 php artisan serve
+
+The Reset 
